@@ -99,20 +99,20 @@ const buildShare = (puzzle, solved, wrong, ms, streak) => {
 // ============================================================
 function Header({dark,onDark,onStats,onHome,onHow,onScoring,mode,onMode}) {
   return (
-    <header style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 14px",height:"52px",background:dark?"#0a0a0a":"#0f1923",borderBottom:`2px solid #C8A96E`,position:"sticky",top:0,zIndex:100,gap:"8px"}}>
-      <button onClick={onHome} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"22px",letterSpacing:"5px",color:"#C8A96E",background:"none",border:"none",cursor:"pointer",padding:0,flexShrink:0}}>DRAFT</button>
+    <header style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 14px",height:"56px",background:dark?"#0a0a0a":"#0f1923",borderBottom:`2px solid #C8A96E`,position:"sticky",top:0,zIndex:100,gap:"8px"}}>
+      <button onClick={onHome} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"26px",letterSpacing:"5px",color:"#C8A96E",background:"none",border:"none",cursor:"pointer",padding:0,flexShrink:0}}>DRAFT</button>
       <div style={{display:"flex",gap:"4px"}}>
         {["daily","practice"].map(m=>(
-          <button key={m} onClick={()=>onMode(m)} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",padding:"5px 10px",borderRadius:"3px",cursor:"pointer",border:"1px solid",borderColor:mode===m?"#C8A96E":"#333",background:mode===m?"#C8A96E":"transparent",color:mode===m?"#0f1923":"#555",transition:"all 0.15s"}}>
+          <button key={m} onClick={()=>onMode(m)} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",padding:"6px 12px",borderRadius:"3px",cursor:"pointer",border:"1px solid",borderColor:mode===m?"#C8A96E":"#333",background:mode===m?"#C8A96E":"transparent",color:mode===m?"#0f1923":"#555",transition:"all 0.15s"}}>
             {m.toUpperCase()}
           </button>
         ))}
       </div>
       <div style={{display:"flex",gap:"8px",alignItems:"center"}}>
-        <button onClick={onHow} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"1px",padding:"4px 8px",background:"transparent",border:"1px solid #333",color:"#666",borderRadius:"3px",cursor:"pointer"}}>HOW</button>
-        <button onClick={onScoring} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"1px",padding:"4px 8px",background:"transparent",border:"1px solid #333",color:"#666",borderRadius:"3px",cursor:"pointer"}}>⭐</button>
-        <button onClick={onStats} style={{background:"none",border:"none",cursor:"pointer",fontSize:"16px",padding:"2px"}}>📊</button>
-        <button onClick={onDark} style={{background:"none",border:"none",cursor:"pointer",fontSize:"15px",padding:"2px"}}>{dark?"☀️":"🌙"}</button>
+        <button onClick={onHow} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"1px",padding:"5px 10px",background:"transparent",border:"1px solid #333",color:"#888",borderRadius:"3px",cursor:"pointer"}}>HOW</button>
+        <button onClick={onScoring} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"1px",padding:"5px 8px",background:"transparent",border:"1px solid #333",color:"#888",borderRadius:"3px",cursor:"pointer"}}>⭐</button>
+        <button onClick={onStats} style={{background:"none",border:"none",cursor:"pointer",fontSize:"18px",padding:"2px"}}>📊</button>
+        <button onClick={onDark} style={{background:"none",border:"none",cursor:"pointer",fontSize:"18px",padding:"2px"}}>{dark?"☀️":"🌙"}</button>
       </div>
     </header>
   );
@@ -410,7 +410,7 @@ function Landing({onPlay,dark,mode}) {
       <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(56px,16vw,90px)",letterSpacing:"4px",color:"#C8A96E",lineHeight:0.85,marginBottom:"10px",textShadow:`3px 3px 0 ${dark?"rgba(0,0,0,0.5)":"rgba(15,25,35,0.2)"}`}}>DRAFT</div>
 
       <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"clamp(13px,3.2vw,15px)",color:dark?"#666":"#777",fontStyle:"italic",marginBottom:"22px",maxWidth:"280px",lineHeight:1.6}}>
-        {isPractice ? "Sharpen your game. No streak on the line." : "Test your NFL knowledge. Group the players. Find the connection."}
+        {isPractice ? "Sharpen your game. No streak on the line." : <span>Test your NFL knowledge.<br/>Group the players.<br/>Find the connection.</span>}
       </div>
 
       {/* Demo tiles */}
@@ -420,7 +420,7 @@ function Landing({onPlay,dark,mode}) {
         ))}
       </div>
 
-      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"3px",color:"#C8A96E",marginBottom:"5px"}}>FIND THE CONNECTION</div>
+
       <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"clamp(12px,3.5vw,15px)",color:fg,fontStyle:"italic",marginBottom:"28px",background:dark?"#181818":"#f0ebe0",padding:"10px 20px",borderRadius:"6px",border:`1px solid ${dark?"#2a2a2a":"#ddd6c4"}`,maxWidth:"300px"}}>
         Famous for being impossible to coach 😤
       </div>
