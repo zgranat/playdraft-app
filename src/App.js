@@ -168,13 +168,13 @@ function Tile({name,selected,onClick,dark,shaking}) {
   return (
     <button onClick={onClick} style={{
       fontFamily:"'Bebas Neue',cursive",
-      fontSize:"clamp(11px,3.4vw,15px)",
+      fontSize:"clamp(12px,3.6vw,16px)",
       letterSpacing:"0.3px",
-      padding:"2px",
-      height:"72px",
+      padding:"4px 2px",
+      aspectRatio:"1 / 1",
       width:"100%",
       display:"flex",alignItems:"center",justifyContent:"center",
-      textAlign:"center",lineHeight:1.2,
+      textAlign:"center",lineHeight:1.15,
       background:selected?(dark?"#1e2d4a":"#0f1923"):(dark?"#1c1c1c":"#ffffff"),
       color:selected?"#C8A96E":(dark?"#d4c9b8":"#1a1a2e"),
       border:`2px solid ${selected?"#C8A96E":(dark?"#2a2a2a":"#ddd6c4")}`,
@@ -198,7 +198,7 @@ function SolvedRow({group}) {
     <div style={{background:group.color,borderRadius:"8px",padding:"12px 14px",marginBottom:"6px",animation:"popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)"}}>
       <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"3px",color:"rgba(255,255,255,0.6)",marginBottom:"2px"}}>{DIFF_LABELS[group.difficulty]}</div>
       <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"clamp(13px,3.5vw,17px)",fontWeight:"700",fontStyle:"italic",color:"#fff",lineHeight:1.2}}>{group.label}</div>
-      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"1.5px",color:"rgba(255,255,255,0.7)",marginTop:"4px"}}>{group.players.join(" · ")}</div>
+      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"1px",color:"rgba(255,255,255,0.8)",marginTop:"5px"}}>{group.players.join(" · ")}</div>
     </div>
   );
 }
@@ -405,7 +405,7 @@ function Landing({onPlay,dark,mode}) {
   const sports=[{icon:"🏈",name:"NFL",status:"live"},{icon:"🏀",name:"NBA",status:"soon"},{icon:"⚾",name:"MLB",status:"soon"},{icon:"🏒",name:"NHL",status:"soon"}];
 
   return (
-    <div style={{minHeight:"calc(100vh - 52px)",background:bg,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-start",padding:"28px 16px 32px",textAlign:"center"}}>
+    <div style={{minHeight:"calc(100vh - 52px)",background:bg,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px 16px",textAlign:"center"}}>
 
       <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(60px,17vw,96px)",letterSpacing:"3px",color:"#C8A96E",lineHeight:0.9,marginBottom:"14px",textShadow:`3px 3px 0 ${dark?"rgba(0,0,0,0.5)":"rgba(15,25,35,0.2)"}`}}>DRAFT</div>
 
@@ -506,12 +506,12 @@ function Game({puzzle,dark,onFinish}) {
   const unsolved=tiles.filter(p=>!solved.some(g=>g.players.includes(p)));
 
   return (
-    <div style={{background:bg,minHeight:"calc(100vh - 52px)",display:"flex",flexDirection:"column",padding:"12px 12px 24px"}}>
-      <div style={{maxWidth:"480px",margin:"0 auto",width:"100%",flex:1,display:"flex",flexDirection:"column"}}>
+    <div style={{background:bg,minHeight:"calc(100vh - 52px)",display:"flex",flexDirection:"column",padding:"14px 12px 24px"}}>
+      <div style={{maxWidth:"460px",margin:"0 auto",width:"100%",display:"flex",flexDirection:"column"}}>
 
         {/* Top bar */}
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"12px"}}>
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"3px",color:dark?"#444":"#aaa"}}>{puzzle.title}</div>
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"3px",color:dark?"#666":"#999"}}>{puzzle.title}</div>
           <Timer running={timerOn} onTick={setTimeMs} dark={dark}/>
           <div style={{textAlign:"right"}}>
             <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"8px",letterSpacing:"2px",color:dark?"#444":"#aaa"}}>DOWNS</div>
@@ -530,7 +530,7 @@ function Game({puzzle,dark,onFinish}) {
 
         {/* Grid — fills available space */}
         {unsolved.length>0&&(
-          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"6px",marginBottom:"12px",flex:1}}>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"8px",marginBottom:"16px"}}>
             {unsolved.map(name=>(
               <Tile key={name} name={name} selected={selected.includes(name)} onClick={()=>handleTile(name)} dark={dark} shaking={shaking.includes(name)}/>
             ))}
@@ -539,11 +539,11 @@ function Game({puzzle,dark,onFinish}) {
 
         {/* Controls — bottom anchored, thumb-friendly */}
         {!over&&(
-          <div style={{display:"flex",flexDirection:"column",gap:"8px",marginTop:"auto"}}>
+          <div style={{display:"flex",flexDirection:"column",gap:"8px"}}>
             <div style={{display:"flex",gap:"8px"}}>
-              <button onClick={()=>setTiles(shuffle(unsolved))} style={{flex:1,fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",padding:"14px",background:"transparent",color:dark?"#666":"#888",border:`1px solid ${dark?"#2a2a2a":"#ccc"}`,borderRadius:"8px",cursor:"pointer",WebkitTapHighlightColor:"transparent"}}>SHUFFLE</button>
-              <button onClick={()=>setSelected([])} disabled={!selected.length} style={{flex:1,fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",padding:"14px",background:"transparent",color:selected.length?(dark?"#d4c9b8":"#1a1a2e"):"#888",border:`1px solid ${selected.length?(dark?"#444":"#999"):(dark?"#222":"#ddd")}`,borderRadius:"8px",cursor:selected.length?"pointer":"default",WebkitTapHighlightColor:"transparent"}}>CLEAR</button>
-              <button onClick={handleSubmit} disabled={selected.length!==4} style={{flex:2,fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"2px",padding:"14px",background:selected.length===4?"#C8A96E":(dark?"#1e1e1e":"#ece4d4"),color:selected.length===4?"#0f1923":(dark?"#333":"#bbb"),border:"none",borderRadius:"8px",cursor:selected.length===4?"pointer":"default",transition:"background 0.15s",WebkitTapHighlightColor:"transparent"}}>SUBMIT</button>
+              <button onClick={()=>setTiles(shuffle(unsolved))} style={{flex:1,fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",padding:"16px",background:"transparent",color:dark?"#888":"#888",border:`1px solid ${dark?"#2a2a2a":"#ccc"}`,borderRadius:"8px",cursor:"pointer",WebkitTapHighlightColor:"transparent"}}>SHUFFLE</button>
+              <button onClick={()=>setSelected([])} disabled={!selected.length} style={{flex:1,fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",padding:"16px",background:"transparent",color:selected.length?(dark?"#d4c9b8":"#1a1a2e"):"#888",border:`1px solid ${selected.length?(dark?"#444":"#999"):(dark?"#222":"#ddd")}`,borderRadius:"8px",cursor:selected.length?"pointer":"default",WebkitTapHighlightColor:"transparent"}}>CLEAR</button>
+              <button onClick={handleSubmit} disabled={selected.length!==4} style={{flex:2,fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"2px",padding:"16px",background:selected.length===4?"#C8A96E":(dark?"#1e1e1e":"#ece4d4"),color:selected.length===4?"#0f1923":(dark?"#333":"#bbb"),border:"none",borderRadius:"8px",cursor:selected.length===4?"pointer":"default",transition:"background 0.15s",WebkitTapHighlightColor:"transparent"}}>SUBMIT</button>
             </div>
           </div>
         )}
