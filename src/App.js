@@ -405,7 +405,7 @@ function Landing({onPlay,dark,mode}) {
   const sports=[{icon:"🏈",name:"NFL",status:"live"},{icon:"🏀",name:"NBA",status:"soon"},{icon:"⚾",name:"MLB",status:"soon"},{icon:"🏒",name:"NHL",status:"soon"}];
 
   return (
-    <div style={{minHeight:"calc(100vh - 52px)",background:bg,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px 16px",textAlign:"center"}}>
+    <div style={{background:bg,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-start",padding:"32px 20px 40px",textAlign:"center"}}>
 
       <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(60px,17vw,96px)",letterSpacing:"3px",color:"#C8A96E",lineHeight:0.9,marginBottom:"14px",textShadow:`3px 3px 0 ${dark?"rgba(0,0,0,0.5)":"rgba(15,25,35,0.2)"}`}}>DRAFT</div>
 
@@ -506,7 +506,7 @@ function Game({puzzle,dark,onFinish}) {
   const unsolved=tiles.filter(p=>!solved.some(g=>g.players.includes(p)));
 
   return (
-    <div style={{background:bg,minHeight:"calc(100vh - 52px)",display:"flex",flexDirection:"column",padding:"14px 12px 24px"}}>
+    <div style={{background:bg,display:"flex",flexDirection:"column",padding:"16px 12px 32px"}}>
       <div style={{maxWidth:"460px",margin:"0 auto",width:"100%",display:"flex",flexDirection:"column"}}>
 
         {/* Top bar */}
@@ -565,6 +565,17 @@ function Game({puzzle,dark,onFinish}) {
 // ROOT
 // ============================================================
 export default function App() {
+  // CRITICAL: Inject viewport meta tag for mobile rendering
+  useEffect(() => {
+    let viewport = document.querySelector('meta[name="viewport"]');
+    if (!viewport) {
+      viewport = document.createElement('meta');
+      viewport.name = 'viewport';
+      document.head.appendChild(viewport);
+    }
+    viewport.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover';
+  }, []);
+
   const [dark,setDark]=useState(false);
   const [screen,setScreen]=useState("home");
   const [showStats,setShowStats]=useState(false);
@@ -580,7 +591,7 @@ export default function App() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
         *{box-sizing:border-box;margin:0;padding:0;}
-        html,body{height:100%;background:${dark?"#0a0a0a":"#faf7f0"};}
+        html,body{background:${dark?"#0a0a0a":"#faf7f0"};margin:0;padding:0;min-height:100vh;}
         @keyframes popIn{from{opacity:0;transform:translateY(-10px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
         @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
         @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-6px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
