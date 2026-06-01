@@ -97,7 +97,7 @@ const buildShare = (puzzle, solved, wrong, ms, streak) => {
 // ============================================================
 // HEADER
 // ============================================================
-function Header({dark,onDark,onStats,onHome,onHow,mode,onMode}) {
+function Header({dark,onDark,onStats,onHome,onHow,onScoring,mode,onMode}) {
   return (
     <header style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 14px",height:"52px",background:dark?"#0a0a0a":"#0f1923",borderBottom:`2px solid #C8A96E`,position:"sticky",top:0,zIndex:100,gap:"8px"}}>
       <button onClick={onHome} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"22px",letterSpacing:"5px",color:"#C8A96E",background:"none",border:"none",cursor:"pointer",padding:0,flexShrink:0}}>DRAFT</button>
@@ -110,6 +110,7 @@ function Header({dark,onDark,onStats,onHome,onHow,mode,onMode}) {
       </div>
       <div style={{display:"flex",gap:"8px",alignItems:"center"}}>
         <button onClick={onHow} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"1px",padding:"4px 8px",background:"transparent",border:"1px solid #333",color:"#666",borderRadius:"3px",cursor:"pointer"}}>HOW</button>
+        <button onClick={onScoring} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"1px",padding:"4px 8px",background:"transparent",border:"1px solid #333",color:"#666",borderRadius:"3px",cursor:"pointer"}}>⭐</button>
         <button onClick={onStats} style={{background:"none",border:"none",cursor:"pointer",fontSize:"16px",padding:"2px"}}>📊</button>
         <button onClick={onDark} style={{background:"none",border:"none",cursor:"pointer",fontSize:"15px",padding:"2px"}}>{dark?"☀️":"🌙"}</button>
       </div>
@@ -339,6 +340,62 @@ function ResultModal({puzzle,solved,wrong,ms,onPlayAgain,dark}) {
   );
 }
 
+
+// ============================================================
+// SCORING PAGE
+// ============================================================
+function ScoringPage({dark,onClose}) {
+  const bg=dark?"#0a0a0a":"#faf7f0", fg=dark?"#d4c9b8":"#1a1a2e", card=dark?"#141414":"#fff", border=dark?"#222":"#e8e0d0";
+  return (
+    <div style={{background:bg,minHeight:"calc(100vh - 52px)",padding:"20px 16px 40px",overflowY:"auto"}}>
+      <div style={{maxWidth:"480px",margin:"0 auto"}}>
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(32px,8vw,48px)",letterSpacing:"4px",color:"#C8A96E",marginBottom:"4px"}}>HOW SCORING WORKS</div>
+        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"italic",marginBottom:"24px",lineHeight:1.6}}>Speed and accuracy are everything. Everyone can win — the best players win faster.</div>
+
+        {/* Time is the score */}
+        <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"20px",marginBottom:"12px"}}>
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,marginBottom:"8px"}}>⚡ TIME IS YOUR SCORE</div>
+          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>Your final time is what you share with friends. Solve all 4 groups as fast as possible. Wrong guesses add time penalties — accuracy matters as much as speed.</div>
+        </div>
+
+        {/* Clean game */}
+        <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"20px",marginBottom:"12px"}}>
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,marginBottom:"8px"}}>🔒 CLEAN GAME BADGE</div>
+          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>Solve all 4 groups with zero wrong guesses and your share card shows the coveted CLEAN GAME badge. The ultimate flex.</div>
+          <div style={{marginTop:"12px",background:dark?"#0a0a0a":"#f5f0e8",borderRadius:"8px",padding:"12px",fontFamily:"'Courier New',monospace",fontSize:"13px",color:dark?"#C8A96E":"#0f1923",lineHeight:1.8}}>
+            DRAFT #7 🏈<br/>
+            ⚡ 1:43 🔒 CLEAN GAME<br/>
+            🟨🟨🟨🟨<br/>
+            🟩🟩🟩🟩<br/>
+            🟦🟦🟦🟦<br/>
+            🟥🟥🟥🟥
+          </div>
+        </div>
+
+        {/* Wrong downs */}
+        <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"20px",marginBottom:"12px"}}>
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,marginBottom:"8px"}}>🏴 4 DOWNS</div>
+          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>You get 4 wrong guesses before game over. Each wrong guess costs you a down. Lose all 4 and the puzzle is over — categories are revealed but no time is recorded.</div>
+        </div>
+
+        {/* Streaks */}
+        <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"20px",marginBottom:"12px"}}>
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,marginBottom:"8px"}}>🔥 STREAKS</div>
+          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>Solve the daily puzzle every day to build your streak. Miss a day and it resets. Your current streak appears on your share card when it hits 3+ days.</div>
+        </div>
+
+        {/* One away */}
+        <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"20px",marginBottom:"20px"}}>
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,marginBottom:"8px"}}>👀 ONE AWAY</div>
+          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>If 3 of your 4 selected players belong to the same group, you'll get a hint. You're close — but not quite.</div>
+        </div>
+
+        <button onClick={onClose} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"3px",padding:"16px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"8px",cursor:"pointer"}}>GOT IT</button>
+      </div>
+    </div>
+  );
+}
+
 // ============================================================
 // LANDING — mobile first
 // ============================================================
@@ -348,16 +405,16 @@ function Landing({onPlay,dark,mode}) {
   const sports=[{icon:"🏈",name:"NFL",status:"live"},{icon:"🏀",name:"NBA",status:"soon"},{icon:"⚾",name:"MLB",status:"soon"},{icon:"🏒",name:"NHL",status:"soon"}];
 
   return (
-    <div style={{minHeight:"calc(100vh - 52px)",background:bg,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px 20px 40px",textAlign:"center"}}>
+    <div style={{minHeight:"calc(100vh - 52px)",background:bg,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-start",padding:"28px 16px 32px",textAlign:"center"}}>
 
-      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(72px,22vw,120px)",letterSpacing:"4px",color:"#C8A96E",lineHeight:0.85,marginBottom:"10px",textShadow:`3px 3px 0 ${dark?"rgba(0,0,0,0.5)":"rgba(15,25,35,0.2)"}`}}>DRAFT</div>
+      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(56px,16vw,90px)",letterSpacing:"4px",color:"#C8A96E",lineHeight:0.85,marginBottom:"10px",textShadow:`3px 3px 0 ${dark?"rgba(0,0,0,0.5)":"rgba(15,25,35,0.2)"}`}}>DRAFT</div>
 
-      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"clamp(14px,4vw,18px)",color:dark?"#666":"#777",fontStyle:"italic",marginBottom:"28px",maxWidth:"320px",lineHeight:1.6}}>
-        {isPractice ? "Sharpen your game. No streak on the line." : "Think you know NFL? Prove it."}
+      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"clamp(13px,3.2vw,15px)",color:dark?"#666":"#777",fontStyle:"italic",marginBottom:"22px",maxWidth:"280px",lineHeight:1.6}}>
+        {isPractice ? "Sharpen your game. No streak on the line." : "Test your NFL knowledge. Group the players. Find the connection."}
       </div>
 
       {/* Demo tiles */}
-      <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"8px",maxWidth:"280px",width:"100%",marginBottom:"12px"}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"8px",maxWidth:"280px",width:"100%",marginBottom:"10px"}}>
         {["RANDY MOSS","TERRELL OWENS","CHAD JOHNSON","ANTONIO BROWN"].map((p,i)=>(
           <div key={p} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"1px",padding:"14px 6px",textAlign:"center",background:dark?"#181818":"#fff",border:`2px solid ${dark?"#2a2a2a":"#ddd6c4"}`,borderRadius:"8px",color:fg,animation:`fadeUp 0.4s ease ${i*0.08}s both"}`}}>{p}</div>
         ))}
@@ -370,7 +427,7 @@ function Landing({onPlay,dark,mode}) {
 
       <button
         onClick={onPlay}
-        style={{fontFamily:"'Bebas Neue',cursive",fontSize:"18px",letterSpacing:"4px",padding:"18px 0",width:"100%",maxWidth:"300px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"10px",cursor:"pointer",boxShadow:"0 4px 20px rgba(200,169,110,0.4)",marginBottom:"28px",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}
+        style={{fontFamily:"'Bebas Neue',cursive",fontSize:"18px",letterSpacing:"4px",padding:"18px 0",width:"100%",maxWidth:"300px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"10px",cursor:"pointer",boxShadow:"0 4px 20px rgba(200,169,110,0.4)",marginBottom:"20px",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}
       >
         {isPractice ? "PRACTICE MODE" : "PLAY TODAY'S DRAFT"}
       </button>
@@ -511,6 +568,7 @@ export default function App() {
   const [dark,setDark]=useState(false);
   const [screen,setScreen]=useState("home");
   const [showStats,setShowStats]=useState(false);
+  const [showScoring,setShowScoring]=useState(false);
   const [mode,setMode]=useState("daily");
   const [practiceIdx,setPracticeIdx]=useState(0);
   const puzzle=getPuzzle(mode,practiceIdx);
@@ -530,10 +588,11 @@ export default function App() {
         button:focus-visible{outline:2px solid #C8A96E;outline-offset:2px;}
         button{-webkit-tap-highlight-color:transparent;}
       `}</style>
-      <Header dark={dark} onDark={()=>setDark(d=>!d)} onStats={()=>setShowStats(true)} onHome={()=>setScreen("home")} onHow={()=>setScreen("howto")} mode={mode} onMode={handleModeChange}/>
+      <Header dark={dark} onDark={()=>setDark(d=>!d)} onStats={()=>setShowStats(true)} onHome={()=>setScreen("home")} onHow={()=>setScreen("howto")} onScoring={()=>setScreen("scoring")} mode={mode} onMode={handleModeChange}/>
       {screen==="home"&&<Landing onPlay={()=>setScreen("game")} dark={dark} mode={mode}/>}
       {screen==="game"&&<Game key={`${puzzle.id}-${mode}-${practiceIdx}`} puzzle={puzzle} dark={dark} onFinish={handleFinish}/>}
       {screen==="howto"&&<HowTo dark={dark} onClose={()=>setScreen("home")}/>}
+      {screen==="scoring"&&<ScoringPage dark={dark} onClose={()=>setScreen("home")}/>}
       {showStats&&<StatsModal onClose={()=>setShowStats(false)} dark={dark}/>}
     </>
   );
