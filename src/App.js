@@ -168,10 +168,10 @@ function Tile({name,selected,onClick,dark,shaking}) {
   return (
     <button onClick={onClick} style={{
       fontFamily:"'Bebas Neue',cursive",
-      fontSize:"clamp(10px,3.2vw,14px)",
-      letterSpacing:"0.5px",
-      padding:"0",
-      height:"64px",
+      fontSize:"clamp(11px,3.4vw,15px)",
+      letterSpacing:"0.3px",
+      padding:"2px",
+      height:"72px",
       width:"100%",
       display:"flex",alignItems:"center",justifyContent:"center",
       textAlign:"center",lineHeight:1.2,
@@ -407,27 +407,27 @@ function Landing({onPlay,dark,mode}) {
   return (
     <div style={{minHeight:"calc(100vh - 52px)",background:bg,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-start",padding:"28px 16px 32px",textAlign:"center"}}>
 
-      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(56px,16vw,90px)",letterSpacing:"4px",color:"#C8A96E",lineHeight:0.85,marginBottom:"10px",textShadow:`3px 3px 0 ${dark?"rgba(0,0,0,0.5)":"rgba(15,25,35,0.2)"}`}}>DRAFT</div>
+      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(60px,17vw,96px)",letterSpacing:"3px",color:"#C8A96E",lineHeight:0.9,marginBottom:"14px",textShadow:`3px 3px 0 ${dark?"rgba(0,0,0,0.5)":"rgba(15,25,35,0.2)"}`}}>DRAFT</div>
 
-      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"clamp(13px,3.2vw,15px)",color:dark?"#666":"#777",fontStyle:"italic",marginBottom:"22px",maxWidth:"280px",lineHeight:1.6}}>
+      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"clamp(16px,4.5vw,19px)",color:dark?"#888":"#666",fontStyle:"italic",marginBottom:"28px",maxWidth:"320px",lineHeight:1.7}}>
         {isPractice ? "Sharpen your game. No streak on the line." : <span>Test your NFL knowledge.<br/>Group the players.<br/>Find the connection.</span>}
       </div>
 
       {/* Demo tiles */}
-      <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"8px",maxWidth:"280px",width:"100%",marginBottom:"10px"}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"10px",maxWidth:"330px",width:"100%",marginBottom:"12px"}}>
         {["RANDY MOSS","TERRELL OWENS","CHAD JOHNSON","ANTONIO BROWN"].map((p,i)=>(
-          <div key={p} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"1px",padding:"14px 6px",textAlign:"center",background:dark?"#181818":"#fff",border:`2px solid ${dark?"#2a2a2a":"#ddd6c4"}`,borderRadius:"8px",color:fg,animation:`fadeUp 0.4s ease ${i*0.08}s both"}`}}>{p}</div>
+          <div key={p} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"0.5px",padding:"18px 6px",textAlign:"center",background:dark?"#181818":"#fff",border:`2px solid ${dark?"#2a2a2a":"#ddd6c4"}`,borderRadius:"8px",color:fg,animation:`fadeUp 0.4s ease ${i*0.08}s both`}}>{p}</div>
         ))}
       </div>
 
 
-      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"clamp(12px,3.5vw,15px)",color:fg,fontStyle:"italic",marginBottom:"28px",background:dark?"#181818":"#f0ebe0",padding:"10px 20px",borderRadius:"6px",border:`1px solid ${dark?"#2a2a2a":"#ddd6c4"}`,maxWidth:"300px"}}>
+      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"clamp(14px,4vw,16px)",color:fg,fontStyle:"italic",marginBottom:"28px",background:dark?"#181818":"#f0ebe0",padding:"14px 22px",borderRadius:"8px",border:`1px solid ${dark?"#2a2a2a":"#ddd6c4"}`,maxWidth:"330px"}}>
         Famous for being impossible to coach 😤
       </div>
 
       <button
         onClick={onPlay}
-        style={{fontFamily:"'Bebas Neue',cursive",fontSize:"18px",letterSpacing:"4px",padding:"18px 0",width:"100%",maxWidth:"300px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"10px",cursor:"pointer",boxShadow:"0 4px 20px rgba(200,169,110,0.4)",marginBottom:"20px",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}
+        style={{fontFamily:"'Bebas Neue',cursive",fontSize:"20px",letterSpacing:"4px",padding:"20px 0",width:"100%",maxWidth:"330px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"10px",cursor:"pointer",boxShadow:"0 4px 20px rgba(200,169,110,0.4)",marginBottom:"24px",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}
       >
         {isPractice ? "PRACTICE MODE" : "PLAY TODAY'S DRAFT"}
       </button>
@@ -435,9 +435,9 @@ function Landing({onPlay,dark,mode}) {
       {/* Sports pills */}
       <div style={{display:"flex",gap:"8px",marginBottom:"24px",flexWrap:"wrap",justifyContent:"center"}}>
         {sports.map(s=>(
-          <div key={s.name} style={{display:"flex",alignItems:"center",gap:"5px",padding:"5px 10px",borderRadius:"20px",border:`1px solid ${s.status==="live"?"#C8A96E":(dark?"#222":"#e0d8cc")}`,background:s.status==="live"?(dark?"rgba(200,169,110,0.1)":"rgba(200,169,110,0.08)"):"transparent"}}>
+          <div key={s.name} style={{display:"flex",alignItems:"center",gap:"5px",padding:"7px 12px",borderRadius:"20px",border:`1px solid ${s.status==="live"?"#C8A96E":(dark?"#222":"#e0d8cc")}`,background:s.status==="live"?(dark?"rgba(200,169,110,0.1)":"rgba(200,169,110,0.08)"):"transparent"}}>
             <span style={{fontSize:"12px"}}>{s.icon}</span>
-            <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:s.status==="live"?"#C8A96E":(dark?"#333":"#bbb")}}>{s.name}</span>
+            <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:s.status==="live"?"#C8A96E":(dark?"#555":"#999")}}>{s.name}</span>
             {s.status==="live"
               ?<span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"7px",letterSpacing:"1px",color:"#4A7C59",background:dark?"rgba(74,124,89,0.2)":"rgba(74,124,89,0.15)",padding:"1px 4px",borderRadius:"3px"}}>LIVE</span>
               :<span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"7px",letterSpacing:"1px",color:dark?"#444":"#bbb",background:dark?"rgba(255,255,255,0.05)":"rgba(0,0,0,0.05)",padding:"1px 4px",borderRadius:"3px"}}>SOON</span>
@@ -448,8 +448,8 @@ function Landing({onPlay,dark,mode}) {
 
       <div style={{display:"flex",gap:"16px",flexWrap:"wrap",justifyContent:"center"}}>
         {[["🏈","16 PLAYERS"],["🏴","4 DOWNS"],["⚡","BEAT THE CLOCK"],["🤯","FIND THE CONNECTION"]].map(([ic,tx])=>(
-          <div key={tx} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:dark?"#444":"#aaa",display:"flex",alignItems:"center",gap:"4px"}}>
-            <span style={{fontSize:"12px"}}>{ic}</span>{tx}
+          <div key={tx} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#555":"#999",display:"flex",alignItems:"center",gap:"5px"}}>
+            <span style={{fontSize:"14px"}}>{ic}</span>{tx}
           </div>
         ))}
       </div>
