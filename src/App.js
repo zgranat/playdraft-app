@@ -73,6 +73,36 @@ const PUZZLES = [
       { id:"C", players:["MARSHAWN LYNCH","RICHARD SHERMAN","CHAD JOHNSON","TERRELL OWENS"], label:"FINED FOR SOMETHING SAID OR DONE IN A POST-GAME INTERVIEW", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["ANTONIO CROMARTIE","PLAXICO BURRESS","PACMAN JONES","TANK JOHNSON"], label:"SUSPENDED FOR AN OFF-FIELD INCIDENT INVOLVING LAW ENFORCEMENT", color:"#8B1A2A", difficulty:4 }
     ]
+  },
+  {
+    id: 8, title: "DRAFT #8",
+    players: ["PEYTON MANNING","DAN MARINO","MATTHEW STAFFORD","PHILIP RIVERS","TOM BRADY","BRETT FAVRE","DREW BREES","ADAM VINATIERI","WARREN MOON","ANTONIO GATES","JOHN RANDLE","WILLIE BROWN","EMMITT SMITH","HINES WARD","DONALD DRIVER","RASHAD JENNINGS"],
+    groups: [
+      { id:"A", players:["PEYTON MANNING","DAN MARINO","MATTHEW STAFFORD","PHILIP RIVERS"], label:"THREW FOR 4,000+ YARDS IN A SINGLE SEASON", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["TOM BRADY","BRETT FAVRE","DREW BREES","ADAM VINATIERI"], label:"PLAYED IN THE NFL PAST AGE 40", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["WARREN MOON","ANTONIO GATES","JOHN RANDLE","WILLIE BROWN"], label:"UNDRAFTED HALL OF FAMERS", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["EMMITT SMITH","HINES WARD","DONALD DRIVER","RASHAD JENNINGS"], label:"WON DANCING WITH THE STARS", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 9, title: "DRAFT #9",
+    players: ["DERRICK HENRY","JULIO JONES","MARK INGRAM","TUA TAGOVAILOA","DAN MARINO","BARRY SANDERS","RANDY MOSS","ERIC DICKERSON","RAY LEWIS","ED REED","BRIAN URLACHER","JASON TAYLOR","CHAD JOHNSON","TERRELL OWENS","MARSHAWN LYNCH","BILLY WHITE SHOES JOHNSON"],
+    groups: [
+      { id:"A", players:["DERRICK HENRY","JULIO JONES","MARK INGRAM","TUA TAGOVAILOA"], label:"PLAYED COLLEGE FOOTBALL AT ALABAMA", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["DAN MARINO","BARRY SANDERS","RANDY MOSS","ERIC DICKERSON"], label:"HALL OF FAMERS WHO NEVER WON A SUPER BOWL", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["RAY LEWIS","ED REED","BRIAN URLACHER","JASON TAYLOR"], label:"WON DEFENSIVE PLAYER OF THE YEAR IN THE 2000s", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["CHAD JOHNSON","TERRELL OWENS","MARSHAWN LYNCH","BILLY WHITE SHOES JOHNSON"], label:"FAMOUS FOR A TOUCHDOWN CELEBRATION FINE", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 10, title: "DRAFT #10",
+    players: ["TOM BRADY","PEYTON MANNING","PATRICK MAHOMES","DAN MARINO","EMMITT SMITH","WALTER PAYTON","FRANK GORE","BARRY SANDERS","J.J. WATT","LUKE KUECHLY","KHALIL MACK","AARON DONALD","DESMOND HOWARD","MALCOLM SMITH","LARRY BROWN","DEXTER JACKSON"],
+    groups: [
+      { id:"A", players:["TOM BRADY","PEYTON MANNING","PATRICK MAHOMES","DAN MARINO"], label:"THREW FOR 40+ TOUCHDOWNS IN A SINGLE SEASON", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["EMMITT SMITH","WALTER PAYTON","FRANK GORE","BARRY SANDERS"], label:"TOP 5 ALL-TIME NFL RUSHING YARD LEADERS", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["J.J. WATT","LUKE KUECHLY","KHALIL MACK","AARON DONALD"], label:"WON DEFENSIVE PLAYER OF THE YEAR IN THE 2010s", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["DESMOND HOWARD","MALCOLM SMITH","LARRY BROWN","DEXTER JACKSON"], label:"WON SUPER BOWL MVP AS A NON-QUARTERBACK", color:"#8B1A2A", difficulty:4 }
+    ]
   }
 ];
 
@@ -84,7 +114,24 @@ const fmt = ms => { const s=Math.floor(ms/1000),m=Math.floor(s/60); return `${m}
 const defaultStats = () => ({streak:0,bestStreak:0,played:0,won:0,scores:[],lastPlayed:null});
 const loadStats = () => { try{const s=localStorage.getItem("draft_v1");return s?JSON.parse(s):defaultStats();}catch{return defaultStats();} };
 const saveStats = s => { try{localStorage.setItem("draft_v1",JSON.stringify(s));}catch{} };
-const getTodaysPuzzle = () => PUZZLES[new Date().getDay() % PUZZLES.length];
+// CHANGE THIS WHEN YOU OFFICIALLY LAUNCH — resets daily puzzle counter to start fresh
+const LAUNCH_DATE = new Date('2026-06-01');
+
+const getTodaysPuzzle = () => {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const launch = new Date(LAUNCH_DATE);
+  launch.setHours(0,0,0,0);
+  const daysSinceLaunch = Math.max(0, Math.floor((today - launch) / 86400000));
+  return PUZZLES[daysSinceLaunch % PUZZLES.length];
+};
+const getTodaysPuzzleNumber = () => {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const launch = new Date(LAUNCH_DATE);
+  launch.setHours(0,0,0,0);
+  return Math.max(0, Math.floor((today - launch) / 86400000)) + 1;
+};
 const getPuzzle = (mode, idx) => mode==="daily" ? getTodaysPuzzle() : PUZZLES[idx % PUZZLES.length];
 
 const buildShare = (puzzle, solved, wrong, ms, streak) => {
