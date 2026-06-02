@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 // ============================================================
 const PUZZLES = [
   {
-    id: 1, title: "DRAFT #1",
+    id: 1, title: "ROUND 1",
     players: ["RANDY MOSS","TERRELL OWENS","CHAD JOHNSON","ANTONIO BROWN","BRETT FAVRE","PEYTON MANNING","DAN MARINO","JOHN ELWAY","BARRY SANDERS","EMMITT SMITH","ERIC DICKERSON","MARSHALL FAULK","LAWRENCE TAYLOR","REGGIE WHITE","DEION SANDERS","ROD WOODSON"],
     groups: [
       { id:"A", players:["RANDY MOSS","TERRELL OWENS","CHAD JOHNSON","ANTONIO BROWN"], label:"FAMOUS FOR BEING IMPOSSIBLE TO COACH", color:"#B8860B", difficulty:1 },
@@ -15,37 +15,37 @@ const PUZZLES = [
     ]
   },
   {
-    id: 2, title: "DRAFT #2",
-    players: ["RYAN LEAF","JaMARCUS RUSSELL","TONY MANDARICH","JOHNNY MANZIEL","KURT WARNER","TONY ROMO","JEFF GARCIA","BRAD JOHNSON","ROB GRONKOWSKI","JIMMY GRAHAM","ANTONIO GATES","TONY GONZALEZ","JAMES HARRISON","ALBERT HAYNESWORTH","RANDY MOSS","TERRELL OWENS"],
+    id: 2, title: "ROUND 2",
+    players: ["RYAN LEAF","JaMARCUS RUSSELL","TONY MANDARICH","JOHNNY MANZIEL","KURT WARNER","TONY ROMO","JEFF GARCIA","BRAD JOHNSON","JULIUS THOMAS","JIMMY GRAHAM","ANTONIO GATES","TONY GONZALEZ","JAMES HARRISON","ALBERT HAYNESWORTH","RANDY MOSS","TERRELL OWENS"],
     groups: [
       { id:"A", players:["RYAN LEAF","JaMARCUS RUSSELL","TONY MANDARICH","JOHNNY MANZIEL"], label:"CONSENSUS ALL-TIME NFL DRAFT BUSTS", color:"#B8860B", difficulty:1 },
       { id:"B", players:["KURT WARNER","TONY ROMO","JEFF GARCIA","BRAD JOHNSON"], label:"REACHED THE SUPER BOWL AS AN UNDRAFTED QUARTERBACK", color:"#2E6B3E", difficulty:2 },
-      { id:"C", players:["ROB GRONKOWSKI","JIMMY GRAHAM","ANTONIO GATES","TONY GONZALEZ"], label:"TIGHT ENDS WHO PLAYED COLLEGE BASKETBALL", color:"#1B4F8A", difficulty:3 },
+      { id:"C", players:["JULIUS THOMAS","JIMMY GRAHAM","ANTONIO GATES","TONY GONZALEZ"], label:"TIGHT ENDS WHO PLAYED COLLEGE BASKETBALL", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["JAMES HARRISON","ALBERT HAYNESWORTH","RANDY MOSS","TERRELL OWENS"], label:"FINED OR SUSPENDED FOR CONDUCT $100K+ IN A SINGLE SEASON", color:"#8B1A2A", difficulty:4 }
     ]
   },
   {
-    id: 3, title: "DRAFT #3",
+    id: 3, title: "ROUND 3",
     players: ["BO JACKSON","DEION SANDERS","BRIAN JORDAN","D.J. DOZIER","PEYTON MANNING","ELI MANNING","ARCHIE MANNING","COOPER MANNING","MARSHAWN LYNCH","JIM MCMAHON","ICKEY WOODS","BILLY WHITE SHOES JOHNSON","DAVID TYREE","SANTONIO HOLMES","LYNN SWANN","JOHN TAYLOR"],
     groups: [
-      { id:"A", players:["BO JACKSON","DEION SANDERS","BRIAN JORDAN","D.J. DOZIER"], label:"PLAYED BOTH NFL AND MLB PROFESSIONALLY", color:"#B8860B", difficulty:1 },
-      { id:"B", players:["PEYTON MANNING","ELI MANNING","ARCHIE MANNING","COOPER MANNING"], label:"THE MANNING FAMILY", color:"#2E6B3E", difficulty:2 },
+      { id:"A", players:["PEYTON MANNING","ELI MANNING","ARCHIE MANNING","COOPER MANNING"], label:"THE MANNING FAMILY", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["BO JACKSON","DEION SANDERS","BRIAN JORDAN","D.J. DOZIER"], label:"PLAYED BOTH NFL AND MLB PROFESSIONALLY", color:"#2E6B3E", difficulty:2 },
       { id:"C", players:["MARSHAWN LYNCH","JIM MCMAHON","ICKEY WOODS","BILLY WHITE SHOES JOHNSON"], label:"FINED BY THE NFL FOR A TOUCHDOWN CELEBRATION", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["DAVID TYREE","SANTONIO HOLMES","LYNN SWANN","JOHN TAYLOR"], label:"MADE THE DEFINING CATCH IN A SUPER BOWL-WINNING DRIVE", color:"#8B1A2A", difficulty:4 }
     ]
   },
   {
-    id: 4, title: "DRAFT #4",
-    players: ["COLIN KAEPERNICK","JIM PLUNKETT","VINCE YOUNG","MARK SANCHEZ","ARIAN FOSTER","PRIEST HOLMES","JAMES STARKS","ALFRED MORRIS","RICKY WILLIAMS","ROBERT SMITH","CALVIN JOHNSON","BARRY SANDERS","TOM BRADY","DREW BREES","AARON RODGERS","PATRICK MAHOMES"],
+    id: 4, title: "ROUND 4",
+    players: ["TOM BRADY","DREW BREES","AARON RODGERS","PATRICK MAHOMES","BARRY SANDERS","CALVIN JOHNSON","ANDREW LUCK","ROB GRONKOWSKI","JERRY RICE","TONY GONZALEZ","RANDY MOSS","LARRY FITZGERALD","JOE NAMATH","JOHNNY UNITAS","BART STARR","ROGER STAUBACH"],
     groups: [
-      { id:"A", players:["COLIN KAEPERNICK","JIM PLUNKETT","VINCE YOUNG","MARK SANCHEZ"], label:"WENT TO THE SUPER BOWL THEN NEVER WON ANOTHER PLAYOFF GAME", color:"#B8860B", difficulty:1 },
-      { id:"B", players:["ARIAN FOSTER","PRIEST HOLMES","JAMES STARKS","ALFRED MORRIS"], label:"WAIVER WIRE ADDS WHO WON SOMEONE A FANTASY CHAMPIONSHIP", color:"#2E6B3E", difficulty:2 },
-      { id:"C", players:["RICKY WILLIAMS","ROBERT SMITH","CALVIN JOHNSON","BARRY SANDERS"], label:"RETIRED EARLY AND LEFT TENS OF MILLIONS ON THE TABLE", color:"#1B4F8A", difficulty:3 },
-      { id:"D", players:["TOM BRADY","DREW BREES","AARON RODGERS","PATRICK MAHOMES"], label:"THREW FOR 5,000+ YARDS IN A SINGLE NFL SEASON", color:"#8B1A2A", difficulty:4 }
+      { id:"A", players:["TOM BRADY","DREW BREES","AARON RODGERS","PATRICK MAHOMES"], label:"THREW FOR 5,000+ YARDS IN A SINGLE SEASON", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["BARRY SANDERS","CALVIN JOHNSON","ANDREW LUCK","ROB GRONKOWSKI"], label:"RETIRED EARLY WHILE STILL PLAYING AT AN ELITE LEVEL", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JERRY RICE","TONY GONZALEZ","RANDY MOSS","LARRY FITZGERALD"], label:"TOP 5 ALL-TIME IN RECEPTIONS OR RECEIVING YARDS", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["JOE NAMATH","JOHNNY UNITAS","BART STARR","ROGER STAUBACH"], label:"WON A SUPER BOWL BEFORE 1980", color:"#8B1A2A", difficulty:4 }
     ]
   },
   {
-    id: 5, title: "DRAFT #5",
+    id: 5, title: "ROUND 5",
     players: ["CHAD JOHNSON","JOE HORN","TERRELL OWENS","STEVE SMITH SR.","MIKE SINGLETARY","BUDDY RYAN","BILL PARCELLS","JOHN MADDEN","WARREN SAPP","NDAMUKONG SUH","JACK TATUM","DICK BUTKUS","JOHN ELWAY","ELI MANNING","PHILIP RIVERS","JOHN HADL"],
     groups: [
       { id:"A", players:["CHAD JOHNSON","JOE HORN","TERRELL OWENS","STEVE SMITH SR."], label:"PULLED A PROP OUT DURING A TOUCHDOWN CELEBRATION", color:"#B8860B", difficulty:1 },
@@ -55,7 +55,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 6, title: "DRAFT #6",
+    id: 6, title: "ROUND 6",
     players: ["MARSHAWN LYNCH","JIM MORA SR.","DENNIS GREEN","MIKE DITKA","CHAD JOHNSON","ROB GRONKOWSKI","TERRELL OWENS","ANTONIO BROWN","COLIN KAEPERNICK","ERIC REID","BRANDON MARSHALL","KENNY STILLS","BRETT FAVRE","TIKI BARBER","BARRY SANDERS","JEROME BETTIS"],
     groups: [
       { id:"A", players:["MARSHAWN LYNCH","JIM MORA SR.","DENNIS GREEN","MIKE DITKA"], label:"DELIVERED AN ALL-TIME NOTORIOUS POST-GAME PRESS CONFERENCE", color:"#B8860B", difficulty:1 },
@@ -65,7 +65,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 7, title: "DRAFT #7",
+    id: 7, title: "ROUND 7",
     players: ["50 CENT","CARLY RAE JEPSEN","SNOOP DOGG","JOHN WALL","PEYTON MANNING","JERRY RICE","EMMITT SMITH","MIKE SINGLETARY","MARSHAWN LYNCH","RICHARD SHERMAN","CHAD JOHNSON","TERRELL OWENS","ANTONIO CROMARTIE","PLAXICO BURRESS","PACMAN JONES","TANK JOHNSON"],
     groups: [
       { id:"A", players:["50 CENT","CARLY RAE JEPSEN","SNOOP DOGG","JOHN WALL"], label:"THREW A CEREMONIAL FIRST PITCH THAT WENT VIRAL FOR THE WRONG REASONS", color:"#B8860B", difficulty:1 },
@@ -75,7 +75,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 8, title: "DRAFT #8",
+    id: 8, title: "ROUND 8",
     players: ["PEYTON MANNING","DAN MARINO","MATTHEW STAFFORD","PHILIP RIVERS","TOM BRADY","BRETT FAVRE","DREW BREES","ADAM VINATIERI","WARREN MOON","ANTONIO GATES","JOHN RANDLE","WILLIE BROWN","EMMITT SMITH","HINES WARD","DONALD DRIVER","RASHAD JENNINGS"],
     groups: [
       { id:"A", players:["PEYTON MANNING","DAN MARINO","MATTHEW STAFFORD","PHILIP RIVERS"], label:"THREW FOR 4,000+ YARDS IN A SINGLE SEASON", color:"#B8860B", difficulty:1 },
@@ -85,7 +85,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 9, title: "DRAFT #9",
+    id: 9, title: "ROUND 9",
     players: ["DERRICK HENRY","JULIO JONES","MARK INGRAM","TUA TAGOVAILOA","DAN MARINO","BARRY SANDERS","RANDY MOSS","ERIC DICKERSON","RAY LEWIS","ED REED","BRIAN URLACHER","JASON TAYLOR","CHAD JOHNSON","TERRELL OWENS","MARSHAWN LYNCH","BILLY WHITE SHOES JOHNSON"],
     groups: [
       { id:"A", players:["DERRICK HENRY","JULIO JONES","MARK INGRAM","TUA TAGOVAILOA"], label:"PLAYED COLLEGE FOOTBALL AT ALABAMA", color:"#B8860B", difficulty:1 },
@@ -95,7 +95,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 10, title: "DRAFT #10",
+    id: 10, title: "ROUND 10",
     players: ["TOM BRADY","PEYTON MANNING","PATRICK MAHOMES","DAN MARINO","EMMITT SMITH","WALTER PAYTON","FRANK GORE","BARRY SANDERS","J.J. WATT","LUKE KUECHLY","KHALIL MACK","AARON DONALD","DESMOND HOWARD","MALCOLM SMITH","LARRY BROWN","DEXTER JACKSON"],
     groups: [
       { id:"A", players:["TOM BRADY","PEYTON MANNING","PATRICK MAHOMES","DAN MARINO"], label:"THREW FOR 40+ TOUCHDOWNS IN A SINGLE SEASON", color:"#B8860B", difficulty:1 },
@@ -138,7 +138,7 @@ const buildShare = (puzzle, solved, wrong, ms, streak) => {
   const rows=[1,2,3,4].map(d=>{const g=solved.find(s=>s.difficulty===d);return g?DIFF_EMOJIS[d].repeat(4):"⬛⬛⬛⬛";}).join("\n");
   const clean = wrong === 0 ? "\n🔒 CLEAN GAME" : "";
   const streakLine = streak>=3 ? `\n🔥 ${streak}-day streak` : "";
-  return `DRAFT ${puzzle.title.split("#")[1]} 🏈\n⚡ ${fmt(ms)}${clean}${streakLine}\n\n${rows}\n\nplaydraft.app`;
+  return `DRAFT — ${puzzle.title} 🏈\n⚡ ${fmt(ms)}${clean}${streakLine}\n\n${rows}\n\nplaydraft.app`;
 };
 
 // ============================================================
@@ -307,9 +307,9 @@ function StatsModal({onClose,dark}) {
 // ============================================================
 // RESULT PANEL — inline, shown below the revealed board
 // ============================================================
-function ResultPanel({puzzle,solved,wrong,ms,onPlayAgain,dark}) {
+function ResultPanel({puzzle,solved,wrong,ms,onPlayAgain,dark,won}) {
   const [copied,setCopied]=useState(false);
-  const won=solved.length===4,bg=dark?"#111":"#faf7f0",fg=dark?"#e0d5c5":"#1a1a2e";
+  const bg=dark?"#111":"#faf7f0",fg=dark?"#e0d5c5":"#1a1a2e";
   const st=loadStats();
   const cleanGame=wrong===0;
   const shareText=buildShare(puzzle,solved,wrong,ms,st.streak);
@@ -515,6 +515,7 @@ function Game({puzzle,dark,onFinish}) {
   const [toast,setToast]=useState(null);
   const [showResult,setShowResult]=useState(false);
   const [revealedGroups,setRevealedGroups]=useState([]);  // Auto-reveal on loss
+  const [triedCombos,setTriedCombos]=useState([]);  // Track previously tried combinations
   const toastRef=useRef(null);
   const bg=dark?"#0a0a0a":"#faf7f0";
 
@@ -523,6 +524,12 @@ function Game({puzzle,dark,onFinish}) {
 
   const handleSubmit=()=>{
     if(selected.length!==4||over)return;
+    // Check if this exact combination was already tried (no penalty)
+    const comboKey=[...selected].sort().join("|");
+    if(triedCombos.includes(comboKey)){
+      showToast("ALREADY RAN THAT PLAY 🔁",1800);
+      return;
+    }
     const group=puzzle.groups.find(g=>selected.every(p=>g.players.includes(p))&&g.players.every(p=>selected.includes(p)));
     if(group){
       const ns=[...solved,group];setSolved(ns);setSelected([]);
@@ -541,7 +548,9 @@ function Game({puzzle,dark,onFinish}) {
       setShaking([...selected]);setTimeout(()=>setShaking([]),550);
       if(oneAway)showToast("ONE AWAY... 👀",2200);
       else showToast(["FUMBLE 😬","INTERCEPTION! 🙈","DELAY OF GAME 🚩","TURNOVER! 😤","SACKED! 🏃"][Math.floor(Math.random()*5)]);
-      const nw=wrong+1;setWrong(nw);setSelected([]);
+      const nw=wrong+1;setWrong(nw);
+      setTriedCombos(prev=>[...prev,comboKey]);
+      // Keep tiles selected so user can swap one without re-picking all 4
       if(nw>=4){
         setTimerOn(false);setOver(true);
         // Reveal remaining groups one at a time, easiest first
@@ -611,7 +620,7 @@ function Game({puzzle,dark,onFinish}) {
           </div>
         )}
 
-        {showResult&&<ResultPanel puzzle={puzzle} solved={[...solved,...revealedGroups]} wrong={wrong} ms={timeMs} dark={dark} onPlayAgain={onFinish}/>}
+        {showResult&&<ResultPanel puzzle={puzzle} solved={[...solved,...revealedGroups]} wrong={wrong} ms={timeMs} dark={dark} onPlayAgain={onFinish} won={solved.length===4}/>}
       </div>
     </div>
   );
