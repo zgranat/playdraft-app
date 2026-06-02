@@ -258,9 +258,9 @@ function StatsModal({onClose,dark}) {
 }
 
 // ============================================================
-// RESULT MODAL — mobile optimized
+// RESULT PANEL — inline, shown below the revealed board
 // ============================================================
-function ResultModal({puzzle,solved,wrong,ms,onPlayAgain,dark}) {
+function ResultPanel({puzzle,solved,wrong,ms,onPlayAgain,dark}) {
   const [copied,setCopied]=useState(false);
   const won=solved.length===4,bg=dark?"#111":"#faf7f0",fg=dark?"#e0d5c5":"#1a1a2e";
   const st=loadStats();
@@ -272,10 +272,7 @@ function ResultModal({puzzle,solved,wrong,ms,onPlayAgain,dark}) {
   const nativeShare=()=>{ if(navigator.share){navigator.share({title:"DRAFT",text:shareText,url:"https://playdraft.app"});}else{copy();} };
 
   return (
-    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.9)",display:"flex",alignItems:"flex-end",justifyContent:"center",zIndex:300,padding:"0"}}>
-      <div style={{background:bg,borderRadius:"16px 16px 0 0",padding:"24px 20px 36px",width:"100%",maxWidth:"480px",border:`2px solid ${won?"#C8A96E":"#8B1A2A"}`,borderBottom:"none",maxHeight:"90vh",overflowY:"auto"}}>
-        {/* Handle bar */}
-        <div style={{width:"40px",height:"4px",background:dark?"#333":"#ddd",borderRadius:"2px",margin:"0 auto 20px"}}/>
+    <div style={{background:bg,borderRadius:"12px",padding:"24px 18px 28px",width:"100%",maxWidth:"460px",margin:"16px auto 0",border:`2px solid ${won?"#C8A96E":"#8B1A2A"}`,animation:"fadeUp 0.5s ease"}}>
 
         <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"38px",letterSpacing:"4px",color:won?"#C8A96E":"#8B1A2A",textAlign:"center",lineHeight:1,marginBottom:"4px"}}>
           {won?(cleanGame?"CLEAN GAME 🔒":"NICE WORK"):"GAME OVER"}
@@ -327,7 +324,7 @@ function ResultModal({puzzle,solved,wrong,ms,onPlayAgain,dark}) {
               𝕏 POST
             </button>
             <button onClick={copy} style={{flex:1,fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",padding:"14px",background:copied?"#2E6B3E":(dark?"#222":"#f0ebe0"),color:copied?"#fff":(dark?"#888":"#999"),border:"none",borderRadius:"8px",cursor:"pointer",transition:"background 0.2s"}}>
-              {copied?"✓":"📋"}
+              {copied?"✓ COPIED":"COPY"}
             </button>
           </div>
         </div>
@@ -335,7 +332,6 @@ function ResultModal({puzzle,solved,wrong,ms,onPlayAgain,dark}) {
         <button onClick={onPlayAgain} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",padding:"14px",background:"transparent",color:fg,border:`2px solid ${dark?"#333":"#c8bfae"}`,borderRadius:"8px",cursor:"pointer"}}>
           PLAY AGAIN
         </button>
-      </div>
     </div>
   );
 }
@@ -471,6 +467,7 @@ function Game({puzzle,dark,onFinish}) {
   const [shaking,setShaking]=useState([]);
   const [toast,setToast]=useState(null);
   const [showResult,setShowResult]=useState(false);
+  const [revealedGroups,setRevealedGroups]=useState([]);  // Auto-reveal on loss
   const toastRef=useRef(null);
   const bg=dark?"#0a0a0a":"#faf7f0";
 
@@ -485,7 +482,8 @@ function Game({puzzle,dark,onFinish}) {
       showToast(["LOCKED IN 🔒","TOUCHDOWN! 🏈","YOU GOT IT!","NICE READ! 🎯","FIRST DOWN! ✅"][Math.floor(Math.random()*5)]);
       if(ns.length===4){
         setTimerOn(false);setOver(true);
-        setTimeout(()=>setShowResult(true),700);
+        // Show result panel after last category lock-in animation completes
+        setTimeout(()=>setShowResult(true),900);
         const st=loadStats(),today=new Date().toDateString(),yest=new Date(Date.now()-86400000).toDateString();
         st.played++;st.won++;st.scores=[...(st.scores||[]),fmt(timeMs)];
         if(st.lastPlayed!==today)st.streak=st.lastPlayed===yest?st.streak+1:1;
@@ -497,13 +495,24 @@ function Game({puzzle,dark,onFinish}) {
       if(oneAway)showToast("ONE AWAY... 👀",2200);
       else showToast(["FUMBLE 😬","INTERCEPTION! 🙈","DELAY OF GAME 🚩","TURNOVER! 😤","SACKED! 🏃"][Math.floor(Math.random()*5)]);
       const nw=wrong+1;setWrong(nw);setSelected([]);
-      if(nw>=4){setTimerOn(false);setOver(true);setTimeout(()=>setShowResult(true),500);
+      if(nw>=4){
+        setTimerOn(false);setOver(true);
+        // Reveal remaining groups one at a time, easiest first
+        const remaining = puzzle.groups
+          .filter(g=>!solved.some(s=>s.id===g.id))
+          .sort((a,b)=>a.difficulty-b.difficulty);
+        remaining.forEach((g,i)=>{
+          setTimeout(()=>setRevealedGroups(prev=>[...prev,g]),700+(i*600));
+        });
+        // Show result panel after all reveals complete
+        setTimeout(()=>setShowResult(true),700+(remaining.length*600)+400);
         const st=loadStats(),today=new Date().toDateString();
-        st.played++;st.scores=[...(st.scores||[]),"DNF"];st.streak=0;st.lastPlayed=today;saveStats(st);}
+        st.played++;st.scores=[...(st.scores||[]),"DNF"];st.streak=0;st.lastPlayed=today;saveStats(st);
+      }
     }
   };
 
-  const unsolved=tiles.filter(p=>!solved.some(g=>g.players.includes(p)));
+  const unsolved=tiles.filter(p=>!solved.some(g=>g.players.includes(p)) && !revealedGroups.some(g=>g.players.includes(p)));
 
   return (
     <div style={{background:bg,display:"flex",flexDirection:"column",padding:"16px 12px 32px"}}>
@@ -523,8 +532,8 @@ function Game({puzzle,dark,onFinish}) {
           </div>
         </div>
 
-        {/* Solved rows */}
-        {solved.sort((a,b)=>a.difficulty-b.difficulty).map(g=>(
+        {/* Solved + auto-revealed (on loss) rows — all in difficulty order */}
+        {[...solved, ...revealedGroups].sort((a,b)=>a.difficulty-b.difficulty).map(g=>(
           <SolvedRow key={g.id} group={g} dark={dark}/>
         ))}
 
@@ -555,7 +564,7 @@ function Game({puzzle,dark,onFinish}) {
           </div>
         )}
 
-        {showResult&&<ResultModal puzzle={puzzle} solved={solved} wrong={wrong} ms={timeMs} dark={dark} onPlayAgain={onFinish}/>}
+        {showResult&&<ResultPanel puzzle={puzzle} solved={[...solved,...revealedGroups]} wrong={wrong} ms={timeMs} dark={dark} onPlayAgain={onFinish}/>}
       </div>
     </div>
   );
