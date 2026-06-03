@@ -6,72 +6,72 @@ import { useState, useEffect, useRef } from "react";
 const PUZZLES = [
   {
     id: 1, title: "ROUND 1",
-    players: ["RANDY MOSS","TERRELL OWENS","CHAD JOHNSON","ANTONIO BROWN","BRETT FAVRE","PEYTON MANNING","DAN MARINO","JOHN ELWAY","BARRY SANDERS","EMMITT SMITH","ERIC DICKERSON","MARSHALL FAULK","LAWRENCE TAYLOR","REGGIE WHITE","DEION SANDERS","ROD WOODSON"],
+    players: ["BARRY SANDERS","ADRIAN PETERSON","DERRICK HENRY","SAQUON BARKLEY","DAN MARINO","WARREN MOON","DAN FOUTS","JIM KELLY","PEYTON MANNING","ANDREW LUCK","JEFF GEORGE","JOHN ELWAY","MEL BLOUNT","TOM BRADY","TOM DEMPSEY","ROY WILLIAMS"],
     groups: [
-      { id:"A", players:["RANDY MOSS","TERRELL OWENS","CHAD JOHNSON","ANTONIO BROWN"], label:"FAMOUS FOR BEING IMPOSSIBLE TO COACH", color:"#B8860B", difficulty:1 },
-      { id:"B", players:["BRETT FAVRE","PEYTON MANNING","DAN MARINO","JOHN ELWAY"], label:"HALL OF FAMERS WITH EXACTLY ONE SUPER BOWL WIN OR LESS", color:"#2E6B3E", difficulty:2 },
-      { id:"C", players:["BARRY SANDERS","EMMITT SMITH","ERIC DICKERSON","MARSHALL FAULK"], label:"RUSHED FOR 2,000+ YARDS IN A SINGLE SEASON", color:"#1B4F8A", difficulty:3 },
-      { id:"D", players:["LAWRENCE TAYLOR","REGGIE WHITE","DEION SANDERS","ROD WOODSON"], label:"NAMED TO THE NFL 75TH ANNIVERSARY ALL-TIME TEAM — DEFENSE", color:"#8B1A2A", difficulty:4 }
+      { id:"A", players:["BARRY SANDERS","ADRIAN PETERSON","DERRICK HENRY","SAQUON BARKLEY"], label:"RUSHED FOR 2,000+ YARDS IN A SINGLE SEASON", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["DAN MARINO","WARREN MOON","DAN FOUTS","JIM KELLY"], label:"HALL OF FAME QUARTERBACKS WHO NEVER WON A SUPER BOWL", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["PEYTON MANNING","ANDREW LUCK","JEFF GEORGE","JOHN ELWAY"], label:"DRAFTED #1 OVERALL BY THE INDIANAPOLIS COLTS", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["MEL BLOUNT","TOM BRADY","TOM DEMPSEY","ROY WILLIAMS"], label:"FAMOUSLY INSPIRED AN NFL RULE CHANGE", color:"#8B1A2A", difficulty:4 }
     ]
   },
   {
     id: 2, title: "ROUND 2",
-    players: ["RYAN LEAF","JaMARCUS RUSSELL","TONY MANDARICH","JOHNNY MANZIEL","KURT WARNER","TONY ROMO","JEFF GARCIA","BRAD JOHNSON","JULIUS THOMAS","JIMMY GRAHAM","ANTONIO GATES","TONY GONZALEZ","JAMES HARRISON","ALBERT HAYNESWORTH","RANDY MOSS","TERRELL OWENS"],
+    players: ["TOM BRADY","PEYTON MANNING","AARON RODGERS","PATRICK MAHOMES","BRUCE SMITH","REGGIE WHITE","KEVIN GREENE","JULIUS PEPPERS","RYAN LEAF","JaMARCUS RUSSELL","TRENT RICHARDSON","VINCE YOUNG","TERRY BRADSHAW","BRETT FAVRE","DEION SANDERS","LAWRENCE TAYLOR"],
     groups: [
-      { id:"A", players:["RYAN LEAF","JaMARCUS RUSSELL","TONY MANDARICH","JOHNNY MANZIEL"], label:"CONSENSUS ALL-TIME NFL DRAFT BUSTS", color:"#B8860B", difficulty:1 },
-      { id:"B", players:["KURT WARNER","TONY ROMO","JEFF GARCIA","BRAD JOHNSON"], label:"REACHED THE SUPER BOWL AS AN UNDRAFTED QUARTERBACK", color:"#2E6B3E", difficulty:2 },
-      { id:"C", players:["JULIUS THOMAS","JIMMY GRAHAM","ANTONIO GATES","TONY GONZALEZ"], label:"TIGHT ENDS WHO PLAYED COLLEGE BASKETBALL", color:"#1B4F8A", difficulty:3 },
-      { id:"D", players:["JAMES HARRISON","ALBERT HAYNESWORTH","RANDY MOSS","TERRELL OWENS"], label:"FINED OR SUSPENDED FOR CONDUCT $100K+ IN A SINGLE SEASON", color:"#8B1A2A", difficulty:4 }
+      { id:"A", players:["TOM BRADY","PEYTON MANNING","AARON RODGERS","PATRICK MAHOMES"], label:"WON NFL MVP MULTIPLE TIMES", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["BRUCE SMITH","REGGIE WHITE","KEVIN GREENE","JULIUS PEPPERS"], label:"TOP 5 ALL-TIME IN NFL CAREER SACKS", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["RYAN LEAF","JaMARCUS RUSSELL","TRENT RICHARDSON","VINCE YOUNG"], label:"TOP-5 DRAFT PICKS CONSIDERED ALL-TIME BUSTS", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["TERRY BRADSHAW","BRETT FAVRE","DEION SANDERS","LAWRENCE TAYLOR"], label:"ACTED IN A MAJOR HOLLYWOOD MOVIE", color:"#8B1A2A", difficulty:4 }
     ]
   },
   {
     id: 3, title: "ROUND 3",
-    players: ["BO JACKSON","DEION SANDERS","BRIAN JORDAN","D.J. DOZIER","PEYTON MANNING","ELI MANNING","ARCHIE MANNING","COOPER MANNING","MARSHAWN LYNCH","JIM MCMAHON","ICKEY WOODS","BILLY WHITE SHOES JOHNSON","DAVID TYREE","SANTONIO HOLMES","LYNN SWANN","JOHN TAYLOR"],
+    players: ["PEYTON MANNING","ELI MANNING","ARCHIE MANNING","COOPER MANNING","BO JACKSON","DEION SANDERS","RUSSELL WILSON","KYLER MURRAY","JOE HORN","BRANDON MARSHALL","ANTONIO BROWN","STEVIE JOHNSON","DAVID TYREE","SANTONIO HOLMES","LYNN SWANN","JOHN TAYLOR"],
     groups: [
       { id:"A", players:["PEYTON MANNING","ELI MANNING","ARCHIE MANNING","COOPER MANNING"], label:"THE MANNING FAMILY", color:"#B8860B", difficulty:1 },
-      { id:"B", players:["BO JACKSON","DEION SANDERS","BRIAN JORDAN","D.J. DOZIER"], label:"PLAYED BOTH NFL AND MLB PROFESSIONALLY", color:"#2E6B3E", difficulty:2 },
-      { id:"C", players:["MARSHAWN LYNCH","JIM MCMAHON","ICKEY WOODS","BILLY WHITE SHOES JOHNSON"], label:"FINED BY THE NFL FOR A TOUCHDOWN CELEBRATION", color:"#1B4F8A", difficulty:3 },
+      { id:"B", players:["BO JACKSON","DEION SANDERS","RUSSELL WILSON","KYLER MURRAY"], label:"DRAFTED BY BOTH AN NFL TEAM AND AN MLB TEAM", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JOE HORN","BRANDON MARSHALL","ANTONIO BROWN","STEVIE JOHNSON"], label:"FINED BY THE NFL FOR A TOUCHDOWN CELEBRATION", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["DAVID TYREE","SANTONIO HOLMES","LYNN SWANN","JOHN TAYLOR"], label:"MADE THE DEFINING CATCH IN A SUPER BOWL-WINNING DRIVE", color:"#8B1A2A", difficulty:4 }
     ]
   },
   {
     id: 4, title: "ROUND 4",
-    players: ["TOM BRADY","DREW BREES","AARON RODGERS","PATRICK MAHOMES","BARRY SANDERS","CALVIN JOHNSON","ANDREW LUCK","ROB GRONKOWSKI","JERRY RICE","TONY GONZALEZ","RANDY MOSS","LARRY FITZGERALD","JOE NAMATH","JOHNNY UNITAS","BART STARR","ROGER STAUBACH"],
+    players: ["TOM BRADY","DREW BREES","MATTHEW STAFFORD","PATRICK MAHOMES","BARRY SANDERS","CALVIN JOHNSON","ANDREW LUCK","ROB GRONKOWSKI","JERRY RICE","TONY GONZALEZ","LARRY FITZGERALD","JASON WITTEN","JOE NAMATH","JOHNNY UNITAS","BART STARR","ROGER STAUBACH"],
     groups: [
-      { id:"A", players:["TOM BRADY","DREW BREES","AARON RODGERS","PATRICK MAHOMES"], label:"THREW FOR 5,000+ YARDS IN A SINGLE SEASON", color:"#B8860B", difficulty:1 },
+      { id:"A", players:["TOM BRADY","DREW BREES","MATTHEW STAFFORD","PATRICK MAHOMES"], label:"THREW FOR 5,000+ YARDS IN A SINGLE SEASON", color:"#B8860B", difficulty:1 },
       { id:"B", players:["BARRY SANDERS","CALVIN JOHNSON","ANDREW LUCK","ROB GRONKOWSKI"], label:"RETIRED EARLY WHILE STILL PLAYING AT AN ELITE LEVEL", color:"#2E6B3E", difficulty:2 },
-      { id:"C", players:["JERRY RICE","TONY GONZALEZ","RANDY MOSS","LARRY FITZGERALD"], label:"TOP 5 ALL-TIME IN RECEPTIONS OR RECEIVING YARDS", color:"#1B4F8A", difficulty:3 },
+      { id:"C", players:["JERRY RICE","TONY GONZALEZ","LARRY FITZGERALD","JASON WITTEN"], label:"TOP 5 ALL-TIME IN NFL CAREER RECEPTIONS", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["JOE NAMATH","JOHNNY UNITAS","BART STARR","ROGER STAUBACH"], label:"WON A SUPER BOWL BEFORE 1980", color:"#8B1A2A", difficulty:4 }
     ]
   },
   {
     id: 5, title: "ROUND 5",
-    players: ["CHAD JOHNSON","JOE HORN","TERRELL OWENS","STEVE SMITH SR.","MIKE SINGLETARY","BUDDY RYAN","BILL PARCELLS","JOHN MADDEN","WARREN SAPP","NDAMUKONG SUH","JACK TATUM","DICK BUTKUS","JOHN ELWAY","ELI MANNING","PHILIP RIVERS","JOHN HADL"],
+    players: ["CAM NEWTON","MATT RYAN","LAMAR JACKSON","JOSH ALLEN","JIM BROWN","JOHNNY UNITAS","WALTER PAYTON","DICK BUTKUS","JOHN ELWAY","ELI MANNING","BO JACKSON","JIM KELLY","ANTWAAN RANDLE EL","HINES WARD","JULIAN EDELMAN","TERRELLE PRYOR"],
     groups: [
-      { id:"A", players:["CHAD JOHNSON","JOE HORN","TERRELL OWENS","STEVE SMITH SR."], label:"PULLED A PROP OUT DURING A TOUCHDOWN CELEBRATION", color:"#B8860B", difficulty:1 },
-      { id:"B", players:["MIKE SINGLETARY","BUDDY RYAN","BILL PARCELLS","JOHN MADDEN"], label:"COACHES FAMOUS FOR SIDELINE CONFRONTATIONS", color:"#2E6B3E", difficulty:2 },
-      { id:"C", players:["WARREN SAPP","NDAMUKONG SUH","JACK TATUM","DICK BUTKUS"], label:"VOTED THE MOST FEARED DEFENSIVE PLAYER OF THEIR ERA", color:"#1B4F8A", difficulty:3 },
-      { id:"D", players:["JOHN ELWAY","ELI MANNING","PHILIP RIVERS","JOHN HADL"], label:"FAMOUSLY REFUSED TO PLAY FOR THE TEAM THAT DRAFTED THEM", color:"#8B1A2A", difficulty:4 }
+      { id:"A", players:["CAM NEWTON","MATT RYAN","LAMAR JACKSON","JOSH ALLEN"], label:"WON NFL MVP AT LEAST ONCE", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["JIM BROWN","JOHNNY UNITAS","WALTER PAYTON","DICK BUTKUS"], label:"NAMED TO THE NFL 100 ALL-TIME TEAM", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JOHN ELWAY","ELI MANNING","BO JACKSON","JIM KELLY"], label:"FAMOUSLY REFUSED TO PLAY FOR THE TEAM THAT DRAFTED THEM", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["ANTWAAN RANDLE EL","HINES WARD","JULIAN EDELMAN","TERRELLE PRYOR"], label:"PLAYED QUARTERBACK IN COLLEGE, SWITCHED TO WIDE RECEIVER IN THE NFL", color:"#8B1A2A", difficulty:4 }
     ]
   },
   {
     id: 6, title: "ROUND 6",
-    players: ["MARSHAWN LYNCH","JIM MORA SR.","DENNIS GREEN","MIKE DITKA","CHAD JOHNSON","ROB GRONKOWSKI","TERRELL OWENS","ANTONIO BROWN","COLIN KAEPERNICK","ERIC REID","BRANDON MARSHALL","KENNY STILLS","BRETT FAVRE","TIKI BARBER","BARRY SANDERS","JEROME BETTIS"],
+    players: ["JOE MONTANA","PATRICK MAHOMES","ELI MANNING","TROY AIKMAN","MARSHAWN LYNCH","JIM MORA SR.","DENNIS GREEN","HERM EDWARDS","JERRY RICE","RANDY MOSS","TERRELL OWENS","CRIS CARTER","BRETT FAVRE","TOM BRADY","ROB GRONKOWSKI","DEION SANDERS"],
     groups: [
-      { id:"A", players:["MARSHAWN LYNCH","JIM MORA SR.","DENNIS GREEN","MIKE DITKA"], label:"DELIVERED AN ALL-TIME NOTORIOUS POST-GAME PRESS CONFERENCE", color:"#B8860B", difficulty:1 },
-      { id:"B", players:["CHAD JOHNSON","ROB GRONKOWSKI","TERRELL OWENS","ANTONIO BROWN"], label:"MADE HEADLINES OFF THE FIELD MORE THAN ON IT — SAME SEASON", color:"#2E6B3E", difficulty:2 },
-      { id:"C", players:["COLIN KAEPERNICK","ERIC REID","BRANDON MARSHALL","KENNY STILLS"], label:"TOOK A KNEE OR RAISED A FIST DURING THE NATIONAL ANTHEM", color:"#1B4F8A", difficulty:3 },
-      { id:"D", players:["BRETT FAVRE","TIKI BARBER","BARRY SANDERS","JEROME BETTIS"], label:"RETIRED, THEN CAME BACK OR SERIOUSLY CONSIDERED IT", color:"#8B1A2A", difficulty:4 }
+      { id:"A", players:["JOE MONTANA","PATRICK MAHOMES","ELI MANNING","TROY AIKMAN"], label:"WON SUPER BOWL MVP", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["MARSHAWN LYNCH","JIM MORA SR.","DENNIS GREEN","HERM EDWARDS"], label:"DELIVERED A NOTORIOUS POST-GAME PRESS CONFERENCE", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JERRY RICE","RANDY MOSS","TERRELL OWENS","CRIS CARTER"], label:"TOP 5 ALL-TIME IN NFL CAREER RECEIVING TOUCHDOWNS", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["BRETT FAVRE","TOM BRADY","ROB GRONKOWSKI","DEION SANDERS"], label:"RETIRED, THEN OFFICIALLY CAME BACK TO PLAY", color:"#8B1A2A", difficulty:4 }
     ]
   },
   {
     id: 7, title: "ROUND 7",
-    players: ["50 CENT","CARLY RAE JEPSEN","SNOOP DOGG","JOHN WALL","PEYTON MANNING","JERRY RICE","EMMITT SMITH","MIKE SINGLETARY","MARSHAWN LYNCH","RICHARD SHERMAN","CHAD JOHNSON","TERRELL OWENS","ANTONIO CROMARTIE","PLAXICO BURRESS","PACMAN JONES","TANK JOHNSON"],
+    players: ["PEYTON MANNING","CAM NEWTON","MYLES GARRETT","TREVOR LAWRENCE","TONY ROMO","TROY AIKMAN","CRIS COLLINSWORTH","KURT WARNER","DESMOND HOWARD","MARCUS ALLEN","JIM PLUNKETT","ROGER STAUBACH","DAVID TYREE","SANTONIO HOLMES","ODELL BECKHAM JR.","DWIGHT CLARK"],
     groups: [
-      { id:"A", players:["50 CENT","CARLY RAE JEPSEN","SNOOP DOGG","JOHN WALL"], label:"THREW A CEREMONIAL FIRST PITCH THAT WENT VIRAL FOR THE WRONG REASONS", color:"#B8860B", difficulty:1 },
-      { id:"B", players:["PEYTON MANNING","JERRY RICE","EMMITT SMITH","MIKE SINGLETARY"], label:"WENT STRAIGHT FROM THE FIELD TO THE BROADCASTING BOOTH", color:"#2E6B3E", difficulty:2 },
-      { id:"C", players:["MARSHAWN LYNCH","RICHARD SHERMAN","CHAD JOHNSON","TERRELL OWENS"], label:"FINED FOR SOMETHING SAID OR DONE IN A POST-GAME INTERVIEW", color:"#1B4F8A", difficulty:3 },
-      { id:"D", players:["ANTONIO CROMARTIE","PLAXICO BURRESS","PACMAN JONES","TANK JOHNSON"], label:"SUSPENDED FOR AN OFF-FIELD INCIDENT INVOLVING LAW ENFORCEMENT", color:"#8B1A2A", difficulty:4 }
+      { id:"A", players:["PEYTON MANNING","CAM NEWTON","MYLES GARRETT","TREVOR LAWRENCE"], label:"FIRST OVERALL PICKS IN THE NFL DRAFT", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["TONY ROMO","TROY AIKMAN","CRIS COLLINSWORTH","KURT WARNER"], label:"WENT STRAIGHT TO THE BROADCAST BOOTH AFTER RETIRING", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["DESMOND HOWARD","MARCUS ALLEN","JIM PLUNKETT","ROGER STAUBACH"], label:"WON A HEISMAN TROPHY AND A SUPER BOWL MVP", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["DAVID TYREE","SANTONIO HOLMES","ODELL BECKHAM JR.","DWIGHT CLARK"], label:"FAMOUS FOR ONE ICONIC INDIVIDUAL CATCH", color:"#8B1A2A", difficulty:4 }
     ]
   },
   {
@@ -133,6 +133,15 @@ const getTodaysPuzzleNumber = () => {
   return Math.max(0, Math.floor((today - launch) / 86400000)) + 1;
 };
 const getPuzzle = (mode, idx) => mode==="daily" ? getTodaysPuzzle() : PUZZLES[idx % PUZZLES.length];
+
+// Pick a random practice puzzle, avoiding today's daily and recently played
+const getRandomPracticePuzzle = (recentlyPlayed = []) => {
+  const todayId = getTodaysPuzzle().id;
+  const available = PUZZLES.filter(p => p.id !== todayId && !recentlyPlayed.includes(p.id));
+  // If we've exhausted, just exclude today's daily
+  const pool = available.length > 0 ? available : PUZZLES.filter(p => p.id !== todayId);
+  return pool[Math.floor(Math.random() * pool.length)];
+};
 
 const buildShare = (puzzle, solved, wrong, ms, streak) => {
   const rows=[1,2,3,4].map(d=>{const g=solved.find(s=>s.difficulty===d);return g?DIFF_EMOJIS[d].repeat(4):"⬛⬛⬛⬛";}).join("\n");
@@ -646,10 +655,28 @@ export default function App() {
   const [showStats,setShowStats]=useState(false);
   const [showScoring,setShowScoring]=useState(false);
   const [mode,setMode]=useState("daily");
-  const [practiceIdx,setPracticeIdx]=useState(0);
-  const puzzle=getPuzzle(mode,practiceIdx);
-  const handleModeChange=m=>{setMode(m);setScreen("home");};
-  const handleFinish=()=>{if(mode==="practice")setPracticeIdx(i=>(i+1)%PUZZLES.length);setScreen("home");};
+  const [practicePuzzle,setPracticePuzzle]=useState(()=>getRandomPracticePuzzle());
+  const [recentPractice,setRecentPractice]=useState([]);
+  const puzzle = mode==="daily" ? getTodaysPuzzle() : practicePuzzle;
+  const handleModeChange=m=>{
+    setMode(m);
+    setScreen("home");
+    // When switching to practice, pick a fresh puzzle
+    if(m==="practice"){
+      const newRecent=[...recentPractice,practicePuzzle.id].slice(-Math.max(1,PUZZLES.length-2));
+      setRecentPractice(newRecent);
+      setPracticePuzzle(getRandomPracticePuzzle(newRecent));
+    }
+  };
+  const handleFinish=()=>{
+    if(mode==="practice"){
+      // Pick a new random puzzle for next round
+      const newRecent=[...recentPractice,practicePuzzle.id].slice(-Math.max(1,PUZZLES.length-2));
+      setRecentPractice(newRecent);
+      setPracticePuzzle(getRandomPracticePuzzle(newRecent));
+    }
+    setScreen("home");
+  };
 
   return (
     <>
@@ -666,7 +693,7 @@ export default function App() {
       `}</style>
       <Header dark={dark} onDark={()=>setDark(d=>!d)} onStats={()=>setShowStats(true)} onHome={()=>setScreen("home")} onHow={()=>setScreen("howto")} onScoring={()=>setScreen("scoring")} mode={mode} onMode={handleModeChange}/>
       {screen==="home"&&<Landing onPlay={()=>setScreen("game")} dark={dark} mode={mode}/>}
-      {screen==="game"&&<Game key={`${puzzle.id}-${mode}-${practiceIdx}`} puzzle={puzzle} dark={dark} onFinish={handleFinish}/>}
+      {screen==="game"&&<Game key={`${puzzle.id}-${mode}`} puzzle={puzzle} dark={dark} onFinish={handleFinish}/>}
       {screen==="howto"&&<HowTo dark={dark} onClose={()=>setScreen("home")}/>}
       {screen==="scoring"&&<ScoringPage dark={dark} onClose={()=>setScreen("home")}/>}
       {showStats&&<StatsModal onClose={()=>setShowStats(false)} dark={dark}/>}
