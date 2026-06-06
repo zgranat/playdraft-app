@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 // ============================================================
 // PUZZLE DATA
@@ -797,6 +798,7 @@ export default function App() {
       {screen==="howto"&&<HowTo dark={dark} onClose={()=>setScreen("home")}/>}
       {screen==="scoring"&&<ScoringPage dark={dark} onClose={()=>setScreen("home")}/>}
       {showStats&&<StatsModal onClose={()=>setShowStats(false)} dark={dark}/>}
+      <Analytics />
     </>
   );
 }
