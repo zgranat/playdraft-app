@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { Analytics } from "@vercel/analytics/react";
 
 // ============================================================
 // PUZZLE DATA
@@ -216,7 +215,13 @@ const defaultStats = () => ({streak:0,bestStreak:0,played:0,won:0,scores:[],last
 const loadStats = () => { try{const s=localStorage.getItem("draft_v1");return s?JSON.parse(s):defaultStats();}catch{return defaultStats();} };
 const saveStats = s => { try{localStorage.setItem("draft_v1",JSON.stringify(s));}catch{} };
 // CHANGE THIS WHEN YOU OFFICIALLY LAUNCH — resets daily puzzle counter to start fresh
-const LAUNCH_DATE = new Date('2026-06-01');
+const LAUNCH_DATE = new Date('2026-06-06');
+
+// CHANGE THIS to your real feedback destination — either a Google Form URL or mailto link.
+// Examples:
+//   const FEEDBACK_URL = "https://forms.gle/your-form-id-here";
+//   const FEEDBACK_URL = "mailto:you@example.com?subject=DRAFT Feedback";
+const FEEDBACK_URL = "https://forms.gle/s2Jk2vvLfLTJLPLd8";
 
 const getTodaysPuzzle = () => {
   const today = new Date();
@@ -489,6 +494,13 @@ function ResultPanel({puzzle,solved,wrong,ms,onPlayAgain,dark,won}) {
         <button onClick={onPlayAgain} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",padding:"14px",background:"transparent",color:fg,border:`2px solid ${dark?"#333":"#c8bfae"}`,borderRadius:"8px",cursor:"pointer"}}>
           PLAY AGAIN
         </button>
+
+        {/* Feedback link */}
+        <div style={{marginTop:"16px",textAlign:"center"}}>
+          <a href={FEEDBACK_URL} target="_blank" rel="noopener noreferrer" style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:dark?"#555":"#999",textDecoration:"none",borderBottom:`1px dashed ${dark?"#333":"#c8bfae"}`,paddingBottom:"2px"}}>
+            SPOT AN ERROR? SEND FEEDBACK →
+          </a>
+        </div>
     </div>
   );
 }
@@ -606,6 +618,11 @@ function Landing({onPlay,dark,mode}) {
           </div>
         ))}
       </div>
+
+      {/* Feedback link */}
+      <a href={FEEDBACK_URL} target="_blank" rel="noopener noreferrer" style={{marginTop:"32px",fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#555":"#999",textDecoration:"none",borderBottom:`1px dashed ${dark?"#333":"#c8bfae"}`,paddingBottom:"2px"}}>
+        SPOT AN ERROR? SEND FEEDBACK →
+      </a>
     </div>
   );
 }
@@ -798,7 +815,6 @@ export default function App() {
       {screen==="howto"&&<HowTo dark={dark} onClose={()=>setScreen("home")}/>}
       {screen==="scoring"&&<ScoringPage dark={dark} onClose={()=>setScreen("home")}/>}
       {showStats&&<StatsModal onClose={()=>setShowStats(false)} dark={dark}/>}
-      <Analytics />
     </>
   );
 }
