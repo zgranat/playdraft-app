@@ -6,12 +6,12 @@ import { useState, useEffect, useRef } from "react";
 const PUZZLES = [
   {
     id: 1, title: "ROUND 1",
-    players: ["BARRY SANDERS","ADRIAN PETERSON","DERRICK HENRY","SAQUON BARKLEY","DAN MARINO","WARREN MOON","DAN FOUTS","JIM KELLY","PEYTON MANNING","ANDREW LUCK","JEFF GEORGE","JOHN ELWAY","MEL BLOUNT","TOM BRADY","TOM DEMPSEY","ROY WILLIAMS"],
+    players: ["TOM BRADY","JOE MONTANA","TROY AIKMAN","PATRICK MAHOMES","CAM NEWTON","SAQUON BARKLEY","ODELL BECKHAM JR.","DAK PRESCOTT","KURT WARNER","MARSHALL FAULK","ISAAC BRUCE","TORRY HOLT","BRETT FAVRE","JERRY RICE","EMMITT SMITH","ADAM VINATIERI"],
     groups: [
-      { id:"A", players:["BARRY SANDERS","ADRIAN PETERSON","DERRICK HENRY","SAQUON BARKLEY"], label:"RUSHED FOR 2,000+ YARDS IN A SINGLE SEASON", color:"#B8860B", difficulty:1 },
-      { id:"B", players:["DAN MARINO","WARREN MOON","DAN FOUTS","JIM KELLY"], label:"HALL OF FAME QUARTERBACKS WHO NEVER WON A SUPER BOWL", color:"#2E6B3E", difficulty:2 },
-      { id:"C", players:["PEYTON MANNING","ANDREW LUCK","JEFF GEORGE","JOHN ELWAY"], label:"DRAFTED #1 OVERALL BY THE INDIANAPOLIS COLTS", color:"#1B4F8A", difficulty:3 },
-      { id:"D", players:["MEL BLOUNT","TOM BRADY","TOM DEMPSEY","ROY WILLIAMS"], label:"FAMOUSLY INSPIRED AN NFL RULE CHANGE", color:"#8B1A2A", difficulty:4 }
+      { id:"A", players:["TOM BRADY","JOE MONTANA","TROY AIKMAN","PATRICK MAHOMES"], label:"WON 3+ SUPER BOWLS AS A STARTING QUARTERBACK", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["CAM NEWTON","SAQUON BARKLEY","ODELL BECKHAM JR.","DAK PRESCOTT"], label:"WON NFL OFFENSIVE ROOKIE OF THE YEAR", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["KURT WARNER","MARSHALL FAULK","ISAAC BRUCE","TORRY HOLT"], label:"PLAYED FOR \"THE GREATEST SHOW ON TURF\" RAMS", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["BRETT FAVRE","JERRY RICE","EMMITT SMITH","ADAM VINATIERI"], label:"CURRENTLY HOLDS AN ALL-TIME NFL CAREER RECORD", color:"#8B1A2A", difficulty:4 }
     ]
   },
   {
@@ -106,12 +106,12 @@ const PUZZLES = [
   },
   {
     id: 11, title: "ROUND 11",
-    players: ["TOM BRADY","JOE MONTANA","TROY AIKMAN","PATRICK MAHOMES","CAM NEWTON","SAQUON BARKLEY","ODELL BECKHAM JR.","DAK PRESCOTT","KURT WARNER","MARSHALL FAULK","ISAAC BRUCE","TORRY HOLT","BRETT FAVRE","JERRY RICE","EMMITT SMITH","ADAM VINATIERI"],
+    players: ["BARRY SANDERS","ADRIAN PETERSON","DERRICK HENRY","SAQUON BARKLEY","DAN MARINO","WARREN MOON","DAN FOUTS","JIM KELLY","PEYTON MANNING","ANDREW LUCK","JEFF GEORGE","JOHN ELWAY","MEL BLOUNT","TOM BRADY","TOM DEMPSEY","ROY WILLIAMS"],
     groups: [
-      { id:"A", players:["TOM BRADY","JOE MONTANA","TROY AIKMAN","PATRICK MAHOMES"], label:"WON 3+ SUPER BOWLS AS A STARTING QUARTERBACK", color:"#B8860B", difficulty:1 },
-      { id:"B", players:["CAM NEWTON","SAQUON BARKLEY","ODELL BECKHAM JR.","DAK PRESCOTT"], label:"WON NFL OFFENSIVE ROOKIE OF THE YEAR", color:"#2E6B3E", difficulty:2 },
-      { id:"C", players:["KURT WARNER","MARSHALL FAULK","ISAAC BRUCE","TORRY HOLT"], label:"PLAYED FOR \"THE GREATEST SHOW ON TURF\" RAMS", color:"#1B4F8A", difficulty:3 },
-      { id:"D", players:["BRETT FAVRE","JERRY RICE","EMMITT SMITH","ADAM VINATIERI"], label:"CURRENTLY HOLDS AN ALL-TIME NFL CAREER RECORD", color:"#8B1A2A", difficulty:4 }
+      { id:"A", players:["BARRY SANDERS","ADRIAN PETERSON","DERRICK HENRY","SAQUON BARKLEY"], label:"RUSHED FOR 2,000+ YARDS IN A SINGLE SEASON", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["DAN MARINO","WARREN MOON","DAN FOUTS","JIM KELLY"], label:"HALL OF FAME QUARTERBACKS WHO NEVER WON A SUPER BOWL", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["PEYTON MANNING","ANDREW LUCK","JEFF GEORGE","JOHN ELWAY"], label:"DRAFTED #1 OVERALL BY THE INDIANAPOLIS COLTS", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["MEL BLOUNT","TOM BRADY","TOM DEMPSEY","ROY WILLIAMS"], label:"FAMOUSLY INSPIRED AN NFL RULE CHANGE", color:"#8B1A2A", difficulty:4 }
     ]
   },
   {
@@ -166,12 +166,12 @@ const PUZZLES = [
   },
   {
     id: 17, title: "ROUND 17",
-    players: ["TONY GONZALEZ","REGGIE WHITE","BRUCE MATTHEWS","JUNIOR SEAU","JOE MONTANA","JERRY RICE","ROGER CRAIG","CHARLES HALEY","MATT RYAN","PATRICK MAHOMES","JARED GOFF","JAKE DELHOMME","JIM BROWN","CARL WEATHERS","BUBBA SMITH","HOWIE LONG"],
+    players: ["TONY GONZALEZ","REGGIE WHITE","PEYTON MANNING","JUNIOR SEAU","JOE MONTANA","JERRY RICE","ROGER CRAIG","CHARLES HALEY","MATT RYAN","PATRICK MAHOMES","JARED GOFF","JAKE DELHOMME","JIM BROWN","FRED WILLIAMSON","BUBBA SMITH","HOWIE LONG"],
     groups: [
-      { id:"A", players:["TONY GONZALEZ","REGGIE WHITE","BRUCE MATTHEWS","JUNIOR SEAU"], label:"PLAYED IN 10+ NFL PRO BOWLS", color:"#B8860B", difficulty:1 },
+      { id:"A", players:["TONY GONZALEZ","REGGIE WHITE","PEYTON MANNING","JUNIOR SEAU"], label:"PLAYED IN 10+ NFL PRO BOWLS", color:"#B8860B", difficulty:1 },
       { id:"B", players:["JOE MONTANA","JERRY RICE","ROGER CRAIG","CHARLES HALEY"], label:"PLAYED FOR THE SAN FRANCISCO 49ers 1980s DYNASTY", color:"#2E6B3E", difficulty:2 },
       { id:"C", players:["MATT RYAN","PATRICK MAHOMES","JARED GOFF","JAKE DELHOMME"], label:"LOST TO TOM BRADY IN THE SUPER BOWL", color:"#1B4F8A", difficulty:3 },
-      { id:"D", players:["JIM BROWN","CARL WEATHERS","BUBBA SMITH","HOWIE LONG"], label:"ACTED IN A MAJOR HOLLYWOOD MOVIE", color:"#8B1A2A", difficulty:4 }
+      { id:"D", players:["JIM BROWN","FRED WILLIAMSON","BUBBA SMITH","HOWIE LONG"], label:"ACTED IN A MAJOR HOLLYWOOD MOVIE", color:"#8B1A2A", difficulty:4 }
     ]
   },
   {
@@ -186,9 +186,9 @@ const PUZZLES = [
   },
   {
     id: 19, title: "ROUND 19",
-    players: ["PHIL SIMMS","JIM McMAHON","DOUG WILLIAMS","JOE THEISMANN","LAWRENCE TAYLOR","PATRICK WILLIS","BRIAN URLACHER","KHALIL MACK","BOB GRIESE","LARRY CSONKA","NICK BUONICONTI","PAUL WARFIELD","FRAN TARKENTON","DAN MARINO","BRETT FAVRE","PEYTON MANNING"],
+    players: ["JOE NAMATH","MARK SANCHEZ","AARON RODGERS","VINNY TESTAVERDE","LAWRENCE TAYLOR","PATRICK WILLIS","BRIAN URLACHER","KHALIL MACK","BOB GRIESE","LARRY CSONKA","NICK BUONICONTI","PAUL WARFIELD","FRAN TARKENTON","DAN MARINO","BRETT FAVRE","PEYTON MANNING"],
     groups: [
-      { id:"A", players:["PHIL SIMMS","JIM McMAHON","DOUG WILLIAMS","JOE THEISMANN"], label:"WON THE SUPER BOWL AS A STARTING QUARTERBACK IN THE 1980s", color:"#B8860B", difficulty:1 },
+      { id:"A", players:["JOE NAMATH","MARK SANCHEZ","AARON RODGERS","VINNY TESTAVERDE"], label:"PLAYED QUARTERBACK FOR THE NEW YORK JETS", color:"#B8860B", difficulty:1 },
       { id:"B", players:["LAWRENCE TAYLOR","PATRICK WILLIS","BRIAN URLACHER","KHALIL MACK"], label:"WON AP NFL DEFENSIVE ROOKIE OF THE YEAR", color:"#2E6B3E", difficulty:2 },
       { id:"C", players:["BOB GRIESE","LARRY CSONKA","NICK BUONICONTI","PAUL WARFIELD"], label:"PLAYED ON THE 1972 MIAMI DOLPHINS PERFECT SEASON TEAM", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["FRAN TARKENTON","DAN MARINO","BRETT FAVRE","PEYTON MANNING"], label:"HELD THE NFL ALL-TIME CAREER TOUCHDOWN PASS RECORD AT SOME POINT", color:"#8B1A2A", difficulty:4 }
@@ -215,7 +215,8 @@ const defaultStats = () => ({streak:0,bestStreak:0,played:0,won:0,scores:[],last
 const loadStats = () => { try{const s=localStorage.getItem("draft_v1");return s?JSON.parse(s):defaultStats();}catch{return defaultStats();} };
 const saveStats = s => { try{localStorage.setItem("draft_v1",JSON.stringify(s));}catch{} };
 // CHANGE THIS WHEN YOU OFFICIALLY LAUNCH — resets daily puzzle counter to start fresh
-const LAUNCH_DATE = new Date('2026-06-06');
+// Month is 0-indexed in this constructor (5 = June). Forces local-time midnight, not UTC.
+const LAUNCH_DATE = new Date(2026, 5, 6);
 
 // CHANGE THIS to your real feedback destination — either a Google Form URL or mailto link.
 // Examples:
@@ -587,7 +588,7 @@ function Landing({onPlay,dark,mode}) {
 
 
       <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"clamp(14px,4vw,16px)",color:fg,fontStyle:"italic",marginBottom:"28px",background:dark?"#181818":"#f0ebe0",padding:"14px 22px",borderRadius:"8px",border:`1px solid ${dark?"#2a2a2a":"#ddd6c4"}`,maxWidth:"330px"}}>
-        Famous for being impossible to coach 😤
+        Fined for over-the-top touchdown celebrations 🚨
       </div>
 
       <button
@@ -788,12 +789,13 @@ export default function App() {
   };
   const handleFinish=()=>{
     if(mode==="practice"){
-      // Pick a new random puzzle for next round
+      // Pick a new random puzzle for next round, stay in game (don't go home)
       const newRecent=[...recentPractice,practicePuzzle.id].slice(-Math.max(1,PUZZLES.length-2));
       setRecentPractice(newRecent);
       setPracticePuzzle(getRandomPracticePuzzle(newRecent));
+    } else {
+      setScreen("home");
     }
-    setScreen("home");
   };
 
   return (
