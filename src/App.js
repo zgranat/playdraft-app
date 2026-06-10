@@ -216,7 +216,7 @@ const loadStats = () => { try{const s=localStorage.getItem("draft_v1");return s?
 const saveStats = s => { try{localStorage.setItem("draft_v1",JSON.stringify(s));}catch{} };
 // CHANGE THIS WHEN YOU OFFICIALLY LAUNCH — resets daily puzzle counter to start fresh
 // Month is 0-indexed in this constructor (5 = June). Forces local-time midnight, not UTC.
-const LAUNCH_DATE = new Date(2026, 5, 6);
+const LAUNCH_DATE = new Date(2026, 5, 9);
 
 // CHANGE THIS to your real feedback destination — either a Google Form URL or mailto link.
 // Examples:
