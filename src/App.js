@@ -304,6 +304,106 @@ const PUZZLES = [
       { id:"C", players:["LAWRENCE TAYLOR","PATRICK WILLIS","BRIAN URLACHER","KHALIL MACK"], label:"WON AP NFL DEFENSIVE ROOKIE OF THE YEAR", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["DAN MARINO","BRETT FAVRE","PEYTON MANNING","TOM BRADY"], label:"HELD THE NFL CAREER TOUCHDOWN PASS RECORD AT SOME POINT", color:"#8B1A2A", difficulty:4 }
     ]
+  },
+  {
+    id: 31, title: "ROUND 31",
+    players: ["PATRICK MAHOMES","TRAVIS KELCE","CHRIS JONES","ISIAH PACHECO","TONY GONZALEZ","SHANNON SHARPE","ANTONIO GATES","MIKE DITKA","JOE BURROW","TUA TAGOVAILOA","JUSTIN HERBERT","JORDAN LOVE","JUSTIN TUCKER","MATT PRATER","SEBASTIAN JANIKOWSKI","BRANDON AUBREY"],
+    groups: [
+      { id:"A", players:["PATRICK MAHOMES","TRAVIS KELCE","CHRIS JONES","ISIAH PACHECO"], label:"PLAYED FOR THE KANSAS CITY CHIEFS DYNASTY (2019-PRESENT)", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["TONY GONZALEZ","SHANNON SHARPE","ANTONIO GATES","MIKE DITKA"], label:"HALL OF FAME TIGHT ENDS", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JOE BURROW","TUA TAGOVAILOA","JUSTIN HERBERT","JORDAN LOVE"], label:"QUARTERBACKS DRAFTED IN THE FIRST ROUND IN 2020", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["JUSTIN TUCKER","MATT PRATER","SEBASTIAN JANIKOWSKI","BRANDON AUBREY"], label:"MADE A 60+ YARD FIELD GOAL IN AN NFL GAME", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 32, title: "ROUND 32",
+    players: ["JALEN HURTS","A.J. BROWN","SAQUON BARKLEY","JASON KELCE","TROY AIKMAN","TONY ROMO","DAK PRESCOTT","ROGER STAUBACH","J.J. WATT","RUSSELL WILSON","DREW BREES","LARRY FITZGERALD","ANTWAAN RANDLE EL","MOHAMED SANU","JULIAN EDELMAN","ODELL BECKHAM JR."],
+    groups: [
+      { id:"A", players:["JALEN HURTS","A.J. BROWN","SAQUON BARKLEY","JASON KELCE"], label:"PLAYED FOR THE PHILADELPHIA EAGLES IN THE 2020s", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["TROY AIKMAN","TONY ROMO","DAK PRESCOTT","ROGER STAUBACH"], label:"PLAYED QUARTERBACK FOR THE DALLAS COWBOYS", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["J.J. WATT","RUSSELL WILSON","DREW BREES","LARRY FITZGERALD"], label:"WON WALTER PAYTON MAN OF THE YEAR SINCE 2000", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["ANTWAAN RANDLE EL","MOHAMED SANU","JULIAN EDELMAN","ODELL BECKHAM JR."], label:"THREW A TOUCHDOWN PASS AS A NON-QUARTERBACK", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 33, title: "ROUND 33",
+    players: ["AARON RODGERS","DAVANTE ADAMS","AARON JONES","JORDY NELSON","ROB GRONKOWSKI","GEORGE KITTLE","DARREN WALLER","MARK ANDREWS","JOE MONTANA","TONY DORSETT","JALEN RAMSEY","DeVONTA SMITH","DEVIN HESTER","JACOBY JONES","DESMOND HOWARD","PERCY HARVIN"],
+    groups: [
+      { id:"A", players:["AARON RODGERS","DAVANTE ADAMS","AARON JONES","JORDY NELSON"], label:"PLAYED FOR THE GREEN BAY PACKERS IN THE 2010s", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["ROB GRONKOWSKI","GEORGE KITTLE","DARREN WALLER","MARK ANDREWS"], label:"HAD A 1,000-YARD RECEIVING SEASON AS A TIGHT END", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JOE MONTANA","TONY DORSETT","JALEN RAMSEY","DeVONTA SMITH"], label:"WON A COLLEGE NATIONAL CHAMPIONSHIP AND A SUPER BOWL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["DEVIN HESTER","JACOBY JONES","DESMOND HOWARD","PERCY HARVIN"], label:"SCORED ON A KICK RETURN IN A SUPER BOWL", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 34, title: "ROUND 34",
+    players: ["JOE BURROW","JA'MARR CHASE","TEE HIGGINS","JOE MIXON","JOSH ALLEN","JIM KELLY","DOUG FLUTIE","RYAN FITZPATRICK","VON MILLER","MIKE EVANS","MYLES GARRETT","JOHNNY MANZIEL","ICKEY WOODS","VICTOR CRUZ","BILLY \"WHITE SHOES\" JOHNSON","CHAD JOHNSON"],
+    groups: [
+      { id:"A", players:["JOE BURROW","JA'MARR CHASE","TEE HIGGINS","JOE MIXON"], label:"PLAYED FOR THE CINCINNATI BENGALS IN THE 2020s", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["JOSH ALLEN","JIM KELLY","DOUG FLUTIE","RYAN FITZPATRICK"], label:"PLAYED QUARTERBACK FOR THE BUFFALO BILLS", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["VON MILLER","MIKE EVANS","MYLES GARRETT","JOHNNY MANZIEL"], label:"PLAYED COLLEGE FOOTBALL AT TEXAS A&M", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["ICKEY WOODS","VICTOR CRUZ","BILLY \"WHITE SHOES\" JOHNSON","CHAD JOHNSON"], label:"INVENTED A FAMOUS TOUCHDOWN CELEBRATION", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 35, title: "ROUND 35",
+    players: ["JARED GOFF","AMON-RA ST. BROWN","AIDAN HUTCHINSON","JAHMYR GIBBS","JIM BROWN","BARRY SANDERS","LaDAINIAN TOMLINSON","MARSHALL FAULK","MIKE DITKA","TONY DUNGY","TOM FLORES","DOUG PEDERSON","MARVIN HARRISON JR.","SHEDEUR SANDERS","CHRISTIAN McCAFFREY","NICK BOSA"],
+    groups: [
+      { id:"A", players:["JARED GOFF","AMON-RA ST. BROWN","AIDAN HUTCHINSON","JAHMYR GIBBS"], label:"PLAYED FOR THE DETROIT LIONS IN THE 2020s", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["JIM BROWN","BARRY SANDERS","LaDAINIAN TOMLINSON","MARSHALL FAULK"], label:"HALL OF FAME RUNNING BACKS", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["MIKE DITKA","TONY DUNGY","TOM FLORES","DOUG PEDERSON"], label:"WON A SUPER BOWL AS A PLAYER AND AS A HEAD COACH", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["MARVIN HARRISON JR.","SHEDEUR SANDERS","CHRISTIAN McCAFFREY","NICK BOSA"], label:"THEIR FATHER ALSO PLAYED IN THE NFL", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 36, title: "ROUND 36",
+    players: ["CALEB WILLIAMS","JUSTIN FIELDS","JAY CUTLER","MITCHELL TRUBISKY","ADAM VINATIERI","STEPHEN GOSTKOWSKI","ROBBIE GOULD","HARRISON BUTKER","TREVOR LAWRENCE","DeANDRE HOPKINS","TEE HIGGINS","DESHAUN WATSON","KURT WARNER","JAMES HARRISON","DANTE HALL","JAKE DELHOMME"],
+    groups: [
+      { id:"A", players:["CALEB WILLIAMS","JUSTIN FIELDS","JAY CUTLER","MITCHELL TRUBISKY"], label:"PLAYED QUARTERBACK FOR THE CHICAGO BEARS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["ADAM VINATIERI","STEPHEN GOSTKOWSKI","ROBBIE GOULD","HARRISON BUTKER"], label:"NFL PLACEKICKERS", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["TREVOR LAWRENCE","DeANDRE HOPKINS","TEE HIGGINS","DESHAUN WATSON"], label:"PLAYED COLLEGE FOOTBALL AT CLEMSON", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["KURT WARNER","JAMES HARRISON","DANTE HALL","JAKE DELHOMME"], label:"PLAYED IN NFL EUROPE BEFORE THEIR NFL BREAKOUT", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 37, title: "ROUND 37",
+    players: ["DAN MARINO","TUA TAGOVAILOA","TYREEK HILL","JASON TAYLOR","RANDY MOSS","JUSTIN JEFFERSON","CRIS CARTER","STEFON DIGGS","JERRY RICE","JULIAN EDELMAN","COOPER KUPP","HINES WARD","XAVIER WORTHY","JOHN ROSS","CHRIS JOHNSON","MARQUISE GOODWIN"],
+    groups: [
+      { id:"A", players:["DAN MARINO","TUA TAGOVAILOA","TYREEK HILL","JASON TAYLOR"], label:"PLAYED FOR THE MIAMI DOLPHINS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["RANDY MOSS","JUSTIN JEFFERSON","CRIS CARTER","STEFON DIGGS"], label:"PLAYED WIDE RECEIVER FOR THE MINNESOTA VIKINGS", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JERRY RICE","JULIAN EDELMAN","COOPER KUPP","HINES WARD"], label:"WON SUPER BOWL MVP AS A WIDE RECEIVER", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["XAVIER WORTHY","JOHN ROSS","CHRIS JOHNSON","MARQUISE GOODWIN"], label:"RAN A SUB-4.3 40-YARD DASH AT THE NFL COMBINE", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 38, title: "ROUND 38",
+    players: ["JOE NAMATH","AARON RODGERS","BRETT FAVRE","DARRELLE REVIS","CAM NEWTON","KYLER MURRAY","BAKER MAYFIELD","JOE BURROW","FRANK GORE","ADRIAN PETERSON","DERRICK HENRY","WALTER PAYTON","MICHAEL STRAHAN","TERRY CREWS","TRAVIS KELCE","ROB GRONKOWSKI"],
+    groups: [
+      { id:"A", players:["JOE NAMATH","AARON RODGERS","BRETT FAVRE","DARRELLE REVIS"], label:"PLAYED FOR THE NEW YORK JETS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["CAM NEWTON","KYLER MURRAY","BAKER MAYFIELD","JOE BURROW"], label:"WON THE HEISMAN TROPHY AND WAS DRAFTED FIRST OVERALL", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["FRANK GORE","ADRIAN PETERSON","DERRICK HENRY","WALTER PAYTON"], label:"RUSHED FOR 1,000+ YARDS IN A SEASON AT AGE 30 OR OLDER", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["MICHAEL STRAHAN","TERRY CREWS","TRAVIS KELCE","ROB GRONKOWSKI"], label:"PLAYED IN THE NFL AND HOSTED A TV GAME SHOW", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 39, title: "ROUND 39",
+    players: ["MATTHEW STAFFORD","COOPER KUPP","AARON DONALD","ODELL BECKHAM JR.","JOE THEISMANN","ROBERT GRIFFIN III","KIRK COUSINS","JAYDEN DANIELS","TIM TEBOW","EMMITT SMITH","PERCY HARVIN","ANTHONY RICHARDSON","TRACY PORTER","JAMES HARRISON","TY LAW","MALCOLM SMITH"],
+    groups: [
+      { id:"A", players:["MATTHEW STAFFORD","COOPER KUPP","AARON DONALD","ODELL BECKHAM JR."], label:"PLAYED FOR THE RAMS SUPER BOWL LVI-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["JOE THEISMANN","ROBERT GRIFFIN III","KIRK COUSINS","JAYDEN DANIELS"], label:"PLAYED QUARTERBACK FOR WASHINGTON", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["TIM TEBOW","EMMITT SMITH","PERCY HARVIN","ANTHONY RICHARDSON"], label:"PLAYED COLLEGE FOOTBALL AT FLORIDA", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["TRACY PORTER","JAMES HARRISON","TY LAW","MALCOLM SMITH"], label:"RETURNED AN INTERCEPTION FOR A TOUCHDOWN IN A SUPER BOWL", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 40, title: "ROUND 40",
+    players: ["BROCK PURDY","DEEBO SAMUEL","GEORGE KITTLE","NICK BOSA","CALVIN JOHNSON","MARSHAWN LYNCH","JEROME BETTIS","WALTER PAYTON","LAWRENCE TAYLOR","J.J. WATT","REGGIE WHITE","RAY LEWIS","STEVE YOUNG","MICHAEL VICK","TUA TAGOVAILOA","BOOMER ESIASON"],
+    groups: [
+      { id:"A", players:["BROCK PURDY","DEEBO SAMUEL","GEORGE KITTLE","NICK BOSA"], label:"PLAYED FOR THE SAN FRANCISCO 49ERS IN THE 2020s", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["CALVIN JOHNSON","MARSHAWN LYNCH","JEROME BETTIS","WALTER PAYTON"], label:"KNOWN BY AN ICONIC NICKNAME: MEGATRON, BEAST MODE, THE BUS, SWEETNESS", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["LAWRENCE TAYLOR","J.J. WATT","REGGIE WHITE","RAY LEWIS"], label:"WON DEFENSIVE PLAYER OF THE YEAR MULTIPLE TIMES", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["STEVE YOUNG","MICHAEL VICK","TUA TAGOVAILOA","BOOMER ESIASON"], label:"THREW LEFT-HANDED IN THE NFL", color:"#8B1A2A", difficulty:4 }
+    ]
   }
 ];
 
@@ -354,7 +454,7 @@ const getRandomPracticePuzzle = (recentlyPlayed = []) => {
 const buildShare = (puzzle, solved, wrong, ms, streak) => {
   const rows=[1,2,3,4].map(d=>{const g=solved.find(s=>s.difficulty===d);return g?DIFF_EMOJIS[d].repeat(4):"⬛⬛⬛⬛";}).join("\n");
   const clean = wrong === 0 ? "\n🔒 CLEAN GAME" : "";
-  const streakLine = streak>=3 ? `\n🔥 ${streak}-day streak` : "";
+  const streakLine = (streak>=3 || (wrong===0 && streak>=1)) ? `\n🔥 ${streak}-day streak` : "";
   return `DRAFT — ${puzzle.title} 🏈\n⚡ ${fmt(ms)}${clean}${streakLine}\n\n${rows}\n\nplaydraft.app`;
 };
 
@@ -542,7 +642,7 @@ function ResultPanel({puzzle,solved,wrong,ms,onPlayAgain,dark,won}) {
           {won?(cleanGame?"CLEAN GAME 🔒":"NICE WORK"):"GAME OVER"}
         </div>
 
-        {st.streak>=3&&won&&(
+        {(st.streak>=3||(cleanGame&&st.streak>=1))&&won&&(
           <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"16px",color:"#C8A96E",textAlign:"center",marginBottom:"6px",letterSpacing:"2px"}}>🔥 {st.streak}-DAY STREAK</div>
         )}
 
@@ -676,21 +776,41 @@ function Landing({onPlay,dark,mode}) {
 
       <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(60px,17vw,96px)",letterSpacing:"3px",color:"#C8A96E",lineHeight:0.9,marginBottom:"14px",textShadow:`3px 3px 0 ${dark?"rgba(0,0,0,0.5)":"rgba(15,25,35,0.2)"}`}}>DRAFT</div>
 
-      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"clamp(16px,4.5vw,19px)",color:dark?"#888":"#666",fontStyle:"italic",marginBottom:"28px",maxWidth:"320px",lineHeight:1.7}}>
-        {isPractice ? "Sharpen your game. No streak on the line." : <span>Test your NFL knowledge.<br/>Group the players.<br/>Find the connection.</span>}
+      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"clamp(16px,4.5vw,19px)",color:dark?"#888":"#666",fontStyle:"italic",marginBottom:"14px"}}>
+        {isPractice ? "Sharpen your game. No streak on the line." : "The daily NFL puzzle."}
       </div>
 
-      {/* Demo tiles */}
-      <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"10px",maxWidth:"330px",width:"100%",marginBottom:"12px"}}>
-        {["CAM NEWTON","LAMAR JACKSON","MARCUS ALLEN","BARRY SANDERS"].map((p,i)=>(
-          <div key={p} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"0.5px",padding:"18px 6px",textAlign:"center",background:dark?"#181818":"#fff",border:`2px solid ${dark?"#2a2a2a":"#ddd6c4"}`,borderRadius:"8px",color:fg,animation:`fadeUp 0.4s ease ${i*0.08}s both`}}>{p}</div>
-        ))}
+      {/* Stacked rules */}
+      {!isPractice&&(
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"3px",color:fg,lineHeight:2,marginBottom:"18px"}}>
+          <div>16 PLAYERS</div>
+          <div>4 HIDDEN GROUPS</div>
+          <div>4 PLAYERS PER GROUP</div>
+          <div style={{color:"#C8A96E"}}>4 CHANCES TO SOLVE</div>
+        </div>
+      )}
+
+      {/* Worked example — clearly labeled */}
+      <div style={{position:"relative",background:dark?"#141414":"#fff",border:`1px solid ${dark?"#2a2a2a":"#ddd6c4"}`,borderRadius:"10px",padding:"22px 14px 14px",maxWidth:"330px",width:"100%",marginBottom:"22px"}}>
+        <div style={{position:"absolute",top:"-9px",left:"12px",fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",background:"#C8A96E",color:"#0f1923",padding:"2px 8px",borderRadius:"4px"}}>EXAMPLE</div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"6px",marginBottom:"10px"}}>
+          {["C.J. STROUD","MATT SCHAUB","DAVID CARR","CASE KEENUM"].map((p,i)=>(
+            <div key={p} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"0.5px",padding:"10px 4px",textAlign:"center",background:dark?"#1c1c1c":"#faf7f0",border:`1.5px solid ${dark?"#2a2a2a":"#ddd6c4"}`,borderRadius:"6px",color:fg,animation:`fadeUp 0.4s ease ${i*0.08}s both`}}>{p}</div>
+          ))}
+        </div>
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"14px",color:dark?"#555":"#999",marginBottom:"10px"}}>↓ tap 4 players, hit submit ↓</div>
+        <div style={{background:"#B8860B",borderRadius:"6px",padding:"9px 10px",animation:"fadeUp 0.4s ease 0.4s both"}}>
+          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",fontWeight:"700",fontStyle:"italic",color:"#fff",lineHeight:1.2}}>STARTED AT QB FOR THE HOUSTON TEXANS</div>
+        </div>
+        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",color:dark?"#666":"#888",fontStyle:"italic",marginTop:"10px",lineHeight:1.5}}>The connection stays hidden until you crack it. 4 wrong guesses and it's a turnover.</div>
       </div>
 
-
-      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"clamp(14px,4vw,16px)",color:fg,fontStyle:"italic",marginBottom:"28px",background:dark?"#181818":"#f0ebe0",padding:"14px 22px",borderRadius:"8px",border:`1px solid ${dark?"#2a2a2a":"#ddd6c4"}`,maxWidth:"330px"}}>
-        Won both the Heisman Trophy and NFL MVP 🏆
-      </div>
+      {/* Streak / competition hook */}
+      {!isPractice&&(()=>{const st=loadStats();return st.streak>0?(
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"2px",color:"#C8A96E",marginBottom:"14px"}}>🔥 {st.streak}-DAY STREAK ON THE LINE</div>
+      ):(
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:dark?"#666":"#999",marginBottom:"14px"}}>SOLVE CLEAN 🔒 · SHARE YOUR TIME ⚡ · START A STREAK 🔥</div>
+      );})()}
 
       <button
         onClick={onPlay}
@@ -815,6 +935,11 @@ function Game({puzzle,dark,onFinish}) {
               ))}
             </div>
           </div>
+        </div>
+
+        {/* Objective + progress */}
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#666":"#999",textAlign:"center",marginBottom:"10px"}}>
+          FIND 4 GROUPS OF 4 CONNECTED PLAYERS · <span style={{color:"#C8A96E"}}>{solved.length}/4 FOUND</span>
         </div>
 
         {/* Solved + auto-revealed (on loss) rows — all in difficulty order */}
