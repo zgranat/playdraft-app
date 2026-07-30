@@ -1,5 +1,4 @@
-// Tracks a unique visitor for "today" using an anonymous client-generated id.
-// Stores ids in a Redis SET keyed by date so we can count uniques per day.
+// Records a unique visitor for "today" (Eastern Time) in a Redis SET.
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -7,7 +6,6 @@ export default async function handler(req, res) {
 
   const { UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN } = process.env;
   if (!UPSTASH_REDIS_REST_URL || !UPSTASH_REDIS_REST_TOKEN) {
-    // Fail silently so a missing config never breaks the app for real users
     return res.status(200).json({ ok: false, reason: 'not configured' });
   }
 
@@ -18,24 +16,33 @@ export default async function handler(req, res) {
     }
     const anonId = (body && body.id) || 'unknown';
 
-    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD (UTC)
+    // Eastern Time, so the day boundary matches the daily puzzle reset
+    const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date());
     const key = `visitors:${today}`;
 
+    const base = UPSTASH_REDIS_REST_URL.replace(/\/+$/, ''); // tolerate a trailing slash
     const headers = { Authorization: `Bearer ${UPSTASH_REDIS_REST_TOKEN}` };
 
-    // Add this visitor's id to today's set
-    await fetch(
-      `${UPSTASH_REDIS_REST_URL}/SADD/${encodeURIComponent(key)}/${encodeURIComponent(anonId)}`,
+    const addRes = await fetch(
+      `${base}/sadd/${encodeURIComponent(key)}/${encodeURIComponent(anonId)}`,
       { headers }
     );
-    // Auto-expire the key after 45 days so old data doesn't pile up
-    await fetch(
-      `${UPSTASH_REDIS_REST_URL}/EXPIRE/${encodeURIComponent(key)}/3888000`,
-      { headers }
-    );
+    const addBody = await addRes.text();
 
-    res.status(200).json({ ok: true });
+    // Surface Upstash rejections instead of swallowing them
+    if (!addRes.ok) {
+      return res.status(200).json({
+        ok: false,
+        upstashStatus: addRes.status,
+        upstashBody: addBody.slice(0, 300),
+      });
+    }
+
+    // Expire after 45 days so old buckets don't accumulate
+    await fetch(`${base}/expire/${encodeURIComponent(key)}/3888000`, { headers });
+
+    return res.status(200).json({ ok: true, key, result: addBody.slice(0, 120) });
   } catch (err) {
-    res.status(200).json({ ok: false, error: String(err) });
+    return res.status(200).json({ ok: false, error: String(err).slice(0, 300) });
   }
 }
