@@ -1,5 +1,4 @@
-// Runs daily via Vercel Cron. Reads yesterday's unique visitor count from
-// Redis and emails it using Resend.
+// Runs daily via Vercel Cron. Emails yesterday's unique visitor count.
 export default async function handler(req, res) {
   const {
     UPSTASH_REDIS_REST_URL,
@@ -13,15 +12,27 @@ export default async function handler(req, res) {
   }
 
   try {
-    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+    // Eastern Time, matching api/track.js
+    const yesterday = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' })
+      .format(new Date(Date.now() - 86400000));
     const key = `visitors:${yesterday}`;
 
-    const countRes = await fetch(
-      `${UPSTASH_REDIS_REST_URL}/SCARD/${encodeURIComponent(key)}`,
-      { headers: { Authorization: `Bearer ${UPSTASH_REDIS_REST_TOKEN}` } }
-    );
-    const countData = await countRes.json();
-    const visitors = countData.result ?? 0;
+    const base = UPSTASH_REDIS_REST_URL.replace(/\/+$/, '');
+    const headers = { Authorization: `Bearer ${UPSTASH_REDIS_REST_TOKEN}` };
+
+    const countRes = await fetch(`${base}/scard/${encodeURIComponent(key)}`, { headers });
+    const raw = await countRes.text();
+
+    if (!countRes.ok) {
+      return res.status(500).json({
+        error: 'redis rejected the request',
+        upstashStatus: countRes.status,
+        upstashBody: raw.slice(0, 300),
+      });
+    }
+
+    let visitors = 0;
+    try { visitors = JSON.parse(raw).result ?? 0; } catch {}
 
     const emailRes = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -32,18 +43,18 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         from: 'PlayDraft Stats <onboarding@resend.dev>',
         to: ALERT_EMAIL,
-        subject: `📊 PlayDraft — ${visitors} visitors on ${yesterday}`,
-        html: `<p><strong>${visitors}</strong> unique visitors played or visited on <strong>${yesterday}</strong>.</p>`,
+        subject: `PlayDraft — ${visitors} visitors on ${yesterday}`,
+        html: `<p><strong>${visitors}</strong> unique visitors on <strong>${yesterday}</strong>.</p>`,
       }),
     });
 
     if (!emailRes.ok) {
       const errText = await emailRes.text();
-      return res.status(500).json({ error: 'Resend failed', detail: errText });
+      return res.status(500).json({ error: 'Resend failed', detail: errText.slice(0, 300), visitors });
     }
 
-    res.status(200).json({ ok: true, visitors, date: yesterday });
+    return res.status(200).json({ ok: true, visitors, date: yesterday });
   } catch (err) {
-    res.status(500).json({ error: String(err) });
+    return res.status(500).json({ error: String(err).slice(0, 300) });
   }
 }
