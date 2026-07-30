@@ -995,6 +995,21 @@ export default function App() {
     viewport.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover';
   }, []);
 
+  useEffect(() => {
+    try {
+      let anonId = localStorage.getItem('pd_anon_id');
+      if (!anonId) {
+        anonId = Math.random().toString(36).slice(2) + Date.now().toString(36);
+        localStorage.setItem('pd_anon_id', anonId);
+      }
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: anonId }),
+      }).catch(() => {});
+    } catch {}
+  }, []);
+
   const [dark,setDark]=useState(false);
   const [screen,setScreen]=useState("home");
   const [showStats,setShowStats]=useState(false);
