@@ -404,6 +404,206 @@ const PUZZLES = [
       { id:"C", players:["LAWRENCE TAYLOR","J.J. WATT","REGGIE WHITE","RAY LEWIS"], label:"WON DEFENSIVE PLAYER OF THE YEAR MULTIPLE TIMES", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["STEVE YOUNG","MICHAEL VICK","TUA TAGOVAILOA","BOOMER ESIASON"], label:"THREW LEFT-HANDED IN THE NFL", color:"#8B1A2A", difficulty:4 }
     ]
+  },
+  {
+    id: 41, title: "ROUND 41",
+    players: ["SAQUON BARKLEY","MICAH PARSONS","CHRIS GODWIN","ALLEN ROBINSON","PHILIP RIVERS","JUSTIN HERBERT","KEENAN ALLEN","ANTONIO GATES","COOPER KUPP","JULIO JONES","JUSTIN JEFFERSON","ANTONIO BROWN","KHALIL MACK","JALEN RAMSEY","HERSCHEL WALKER","RUSSELL WILSON"],
+    groups: [
+      { id:"A", players:["SAQUON BARKLEY","MICAH PARSONS","CHRIS GODWIN","ALLEN ROBINSON"], label:"PLAYED COLLEGE FOOTBALL AT PENN STATE", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["PHILIP RIVERS","JUSTIN HERBERT","KEENAN ALLEN","ANTONIO GATES"], label:"PLAYED FOR THE CHARGERS FRANCHISE", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["COOPER KUPP","JULIO JONES","JUSTIN JEFFERSON","ANTONIO BROWN"], label:"LED THE NFL IN RECEIVING YARDS IN A SEASON", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["KHALIL MACK","JALEN RAMSEY","HERSCHEL WALKER","RUSSELL WILSON"], label:"TRADED FOR MULTIPLE FIRST-ROUND PICKS", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 42, title: "ROUND 42",
+    players: ["REGGIE WHITE","JASON WITTEN","ERIC BERRY","ALVIN KAMARA","J.J. WATT","DeANDRE HOPKINS","ANDRE JOHNSON","C.J. STROUD","WARREN MOON","DOUG FLUTIE","JEFF GARCIA","JOE THEISMANN","RANDY MOSS","PUKA NACUA","JA'MARR CHASE","ODELL BECKHAM JR."],
+    groups: [
+      { id:"A", players:["REGGIE WHITE","JASON WITTEN","ERIC BERRY","ALVIN KAMARA"], label:"PLAYED COLLEGE FOOTBALL AT TENNESSEE", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["J.J. WATT","DeANDRE HOPKINS","ANDRE JOHNSON","C.J. STROUD"], label:"PLAYED FOR THE HOUSTON TEXANS", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["WARREN MOON","DOUG FLUTIE","JEFF GARCIA","JOE THEISMANN"], label:"PLAYED IN THE CFL BEFORE THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["RANDY MOSS","PUKA NACUA","JA'MARR CHASE","ODELL BECKHAM JR."], label:"HAD A 1,000-YARD RECEIVING SEASON AS A ROOKIE", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 43, title: "ROUND 43",
+    players: ["LARRY FITZGERALD","KYLER MURRAY","PATRICK PETERSON","KURT WARNER","MYLES GARRETT","NICK CHUBB","BAKER MAYFIELD","JOE THOMAS","LaDAINIAN TOMLINSON","PRIEST HOLMES","SHAUN ALEXANDER","MARSHALL FAULK","ELI MANNING","TRAVIS KELCE","JOE NAMATH","WALTER PAYTON"],
+    groups: [
+      { id:"A", players:["LARRY FITZGERALD","KYLER MURRAY","PATRICK PETERSON","KURT WARNER"], label:"PLAYED FOR THE ARIZONA CARDINALS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["MYLES GARRETT","NICK CHUBB","BAKER MAYFIELD","JOE THOMAS"], label:"PLAYED FOR THE CLEVELAND BROWNS", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["LaDAINIAN TOMLINSON","PRIEST HOLMES","SHAUN ALEXANDER","MARSHALL FAULK"], label:"SCORED 20+ TOUCHDOWNS IN A SINGLE SEASON", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["ELI MANNING","TRAVIS KELCE","JOE NAMATH","WALTER PAYTON"], label:"HOSTED SATURDAY NIGHT LIVE", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 44, title: "ROUND 44",
+    players: ["CAM NEWTON","LUKE KUECHLY","STEVE SMITH SR.","CHRISTIAN McCAFFREY","JIM BROWN","DONOVAN McNABB","DWIGHT FREENEY","MARVIN HARRISON","TERRELL DAVIS","EMMITT SMITH","MARCUS ALLEN","FRANCO HARRIS","CALVIN JOHNSON","ADRIAN PETERSON","RICHARD SHERMAN","ROB GRONKOWSKI"],
+    groups: [
+      { id:"A", players:["CAM NEWTON","LUKE KUECHLY","STEVE SMITH SR.","CHRISTIAN McCAFFREY"], label:"PLAYED FOR THE CAROLINA PANTHERS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["JIM BROWN","DONOVAN McNABB","DWIGHT FREENEY","MARVIN HARRISON"], label:"PLAYED COLLEGE FOOTBALL AT SYRACUSE", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["TERRELL DAVIS","EMMITT SMITH","MARCUS ALLEN","FRANCO HARRIS"], label:"RUSHED FOR 100+ YARDS IN A SUPER BOWL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["CALVIN JOHNSON","ADRIAN PETERSON","RICHARD SHERMAN","ROB GRONKOWSKI"], label:"APPEARED ON THE COVER OF MADDEN IN THE 2010s", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 45, title: "ROUND 45",
+    players: ["D.K. METCALF","A.J. BROWN","PATRICK WILLIS","MICHAEL OHER","TREVOR LAWRENCE","MAURICE JONES-DREW","FRED TAYLOR","CALVIN RIDLEY","ARIAN FOSTER","DeMARCO MURRAY","EZEKIEL ELLIOTT","LeSEAN McCOY","TONY ROMO","JOE FLACCO","COOPER KUPP","CARSON WENTZ"],
+    groups: [
+      { id:"A", players:["D.K. METCALF","A.J. BROWN","PATRICK WILLIS","MICHAEL OHER"], label:"PLAYED COLLEGE FOOTBALL AT OLE MISS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["TREVOR LAWRENCE","MAURICE JONES-DREW","FRED TAYLOR","CALVIN RIDLEY"], label:"PLAYED FOR THE JACKSONVILLE JAGUARS", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["ARIAN FOSTER","DeMARCO MURRAY","EZEKIEL ELLIOTT","LeSEAN McCOY"], label:"LED THE NFL IN RUSHING IN A SEASON DURING THE 2010s", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["TONY ROMO","JOE FLACCO","COOPER KUPP","CARSON WENTZ"], label:"DRAFTED OUT OF A SMALL-COLLEGE PROGRAM", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 46, title: "ROUND 46",
+    players: ["LAWRENCE TAYLOR","JULIUS PEPPERS","MITCHELL TRUBISKY","GIOVANI BERNARD","DERRICK HENRY","EDDIE GEORGE","STEVE McNAIR","RYAN TANNEHILL","JEROME BETTIS","EDGERRIN JAMES","FRANK GORE","CURTIS MARTIN","DEION SANDERS","TROY BROWN","MIKE VRABEL","WILLIAM PERRY"],
+    groups: [
+      { id:"A", players:["LAWRENCE TAYLOR","JULIUS PEPPERS","MITCHELL TRUBISKY","GIOVANI BERNARD"], label:"PLAYED COLLEGE FOOTBALL AT NORTH CAROLINA", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["DERRICK HENRY","EDDIE GEORGE","STEVE McNAIR","RYAN TANNEHILL"], label:"PLAYED FOR THE TENNESSEE TITANS", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JEROME BETTIS","EDGERRIN JAMES","FRANK GORE","CURTIS MARTIN"], label:"RUSHED FOR 10,000+ CAREER YARDS", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["DEION SANDERS","TROY BROWN","MIKE VRABEL","WILLIAM PERRY"], label:"PLAYED SNAPS ON BOTH OFFENSE AND DEFENSE IN THE NFL", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 47, title: "ROUND 47",
+    players: ["RUSSELL WILSON","TYLER LOCKETT","BOBBY WAGNER","SHAUN ALEXANDER","KIRK COUSINS","LeVEON BELL","PLAXICO BURRESS","KENNETH WALKER III","MICHAEL THOMAS","WES WELKER","JULIAN EDELMAN","ANTONIO BROWN","VON MILLER","LUKE KUECHLY","AARON DONALD","NICK BOSA"],
+    groups: [
+      { id:"A", players:["RUSSELL WILSON","TYLER LOCKETT","BOBBY WAGNER","SHAUN ALEXANDER"], label:"PLAYED FOR THE SEATTLE SEAHAWKS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["KIRK COUSINS","LeVEON BELL","PLAXICO BURRESS","KENNETH WALKER III"], label:"PLAYED COLLEGE FOOTBALL AT MICHIGAN STATE", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["MICHAEL THOMAS","WES WELKER","JULIAN EDELMAN","ANTONIO BROWN"], label:"CAUGHT 100+ PASSES IN A SINGLE SEASON", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["VON MILLER","LUKE KUECHLY","AARON DONALD","NICK BOSA"], label:"WON AP DEFENSIVE ROOKIE OF THE YEAR IN THE 2010s", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 48, title: "ROUND 48",
+    players: ["ELI MANNING","ODELL BECKHAM JR.","SAQUON BARKLEY","MICHAEL STRAHAN","BRIAN DAWKINS","LeSEAN McCOY","DeSEAN JACKSON","JALEN HURTS","CALVIN JOHNSON","JULIO JONES","STEFON DIGGS","COOPER KUPP","BARRY SANDERS","MARCUS ALLEN","TONY DORSETT","ROGER STAUBACH"],
+    groups: [
+      { id:"A", players:["ELI MANNING","ODELL BECKHAM JR.","SAQUON BARKLEY","MICHAEL STRAHAN"], label:"PLAYED FOR THE NEW YORK GIANTS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["BRIAN DAWKINS","LeSEAN McCOY","DeSEAN JACKSON","JALEN HURTS"], label:"PLAYED FOR THE PHILADELPHIA EAGLES", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["CALVIN JOHNSON","JULIO JONES","STEFON DIGGS","COOPER KUPP"], label:"HAD A 1,500-YARD RECEIVING SEASON", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["BARRY SANDERS","MARCUS ALLEN","TONY DORSETT","ROGER STAUBACH"], label:"WON THE HEISMAN AND MADE THE PRO FOOTBALL HALL OF FAME", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 49, title: "ROUND 49",
+    players: ["LAMAR JACKSON","RAY LEWIS","JUSTIN TUCKER","MARK ANDREWS","DREW BREES","ROD WOODSON","MIKE ALSTOTT","RYAN KERRIGAN","ROB GRONKOWSKI","TRAVIS KELCE","ANTONIO GATES","JIMMY GRAHAM","JOHN ELWAY","TERRELL DAVIS","PATRICK MAHOMES","CHRIS JONES"],
+    groups: [
+      { id:"A", players:["LAMAR JACKSON","RAY LEWIS","JUSTIN TUCKER","MARK ANDREWS"], label:"PLAYED FOR THE BALTIMORE RAVENS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["DREW BREES","ROD WOODSON","MIKE ALSTOTT","RYAN KERRIGAN"], label:"PLAYED COLLEGE FOOTBALL AT PURDUE", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["ROB GRONKOWSKI","TRAVIS KELCE","ANTONIO GATES","JIMMY GRAHAM"], label:"HAD A 10-TOUCHDOWN SEASON AS A TIGHT END", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["JOHN ELWAY","TERRELL DAVIS","PATRICK MAHOMES","CHRIS JONES"], label:"WON BACK-TO-BACK SUPER BOWLS", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 50, title: "ROUND 50",
+    players: ["DAK PRESCOTT","MICAH PARSONS","EMMITT SMITH","MICHAEL IRVIN","DEREK CARR","KHALIL MACK","DAVANTE ADAMS","MAXX CROSBY","CHRISTIAN McCAFFREY","ALVIN KAMARA","MARSHALL FAULK","MATT FORTE","BRETT FAVRE","DAN MARINO","TROY AIKMAN","JOE MONTANA"],
+    groups: [
+      { id:"A", players:["DAK PRESCOTT","MICAH PARSONS","EMMITT SMITH","MICHAEL IRVIN"], label:"PLAYED FOR THE DALLAS COWBOYS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["DEREK CARR","KHALIL MACK","DAVANTE ADAMS","MAXX CROSBY"], label:"PLAYED FOR THE RAIDERS FRANCHISE", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["CHRISTIAN McCAFFREY","ALVIN KAMARA","MARSHALL FAULK","MATT FORTE"], label:"CAUGHT 80+ PASSES IN A SEASON AS A RUNNING BACK", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["BRETT FAVRE","DAN MARINO","TROY AIKMAN","JOE MONTANA"], label:"FIRST-BALLOT HALL OF FAME QUARTERBACKS", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 51, title: "ROUND 51",
+    players: ["ANDREW LUCK","EDGERRIN JAMES","JONATHAN TAYLOR","REGGIE WAYNE","WARREN MOON","COREY DILLON","MARCUS PETERS","BUDDA BAKER","LaDAINIAN TOMLINSON","MARCUS ALLEN","JIM BROWN","ADRIAN PETERSON","DREW BREES","PHILIP RIVERS","MATT RYAN","ELI MANNING"],
+    groups: [
+      { id:"A", players:["ANDREW LUCK","EDGERRIN JAMES","JONATHAN TAYLOR","REGGIE WAYNE"], label:"PLAYED FOR THE INDIANAPOLIS COLTS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["WARREN MOON","COREY DILLON","MARCUS PETERS","BUDDA BAKER"], label:"PLAYED COLLEGE FOOTBALL AT WASHINGTON", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["LaDAINIAN TOMLINSON","MARCUS ALLEN","JIM BROWN","ADRIAN PETERSON"], label:"SCORED 100+ CAREER RUSHING TOUCHDOWNS", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["DREW BREES","PHILIP RIVERS","MATT RYAN","ELI MANNING"], label:"THREW FOR 50,000+ CAREER PASSING YARDS", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 52, title: "ROUND 52",
+    players: ["BEN ROETHLISBERGER","T.J. WATT","ANTONIO BROWN","LeVEON BELL","LAMAR JACKSON","TEDDY BRIDGEWATER","DEION BRANCH","ELVIS DUMERVIL","CHARLES WOODSON","ED REED","TROY POLAMALU","STEPHON GILMORE","BAKER MAYFIELD","SAM DARNOLD","JOSH ALLEN","JOSH ROSEN"],
+    groups: [
+      { id:"A", players:["BEN ROETHLISBERGER","T.J. WATT","ANTONIO BROWN","LeVEON BELL"], label:"PLAYED FOR THE PITTSBURGH STEELERS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["LAMAR JACKSON","TEDDY BRIDGEWATER","DEION BRANCH","ELVIS DUMERVIL"], label:"PLAYED COLLEGE FOOTBALL AT LOUISVILLE", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["CHARLES WOODSON","ED REED","TROY POLAMALU","STEPHON GILMORE"], label:"WON DEFENSIVE PLAYER OF THE YEAR AS A DEFENSIVE BACK", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["BAKER MAYFIELD","SAM DARNOLD","JOSH ALLEN","JOSH ROSEN"], label:"QUARTERBACKS DRAFTED IN THE FIRST ROUND IN 2018", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 53, title: "ROUND 53",
+    players: ["BARRY SANDERS","CALVIN JOHNSON","MATTHEW STAFFORD","AMON-RA ST. BROWN","MARCUS MARIOTA","JUSTIN HERBERT","PENEI SEWELL","DeFOREST BUCKNER","RANDY MOSS","JERRY RICE","DAVANTE ADAMS","ROB GRONKOWSKI","MATT CASSEL","JIMMY GAROPPOLO","CAM NEWTON","MAC JONES"],
+    groups: [
+      { id:"A", players:["BARRY SANDERS","CALVIN JOHNSON","MATTHEW STAFFORD","AMON-RA ST. BROWN"], label:"PLAYED FOR THE DETROIT LIONS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["MARCUS MARIOTA","JUSTIN HERBERT","PENEI SEWELL","DeFOREST BUCKNER"], label:"PLAYED COLLEGE FOOTBALL AT OREGON", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["RANDY MOSS","JERRY RICE","DAVANTE ADAMS","ROB GRONKOWSKI"], label:"CAUGHT 15+ TOUCHDOWN PASSES IN A SEASON", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["MATT CASSEL","JIMMY GAROPPOLO","CAM NEWTON","MAC JONES"], label:"STARTED A GAME AT QUARTERBACK FOR THE PATRIOTS SINCE 2001", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 54, title: "ROUND 54",
+    players: ["MIKE EVANS","RONDE BARBER","JAMEIS WINSTON","BAKER MAYFIELD","SHEDEUR SANDERS","TRAVIS HUNTER","KORDELL STEWART","PHILLIP LINDSAY","MICHAEL STRAHAN","JARED ALLEN","DeMARCUS WARE","T.J. WATT","JA'MARR CHASE","MICAH PARSONS","SAUCE GARDNER","JAYDEN DANIELS"],
+    groups: [
+      { id:"A", players:["MIKE EVANS","RONDE BARBER","JAMEIS WINSTON","BAKER MAYFIELD"], label:"PLAYED FOR THE TAMPA BAY BUCCANEERS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["SHEDEUR SANDERS","TRAVIS HUNTER","KORDELL STEWART","PHILLIP LINDSAY"], label:"PLAYED COLLEGE FOOTBALL AT COLORADO", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["MICHAEL STRAHAN","JARED ALLEN","DeMARCUS WARE","T.J. WATT"], label:"LED THE NFL IN SACKS IN A SEASON", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["JA'MARR CHASE","MICAH PARSONS","SAUCE GARDNER","JAYDEN DANIELS"], label:"MADE THE PRO BOWL AS A ROOKIE IN THE 2020s", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 55, title: "ROUND 55",
+    players: ["WALTER PAYTON","BRIAN URLACHER","DEVIN HESTER","CALEB WILLIAMS","MATT RYAN","LUKE KUECHLY","DOUG FLUTIE","ZAY FLOWERS","DAN MARINO","AARON RODGERS","DREW BREES","MATTHEW STAFFORD","KURT WARNER","STEVE YOUNG","EMMITT SMITH","TERRELL DAVIS"],
+    groups: [
+      { id:"A", players:["WALTER PAYTON","BRIAN URLACHER","DEVIN HESTER","CALEB WILLIAMS"], label:"PLAYED FOR THE CHICAGO BEARS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["MATT RYAN","LUKE KUECHLY","DOUG FLUTIE","ZAY FLOWERS"], label:"PLAYED COLLEGE FOOTBALL AT BOSTON COLLEGE", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["DAN MARINO","AARON RODGERS","DREW BREES","MATTHEW STAFFORD"], label:"THREW 40+ TOUCHDOWN PASSES IN A SEASON", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["KURT WARNER","STEVE YOUNG","EMMITT SMITH","TERRELL DAVIS"], label:"WON A SUPER BOWL AND AN NFL MVP AWARD", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 56, title: "ROUND 56",
+    players: ["BARRY SANDERS","THURMAN THOMAS","DEZ BRYANT","MASON RUDOLPH","TUA TAGOVAILOA","TYREEK HILL","JAYLEN WADDLE","BRADLEY CHUBB","TOM BRADY","PEYTON MANNING","DEION SANDERS","CHRIS LONG","TREVOR LAWRENCE","ZACH WILSON","JUSTIN FIELDS","MAC JONES"],
+    groups: [
+      { id:"A", players:["BARRY SANDERS","THURMAN THOMAS","DEZ BRYANT","MASON RUDOLPH"], label:"PLAYED COLLEGE FOOTBALL AT OKLAHOMA STATE", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["TUA TAGOVAILOA","TYREEK HILL","JAYLEN WADDLE","BRADLEY CHUBB"], label:"PLAYED FOR THE MIAMI DOLPHINS IN THE 2020s", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["TOM BRADY","PEYTON MANNING","DEION SANDERS","CHRIS LONG"], label:"WON A SUPER BOWL WITH TWO DIFFERENT FRANCHISES", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["TREVOR LAWRENCE","ZACH WILSON","JUSTIN FIELDS","MAC JONES"], label:"QUARTERBACKS DRAFTED IN THE FIRST ROUND IN 2021", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 57, title: "ROUND 57",
+    players: ["DEREK CARR","DAVID CARR","TRENT DILFER","DAVANTE ADAMS","JOSH ALLEN","STEFON DIGGS","VON MILLER","JIM KELLY","JUSTIN HERBERT","DAK PRESCOTT","ROBERT GRIFFIN III","C.J. STROUD","MICHAEL VICK","LAMAR JACKSON","CAM NEWTON","RANDALL CUNNINGHAM"],
+    groups: [
+      { id:"A", players:["DEREK CARR","DAVID CARR","TRENT DILFER","DAVANTE ADAMS"], label:"PLAYED COLLEGE FOOTBALL AT FRESNO STATE", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["JOSH ALLEN","STEFON DIGGS","VON MILLER","JIM KELLY"], label:"PLAYED FOR THE BUFFALO BILLS", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JUSTIN HERBERT","DAK PRESCOTT","ROBERT GRIFFIN III","C.J. STROUD"], label:"WON OFFENSIVE ROOKIE OF THE YEAR AS A QUARTERBACK", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["MICHAEL VICK","LAMAR JACKSON","CAM NEWTON","RANDALL CUNNINGHAM"], label:"RUSHED FOR 4,000+ CAREER YARDS AS A QUARTERBACK", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 58, title: "ROUND 58",
+    players: ["TROY AIKMAN","JONATHAN OGDEN","MAURICE JONES-DREW","KENNY CLARK","TERRELL SUGGS","PAT TILLMAN","JAKE PLUMMER","BROCK OSWEILER","DERRICK HENRY","JONATHAN TAYLOR","EZEKIEL ELLIOTT","TODD GURLEY","TOM BRADY","JULIAN EDELMAN","ROB GRONKOWSKI","DEVIN McCOURTY"],
+    groups: [
+      { id:"A", players:["TROY AIKMAN","JONATHAN OGDEN","MAURICE JONES-DREW","KENNY CLARK"], label:"PLAYED COLLEGE FOOTBALL AT UCLA", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["TERRELL SUGGS","PAT TILLMAN","JAKE PLUMMER","BROCK OSWEILER"], label:"PLAYED COLLEGE FOOTBALL AT ARIZONA STATE", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["DERRICK HENRY","JONATHAN TAYLOR","EZEKIEL ELLIOTT","TODD GURLEY"], label:"RUSHED FOR 1,500+ YARDS IN A SEASON", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["TOM BRADY","JULIAN EDELMAN","ROB GRONKOWSKI","DEVIN McCOURTY"], label:"PLAYED IN FIVE OR MORE SUPER BOWLS", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 59, title: "ROUND 59",
+    players: ["RANDY MOSS","CHAD PENNINGTON","BYRON LEFTWICH","AHMAD BRADSHAW","KIRK COUSINS","JUSTIN JEFFERSON","DALVIN COOK","T.J. HOCKENSON","J.J. WATT","WARREN SAPP","MYLES GARRETT","AARON DONALD","WALTER PAYTON","RAY LEWIS","BARRY SANDERS","REGGIE WHITE"],
+    groups: [
+      { id:"A", players:["RANDY MOSS","CHAD PENNINGTON","BYRON LEFTWICH","AHMAD BRADSHAW"], label:"PLAYED COLLEGE FOOTBALL AT MARSHALL", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["KIRK COUSINS","JUSTIN JEFFERSON","DALVIN COOK","T.J. HOCKENSON"], label:"PLAYED FOR THE MINNESOTA VIKINGS IN THE 2020s", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["J.J. WATT","WARREN SAPP","MYLES GARRETT","AARON DONALD"], label:"WON DEFENSIVE PLAYER OF THE YEAR AS A DEFENSIVE LINEMAN", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["WALTER PAYTON","RAY LEWIS","BARRY SANDERS","REGGIE WHITE"], label:"HAS A JERSEY NUMBER RETIRED BY AN NFL FRANCHISE", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 60, title: "ROUND 60",
+    players: ["MICHAEL VICK","KAM CHANCELLOR","TYROD TAYLOR","DeANGELO HALL","CAM NEWTON","BO JACKSON","RONNIE BROWN","CADILLAC WILLIAMS","JA'MARR CHASE","CALVIN JOHNSON","LARRY FITZGERALD","MARVIN HARRISON JR.","TOM BRADY","BEN ROETHLISBERGER","RUSSELL WILSON","KURT WARNER"],
+    groups: [
+      { id:"A", players:["MICHAEL VICK","KAM CHANCELLOR","TYROD TAYLOR","DeANGELO HALL"], label:"PLAYED COLLEGE FOOTBALL AT VIRGINIA TECH", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["CAM NEWTON","BO JACKSON","RONNIE BROWN","CADILLAC WILLIAMS"], label:"PLAYED COLLEGE FOOTBALL AT AUBURN", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JA'MARR CHASE","CALVIN JOHNSON","LARRY FITZGERALD","MARVIN HARRISON JR."], label:"WIDE RECEIVERS SELECTED IN THE TOP 5 OF THE NFL DRAFT", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["TOM BRADY","BEN ROETHLISBERGER","RUSSELL WILSON","KURT WARNER"], label:"WON A SUPER BOWL AS A STARTER IN THEIR FIRST TWO NFL SEASONS", color:"#8B1A2A", difficulty:4 }
+    ]
   }
 ];
 
@@ -412,9 +612,76 @@ const DIFF_EMOJIS = {1:"🟨",2:"🟩",3:"🟦",4:"🟥"};
 
 const shuffle = arr => { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
 const fmt = ms => { const s=Math.floor(ms/1000),m=Math.floor(s/60); return `${m}:${String(s%60).padStart(2,"0")}`; };
-const defaultStats = () => ({streak:0,bestStreak:0,played:0,won:0,scores:[],lastPlayed:null});
+const defaultStats = () => ({streak:0,bestStreak:0,played:0,won:0,scores:[],lastPlayed:null,history:[]});
 const loadStats = () => { try{const s=localStorage.getItem("draft_v1");return s?JSON.parse(s):defaultStats();}catch{return defaultStats();} };
 const saveStats = s => { try{localStorage.setItem("draft_v1",JSON.stringify(s));}catch{} };
+
+// A stored streak is only still alive if the last daily was today or yesterday.
+// Without this, the UI keeps advertising a streak a missed day already broke.
+const liveStreak = st => {
+  if(!st || !st.lastPlayed) return 0;
+  const today=new Date().toDateString(), yest=new Date(Date.now()-86400000).toDateString();
+  return (st.lastPlayed===today || st.lastPlayed===yest) ? (st.streak||0) : 0;
+};
+
+// ONLY daily results touch stats — practice must never affect the streak.
+// Also guards against double-counting when the same day's puzzle is replayed.
+const recordDailyResult = (won, timeStr, ms, wrongCount) => {
+  const st=loadStats();
+  const today=new Date().toDateString(), yest=new Date(Date.now()-86400000).toDateString();
+  if(st.lastPlayed===today) return st;
+  st.played=(st.played||0)+1;
+  if(won){
+    st.won=(st.won||0)+1;
+    st.scores=[...(st.scores||[]),timeStr].slice(-50);
+    st.streak=(st.lastPlayed===yest)?(st.streak||0)+1:1;
+  } else {
+    st.scores=[...(st.scores||[]),"DNF"].slice(-50);
+    st.streak=0;
+  }
+  st.bestStreak=Math.max(st.streak,st.bestStreak||0);
+  st.lastPlayed=today;
+  st.history=[...(st.history||[]),{d:today,won:!!won,ms:won?ms:null,wrong:wrongCount||0}].slice(-180);
+  saveStats(st);
+  return st;
+};
+
+// Parse a legacy "M:SS" score string back into ms, so long-time players
+// still see averages from before history tracking existed.
+const parseScore = v => { const m=/^(\d+):(\d{2})$/.exec(v||""); return m?((+m[1])*60+(+m[2]))*1000:null; };
+
+// Everything the Locker Room needs, derived from history with a legacy fallback.
+const deriveStats = st => {
+  const hist=st.history||[];
+  let times=hist.filter(e=>e.won&&e.ms>0).map(e=>e.ms);
+  if(!times.length) times=(st.scores||[]).map(parseScore).filter(Boolean);
+  const clean=hist.filter(e=>e.won&&e.wrong===0).length;
+  const wins=hist.length?hist.filter(e=>e.won).length:(st.won||0);
+  const played=hist.length||st.played||0;
+  return {
+    played,
+    wins,
+    winPct: played?Math.round((wins/played)*100):0,
+    avgMs: times.length?Math.round(times.reduce((a,b)=>a+b,0)/times.length):0,
+    bestMs: times.length?Math.min(...times):0,
+    clean,
+    cleanPct: wins?Math.round((clean/wins)*100):0,
+    hasHistory: hist.length>0,
+  };
+};
+
+// Last 7 calendar days as W / L / missed, most recent last.
+const last7 = st => {
+  const hist=st.history||[];
+  const out=[];
+  for(let i=6;i>=0;i--){
+    const d=new Date(Date.now()-i*86400000);
+    const key=d.toDateString();
+    const e=hist.find(x=>x.d===key);
+    out.push({label:d.toLocaleDateString(undefined,{weekday:"narrow"}),state:e?(e.won?"W":"L"):"-"});
+  }
+  return out;
+};
 // CHANGE THIS WHEN YOU OFFICIALLY LAUNCH — resets daily puzzle counter to start fresh
 // Month is 0-indexed in this constructor (5 = June). Forces local-time midnight, not UTC.
 const LAUNCH_DATE = new Date(2026, 6, 3);
@@ -451,11 +718,15 @@ const getRandomPracticePuzzle = (recentlyPlayed = []) => {
   return pool[Math.floor(Math.random() * pool.length)];
 };
 
-const buildShare = (puzzle, solved, wrong, ms, streak) => {
-  const rows=[1,2,3,4].map(d=>{const g=solved.find(s=>s.difficulty===d);return g?DIFF_EMOJIS[d].repeat(4):"⬛⬛⬛⬛";}).join("\n");
-  const clean = wrong === 0 ? "\n🔒 CLEAN GAME" : "";
-  const streakLine = (streak>=3 || (wrong===0 && streak>=1)) ? `\n🔥 ${streak}-day streak` : "";
-  return `DRAFT — ${puzzle.title} 🏈\n⚡ ${fmt(ms)}${clean}${streakLine}\n\n${rows}\n\nplaydraft.app`;
+const buildShare = (puzzle, solvedOnly, wrong, ms, streak, mode, won) => {
+  // Only groups the player actually cracked get colour — a loss must not
+  // render as a full board, or the share card lies.
+  const rows=[1,2,3,4].map(d=>{const g=solvedOnly.find(s=>s.difficulty===d);return g?DIFF_EMOJIS[d].repeat(4):"⬛⬛⬛⬛";}).join("\n");
+  const header = mode==="daily" ? `DRAFT #${getTodaysPuzzleNumber()} 🏈` : "DRAFT — PRACTICE 🏈";
+  const line = won ? `⚡ ${fmt(ms)}${wrong===0?" · 🔒 CLEAN GAME":""}` : "🏴 TURNOVER ON DOWNS";
+  const streakLine = (mode==="daily" && streak>=3) ? `\n🔥 ${streak}-day streak` : "";
+  const cta = won ? `\nCan you beat ${fmt(ms)}?` : "\nThink you can solve it?";
+  return `${header}\n${line}\n\n${rows}${streakLine}\n${cta}\nplaydraft.app`;
 };
 
 // ============================================================
@@ -587,36 +858,53 @@ function Timer({running,onTick,dark}) {
 }
 
 // ============================================================
-// STATS MODAL
+// REMINDER SIGNUP — opt-in, shown after a daily win
 // ============================================================
-function StatsModal({onClose,dark}) {
-  const st=loadStats(),bg=dark?"#111":"#faf7f0",fg=dark?"#e0d5c5":"#1a1a2e",border=dark?"#222":"#e0d5c0";
-  const winPct=st.played>0?Math.round((st.won/st.played)*100):0;
+function ReminderSignup({dark}) {
+  const [email,setEmail]=useState("");
+  const [state,setState]=useState(()=>{try{return localStorage.getItem("draft_sub")?"done":"idle";}catch{return "idle";}});
+  const [err,setErr]=useState("");
+  const fg=dark?"#e0d5c5":"#1a1a2e", border=dark?"#2a2a2a":"#ddd6c4";
+
+  if(state==="done") return (
+    <div style={{marginTop:"16px",textAlign:"center",fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:"#2E6B3E"}}>
+      ✅ DAILY REMINDER IS ON
+    </div>
+  );
+  if(state==="hidden") return null;
+
+  const submit=()=>{
+    const v=email.trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){setErr("Enter a valid email");return;}
+    setErr(""); setState("sending");
+    fetch("/api/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:v})})
+      .then(r=>r.json())
+      .then(d=>{
+        if(d&&d.ok){ try{localStorage.setItem("draft_sub","1");}catch{} setState("done"); }
+        else { setErr("Couldn't sign up — try again later."); setState("idle"); }
+      })
+      .catch(()=>{setErr("Couldn't sign up — try again later.");setState("idle");});
+  };
+
   return (
-    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:300,padding:"16px"}} onClick={onClose}>
-      <div onClick={e=>e.stopPropagation()} style={{background:bg,border:`2px solid ${border}`,borderRadius:"12px",padding:"24px",maxWidth:"340px",width:"100%"}}>
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"24px",letterSpacing:"5px",color:"#C8A96E",textAlign:"center",marginBottom:"20px"}}>YOUR STATS</div>
-        {st.streak>=3&&<div style={{textAlign:"center",fontFamily:"'Bebas Neue',cursive",fontSize:"18px",color:"#C8A96E",marginBottom:"14px",letterSpacing:"2px"}}>🔥 {st.streak}-DAY STREAK</div>}
-        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"10px",marginBottom:"20px"}}>
-          {[["PLAYED",st.played],["WIN %",`${winPct}%`],["STREAK",st.streak],["BEST",st.bestStreak]].map(([l,v])=>(
-            <div key={l} style={{textAlign:"center",background:dark?"#1a1a1a":"#f0ebe0",padding:"12px 4px",borderRadius:"8px"}}>
-              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"26px",color:fg,lineHeight:1}}>{v}</div>
-              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"8px",letterSpacing:"2px",color:"#888",marginTop:"2px"}}>{l}</div>
-            </div>
-          ))}
-        </div>
-        {st.scores.length>0&&(
-          <div style={{marginBottom:"4px"}}>
-            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"3px",color:"#888",marginBottom:"8px"}}>RECENT TIMES</div>
-            <div style={{display:"flex",gap:"5px",flexWrap:"wrap"}}>
-              {st.scores.slice(-10).reverse().map((s,i)=>(
-                <div key={i} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",color:"#C8A96E",background:dark?"#1a1a1a":"#f0ebe0",padding:"4px 8px",borderRadius:"4px"}}>{s}</div>
-              ))}
-            </div>
-          </div>
-        )}
-        <button onClick={onClose} style={{marginTop:"20px",width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"3px",padding:"14px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"6px",cursor:"pointer"}}>CLOSE</button>
+    <div style={{marginTop:"18px",paddingTop:"16px",borderTop:`1px solid ${dark?"#1e1e1e":"#ece4d4"}`}}>
+      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:fg,textAlign:"center"}}>🔥 DON&apos;T LOSE THE STREAK</div>
+      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:dark?"#777":"#888",textAlign:"center",margin:"4px 0 10px",lineHeight:1.4}}>
+        One email a day when the new puzzle drops. Nothing else, unsubscribe anytime.
       </div>
+      <div style={{display:"flex",gap:"6px"}}>
+        <input
+          type="email" inputMode="email" autoComplete="email" placeholder="you@email.com"
+          value={email} onChange={e=>setEmail(e.target.value)}
+          onKeyDown={e=>{if(e.key==="Enter")submit();}}
+          style={{flex:2,fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"15px",padding:"12px",borderRadius:"8px",border:`1px solid ${border}`,background:dark?"#0f0f0f":"#fff",color:fg,minWidth:0}}
+        />
+        <button onClick={submit} disabled={state==="sending"} style={{flex:1,fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",padding:"12px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"8px",cursor:"pointer"}}>
+          {state==="sending"?"...":"REMIND ME"}
+        </button>
+      </div>
+      {err&&<div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",color:"#B0475A",textAlign:"center",marginTop:"6px"}}>{err}</div>}
+      <button onClick={()=>setState("hidden")} style={{display:"block",margin:"8px auto 0",background:"none",border:"none",fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:dark?"#555":"#aaa",cursor:"pointer"}}>NO THANKS</button>
     </div>
   );
 }
@@ -624,12 +912,13 @@ function StatsModal({onClose,dark}) {
 // ============================================================
 // RESULT PANEL — inline, shown below the revealed board
 // ============================================================
-function ResultPanel({puzzle,solved,wrong,ms,onPlayAgain,dark,won}) {
+function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mode}) {
   const [copied,setCopied]=useState(false);
   const bg=dark?"#111":"#faf7f0",fg=dark?"#e0d5c5":"#1a1a2e";
   const st=loadStats();
   const cleanGame=wrong===0;
-  const shareText=buildShare(puzzle,solved,wrong,ms,st.streak);
+  const streak=mode==="daily"?liveStreak(st):0;
+  const shareText=buildShare(puzzle,solvedOnly||solved,wrong,ms,streak,mode,won);
 
   const copy=()=>{navigator.clipboard.writeText(shareText).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2200);});};
   const shareToX=()=>window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`,"_blank");
@@ -642,8 +931,8 @@ function ResultPanel({puzzle,solved,wrong,ms,onPlayAgain,dark,won}) {
           {won?(cleanGame?"CLEAN GAME 🔒":"NICE WORK"):"GAME OVER"}
         </div>
 
-        {(st.streak>=3||(cleanGame&&st.streak>=1))&&won&&(
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"16px",color:"#C8A96E",textAlign:"center",marginBottom:"6px",letterSpacing:"2px"}}>🔥 {st.streak}-DAY STREAK</div>
+        {(streak>=3||(cleanGame&&streak>=1))&&won&&(
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"16px",color:"#C8A96E",textAlign:"center",marginBottom:"6px",letterSpacing:"2px"}}>🔥 {streak}-DAY STREAK</div>
         )}
 
         <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:"#888",textAlign:"center",marginBottom:"20px",fontStyle:"italic"}}>{puzzle.title}</div>
@@ -696,6 +985,8 @@ function ResultPanel({puzzle,solved,wrong,ms,onPlayAgain,dark,won}) {
         <button onClick={onPlayAgain} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",padding:"14px",background:"transparent",color:fg,border:`2px solid ${dark?"#333":"#c8bfae"}`,borderRadius:"8px",cursor:"pointer"}}>
           PLAY AGAIN
         </button>
+
+        {won&&mode==="daily"&&<ReminderSignup dark={dark}/>}
 
         {/* Feedback link */}
         <div style={{marginTop:"16px",textAlign:"center"}}>
@@ -764,6 +1055,111 @@ function ScoringPage({dark,onClose}) {
 }
 
 // ============================================================
+// LOCKER ROOM — season stats
+// ============================================================
+function LockerRoom({dark,onClose,onPlay}) {
+  const bg=dark?"#0a0a0a":"#faf7f0", fg=dark?"#d4c9b8":"#1a1a2e", card=dark?"#141414":"#fff", border=dark?"#222":"#e8e0d0";
+  const [copied,setCopied]=useState(false);
+  const st=loadStats(), d=deriveStats(st), streak=liveStreak(st), week=last7(st);
+  const doneToday = st.lastPlayed===new Date().toDateString();
+  const empty = d.played===0;
+
+  const brag=`🏈 DRAFT — MY LOCKER ROOM\n🔥 ${streak}-day streak · 🏆 best ${st.bestStreak||0}\n⚡ avg ${d.avgMs?fmt(d.avgMs):"—"} · fastest ${d.bestMs?fmt(d.bestMs):"—"}\n🔒 ${d.clean} clean game${d.clean===1?"":"s"}\n\nplaydraft.app`;
+  const shareBrag=()=>{ if(navigator.share){navigator.share({title:"DRAFT",text:brag,url:"https://playdraft.app"});} else {navigator.clipboard.writeText(brag).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2200);});} };
+
+  const Stat=({label,value,hint})=>(
+    <div style={{textAlign:"center",background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"14px 6px"}}>
+      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"26px",color:fg,lineHeight:1}}>{value}</div>
+      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"8px",letterSpacing:"2px",color:"#888",marginTop:"3px"}}>{label}</div>
+      {hint&&<div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"10px",fontStyle:"italic",color:dark?"#555":"#aaa",marginTop:"2px"}}>{hint}</div>}
+    </div>
+  );
+
+  return (
+    <div style={{background:bg,minHeight:"calc(100vh - 52px)",padding:"20px 16px 40px",overflowY:"auto"}}>
+      <div style={{maxWidth:"480px",margin:"0 auto"}}>
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(32px,8vw,48px)",letterSpacing:"4px",color:"#C8A96E",marginBottom:"4px"}}>LOCKER ROOM</div>
+        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"italic",marginBottom:"22px",lineHeight:1.6}}>Your season so far. Streaks are earned one day at a time.</div>
+
+        {empty ? (
+          <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"32px 20px",textAlign:"center",marginBottom:"16px"}}>
+            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"20px",letterSpacing:"2px",color:fg,marginBottom:"6px"}}>NO SNAPS TAKEN YET</div>
+            <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.5}}>Solve today&apos;s DRAFT to get on the board and start a streak.</div>
+          </div>
+        ) : (
+          <>
+            {/* Streak hero */}
+            <div style={{background:streak>0?"#B8860B":card,border:`1px solid ${streak>0?"#B8860B":border}`,borderRadius:"12px",padding:"20px",marginBottom:"12px",textAlign:"center"}}>
+              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"3px",color:streak>0?"rgba(255,255,255,0.7)":"#888"}}>CURRENT STREAK</div>
+              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"52px",lineHeight:1,color:streak>0?"#fff":fg}}>{streak>0?`🔥 ${streak}`:"0"}</div>
+              <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",fontStyle:"italic",color:streak>0?"rgba(255,255,255,0.85)":"#888",marginTop:"4px"}}>
+                {streak>0
+                  ? (doneToday?"Locked in for today. Come back tomorrow.":"Play today or the streak ends.")
+                  : "Solve today\u2019s DRAFT to start one."}
+              </div>
+              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:streak>0?"rgba(255,255,255,0.7)":"#888",marginTop:"8px"}}>SEASON HIGH · {st.bestStreak||0}</div>
+            </div>
+
+            {/* Season stats */}
+            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"3px",color:"#888",margin:"18px 0 8px"}}>SEASON STATS</div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"8px",marginBottom:"8px"}}>
+              <Stat label="DRAFTS PLAYED" value={d.played}/>
+              <Stat label="WIN %" value={`${d.winPct}%`} hint={`${d.wins} of ${d.played}`}/>
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"8px",marginBottom:"8px"}}>
+              <Stat label="AVG TIME" value={d.avgMs?fmt(d.avgMs):"—"}/>
+              <Stat label="FASTEST" value={d.bestMs?fmt(d.bestMs):"—"} hint={d.bestMs?"personal record":null}/>
+            </div>
+            <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"16px",marginBottom:"8px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+              <div>
+                <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:fg}}>🔒 CLEAN GAMES</div>
+                <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:dark?"#777":"#888",marginTop:"2px"}}>Solved with zero wrong downs</div>
+              </div>
+              <div style={{textAlign:"right"}}>
+                <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"28px",color:"#C8A96E",lineHeight:1}}>{d.clean}</div>
+                <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"1px",color:"#888"}}>{d.cleanPct}% OF WINS</div>
+              </div>
+            </div>
+
+            {/* Game log */}
+            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"3px",color:"#888",margin:"18px 0 8px"}}>GAME LOG · LAST 7 DAYS</div>
+            <div style={{display:"flex",gap:"6px",marginBottom:"6px"}}>
+              {week.map((w,i)=>(
+                <div key={i} style={{flex:1,textAlign:"center"}}>
+                  <div style={{height:"34px",borderRadius:"7px",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Bebas Neue',cursive",fontSize:"14px",
+                    background:w.state==="W"?"#2E6B3E":w.state==="L"?"#8B1A2A":(dark?"#161616":"#eee7db"),
+                    color:w.state==="-"?(dark?"#3a3a3a":"#c3b9a6"):"#fff",
+                    border:`1px solid ${w.state==="-"?(dark?"#222":"#e0d8cc"):"transparent"}`}}>
+                    {w.state==="-"?"·":w.state}
+                  </div>
+                  <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"1px",color:"#888",marginTop:"3px"}}>{w.label}</div>
+                </div>
+              ))}
+            </div>
+            {!d.hasHistory&&(
+              <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:dark?"#666":"#999",marginBottom:"8px",lineHeight:1.5}}>
+                Day-by-day logging started recently, so earlier games won&apos;t appear here yet.
+              </div>
+            )}
+
+            <button onClick={shareBrag} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",padding:"15px",background:copied?"#2E6B3E":(dark?"#1c1c1c":"#fff"),color:copied?"#fff":fg,border:`2px solid ${copied?"#2E6B3E":(dark?"#333":"#c8bfae")}`,borderRadius:"8px",cursor:"pointer",marginTop:"10px",transition:"background 0.2s"}}>
+              {copied?"✓ COPIED":"📲 SHARE YOUR LOCKER ROOM"}
+            </button>
+          </>
+        )}
+
+        {!doneToday&&(
+          <button onClick={onPlay} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"3px",padding:"16px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"8px",cursor:"pointer",marginTop:"10px"}}>
+            {streak>0?"KEEP THE STREAK ALIVE":"PLAY TODAY'S DRAFT"}
+          </button>
+        )}
+        <button onClick={onClose} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"3px",padding:"14px",background:"transparent",color:dark?"#888":"#888",border:`1px solid ${dark?"#2a2a2a":"#ccc"}`,borderRadius:"8px",cursor:"pointer",marginTop:"8px"}}>BACK</button>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
 // LANDING — mobile first
 // ============================================================
 function Landing({onPlay,dark,mode}) {
@@ -806,11 +1202,22 @@ function Landing({onPlay,dark,mode}) {
       </div>
 
       {/* Streak / competition hook */}
-      {!isPractice&&(()=>{const st=loadStats();return st.streak>0?(
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"2px",color:"#C8A96E",marginBottom:"14px"}}>🔥 {st.streak}-DAY STREAK ON THE LINE</div>
-      ):(
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:dark?"#666":"#999",marginBottom:"14px"}}>SOLVE CLEAN 🔒 · SHARE YOUR TIME ⚡ · START A STREAK 🔥</div>
-      );})()}
+      {!isPractice&&(()=>{
+        const st=loadStats(), s=liveStreak(st);
+        const doneToday = st.lastPlayed===new Date().toDateString();
+        if(s>0 && doneToday) return (
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"2px",color:"#2E6B3E",marginBottom:"14px"}}>✅ TODAY'S DRAFT IS IN THE BOOKS · 🔥 {s}-DAY STREAK</div>
+        );
+        if(s>0) return (
+          <div style={{marginBottom:"14px"}}>
+            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"2px",color:"#C8A96E"}}>🔥 {s}-DAY STREAK ON THE LINE</div>
+            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#666":"#999",marginTop:"2px"}}>SOLVE TODAY'S DRAFT TO KEEP IT ALIVE</div>
+          </div>
+        );
+        return (
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:dark?"#666":"#999",marginBottom:"14px"}}>SOLVE CLEAN 🔒 · SHARE YOUR TIME ⚡ · START A STREAK 🔥</div>
+        );
+      })()}
 
       <button
         onClick={onPlay}
@@ -852,7 +1259,7 @@ function Landing({onPlay,dark,mode}) {
 // ============================================================
 // GAME — mobile optimized
 // ============================================================
-function Game({puzzle,dark,onFinish}) {
+function Game({puzzle,dark,onFinish,mode}) {
   const [tiles,setTiles]=useState(()=>shuffle(puzzle.players));
   const [selected,setSelected]=useState([]);
   const [solved,setSolved]=useState([]);
@@ -868,7 +1275,7 @@ function Game({puzzle,dark,onFinish}) {
   const toastRef=useRef(null);
   const bg=dark?"#0a0a0a":"#faf7f0";
 
-  const showToast=(msg,dur=1800)=>{clearTimeout(toastRef.current);setToast(msg);toastRef.current=setTimeout(()=>setToast(null),dur);};
+  const showToast=(msg,dur=1800)=>{clearTimeout(toastRef.current);setToast(typeof msg==="string"?{title:msg}:msg);toastRef.current=setTimeout(()=>setToast(null),dur);};
   const handleTile=name=>{if(over)return;setSelected(prev=>prev.includes(name)?prev.filter(p=>p!==name):prev.length<4?[...prev,name]:prev);};
 
   const handleSubmit=()=>{
@@ -887,17 +1294,19 @@ function Game({puzzle,dark,onFinish}) {
         setTimerOn(false);setOver(true);
         // Show result panel after last category lock-in animation completes
         setTimeout(()=>setShowResult(true),900);
-        const st=loadStats(),today=new Date().toDateString(),yest=new Date(Date.now()-86400000).toDateString();
-        st.played++;st.won++;st.scores=[...(st.scores||[]),fmt(timeMs)];
-        if(st.lastPlayed!==today)st.streak=st.lastPlayed===yest?st.streak+1:1;
-        st.bestStreak=Math.max(st.streak,st.bestStreak);st.lastPlayed=today;saveStats(st);
+        if(mode==="daily") recordDailyResult(true, fmt(timeMs), timeMs, wrong);
       }
     } else {
       const oneAway=puzzle.groups.some(g=>selected.filter(p=>g.players.includes(p)).length===3);
       setShaking([...selected]);setTimeout(()=>setShaking([]),550);
-      if(oneAway)showToast("ONE AWAY... 👀",2200);
-      else showToast(["FUMBLE 😬","INTERCEPTION! 🙈","DELAY OF GAME 🚩","TURNOVER! 😤","SACKED! 🏃"][Math.floor(Math.random()*5)]);
       const nw=wrong+1;setWrong(nw);
+      const left=4-nw, downs=`${left} DOWN${left===1?"":"S"} LEFT`;
+      if(oneAway){
+        showToast({title:"ONE AWAY 👀",sub:`3 OF THESE 4 CONNECT · ${downs}`,tone:"warn"},2400);
+      } else {
+        const flavor=["FUMBLE 😬","INTERCEPTION! 🙈","DELAY OF GAME 🚩","TURNOVER! 😤","SACKED! 🏃"][Math.floor(Math.random()*5)];
+        showToast({title:flavor,sub:`NOT CLOSE · ${downs}`,tone:"bad"},2200);
+      }
       setTriedCombos(prev=>[...prev,comboKey]);
       // Keep tiles selected so user can swap one without re-picking all 4
       if(nw>=4){
@@ -911,8 +1320,7 @@ function Game({puzzle,dark,onFinish}) {
         });
         // Show result panel after all reveals complete
         setTimeout(()=>setShowResult(true),700+(remaining.length*600)+400);
-        const st=loadStats(),today=new Date().toDateString();
-        st.played++;st.scores=[...(st.scores||[]),"DNF"];st.streak=0;st.lastPlayed=today;saveStats(st);
+        if(mode==="daily") recordDailyResult(false, null, null, nw);
       }
     }
   };
@@ -969,12 +1377,13 @@ function Game({puzzle,dark,onFinish}) {
 
         {/* Toast */}
         {toast&&(
-          <div style={{position:"fixed",top:"64px",left:"50%",transform:"translateX(-50%)",fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"3px",background:dark?"#1a1a1a":"#0f1923",color:"#C8A96E",padding:"10px 22px",borderRadius:"8px",boxShadow:"0 4px 20px rgba(0,0,0,0.5)",zIndex:200,border:"1px solid rgba(200,169,110,0.3)",whiteSpace:"nowrap",animation:"toastIn 0.2s ease"}}>
-            {toast}
+          <div style={{position:"fixed",top:"64px",left:"50%",transform:"translateX(-50%)",background:dark?"#1a1a1a":"#0f1923",padding:"10px 22px",borderRadius:"8px",boxShadow:"0 4px 20px rgba(0,0,0,0.5)",zIndex:200,textAlign:"center",whiteSpace:"nowrap",animation:"toastIn 0.2s ease",border:`1px solid ${toast.tone==="bad"?"rgba(139,26,42,0.9)":"rgba(200,169,110,0.4)"}`}}>
+            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"3px",color:toast.tone==="bad"?"#D9788A":"#C8A96E"}}>{toast.title}</div>
+            {toast.sub&&<div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:"#8a8a8a",marginTop:"3px"}}>{toast.sub}</div>}
           </div>
         )}
 
-        {showResult&&<ResultPanel puzzle={puzzle} solved={[...solved,...revealedGroups]} wrong={wrong} ms={timeMs} dark={dark} onPlayAgain={onFinish} won={solved.length===4}/>}
+        {showResult&&<ResultPanel puzzle={puzzle} solved={[...solved,...revealedGroups]} solvedOnly={solved} wrong={wrong} ms={timeMs} dark={dark} onPlayAgain={onFinish} won={solved.length===4} mode={mode}/>}
       </div>
     </div>
   );
@@ -1012,7 +1421,6 @@ export default function App() {
 
   const [dark,setDark]=useState(false);
   const [screen,setScreen]=useState("home");
-  const [showStats,setShowStats]=useState(false);
   const [showScoring,setShowScoring]=useState(false);
   const [mode,setMode]=useState("daily");
   const [practicePuzzle,setPracticePuzzle]=useState(()=>getRandomPracticePuzzle());
@@ -1052,12 +1460,12 @@ export default function App() {
         button:focus-visible{outline:2px solid #C8A96E;outline-offset:2px;}
         button{-webkit-tap-highlight-color:transparent;}
       `}</style>
-      <Header dark={dark} onDark={()=>setDark(d=>!d)} onStats={()=>setShowStats(true)} onHome={()=>setScreen("home")} onHow={()=>setScreen("howto")} onScoring={()=>setScreen("scoring")} mode={mode} onMode={handleModeChange}/>
+      <Header dark={dark} onDark={()=>setDark(d=>!d)} onStats={()=>setScreen("locker")} onHome={()=>setScreen("home")} onHow={()=>setScreen("howto")} onScoring={()=>setScreen("scoring")} mode={mode} onMode={handleModeChange}/>
       {screen==="home"&&<Landing onPlay={()=>setScreen("game")} dark={dark} mode={mode}/>}
-      {screen==="game"&&<Game key={`${puzzle.id}-${mode}`} puzzle={puzzle} dark={dark} onFinish={handleFinish}/>}
+      {screen==="game"&&<Game key={`${puzzle.id}-${mode}`} puzzle={puzzle} dark={dark} mode={mode} onFinish={handleFinish}/>}
       {screen==="howto"&&<HowTo dark={dark} onClose={()=>setScreen("home")}/>}
       {screen==="scoring"&&<ScoringPage dark={dark} onClose={()=>setScreen("home")}/>}
-      {showStats&&<StatsModal onClose={()=>setShowStats(false)} dark={dark}/>}
+      {screen==="locker"&&<LockerRoom dark={dark} onClose={()=>setScreen("home")} onPlay={()=>{setMode("daily");setScreen("game");}}/>}
       <Analytics />
     </>
   );
