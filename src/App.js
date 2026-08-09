@@ -427,16 +427,6 @@ const PUZZLES = [
   },
   {
     id: 43, title: "ROUND 43",
-    players: ["LARRY FITZGERALD","KYLER MURRAY","PATRICK PETERSON","KURT WARNER","MYLES GARRETT","NICK CHUBB","BAKER MAYFIELD","JOE THOMAS","LaDAINIAN TOMLINSON","PRIEST HOLMES","SHAUN ALEXANDER","MARSHALL FAULK","ELI MANNING","TRAVIS KELCE","JOE NAMATH","WALTER PAYTON"],
-    groups: [
-      { id:"A", players:["LARRY FITZGERALD","KYLER MURRAY","PATRICK PETERSON","KURT WARNER"], label:"PLAYED FOR THE ARIZONA CARDINALS", color:"#B8860B", difficulty:1 },
-      { id:"B", players:["MYLES GARRETT","NICK CHUBB","BAKER MAYFIELD","JOE THOMAS"], label:"PLAYED FOR THE CLEVELAND BROWNS", color:"#2E6B3E", difficulty:2 },
-      { id:"C", players:["LaDAINIAN TOMLINSON","PRIEST HOLMES","SHAUN ALEXANDER","MARSHALL FAULK"], label:"SCORED 20+ TOUCHDOWNS IN A SINGLE SEASON", color:"#1B4F8A", difficulty:3 },
-      { id:"D", players:["ELI MANNING","TRAVIS KELCE","JOE NAMATH","WALTER PAYTON"], label:"HOSTED SATURDAY NIGHT LIVE", color:"#8B1A2A", difficulty:4 }
-    ]
-  },
-  {
-    id: 44, title: "ROUND 44",
     players: ["CAM NEWTON","LUKE KUECHLY","STEVE SMITH SR.","CHRISTIAN McCAFFREY","JIM BROWN","DONOVAN McNABB","DWIGHT FREENEY","MARVIN HARRISON","TERRELL DAVIS","EMMITT SMITH","MARCUS ALLEN","FRANCO HARRIS","CALVIN JOHNSON","ADRIAN PETERSON","RICHARD SHERMAN","ROB GRONKOWSKI"],
     groups: [
       { id:"A", players:["CAM NEWTON","LUKE KUECHLY","STEVE SMITH SR.","CHRISTIAN McCAFFREY"], label:"PLAYED FOR THE CAROLINA PANTHERS", color:"#B8860B", difficulty:1 },
@@ -446,7 +436,28 @@ const PUZZLES = [
     ]
   },
   {
+    id: 44, title: "ROUND 44",
+    players: ["LARRY FITZGERALD","KYLER MURRAY","PATRICK PETERSON","KURT WARNER","MYLES GARRETT","NICK CHUBB","BAKER MAYFIELD","JOE THOMAS","LaDAINIAN TOMLINSON","PRIEST HOLMES","SHAUN ALEXANDER","MARSHALL FAULK","ELI MANNING","TRAVIS KELCE","JOE NAMATH","WALTER PAYTON"],
+    groups: [
+      { id:"A", players:["LARRY FITZGERALD","KYLER MURRAY","PATRICK PETERSON","KURT WARNER"], label:"PLAYED FOR THE ARIZONA CARDINALS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["MYLES GARRETT","NICK CHUBB","BAKER MAYFIELD","JOE THOMAS"], label:"PLAYED FOR THE CLEVELAND BROWNS", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["LaDAINIAN TOMLINSON","PRIEST HOLMES","SHAUN ALEXANDER","MARSHALL FAULK"], label:"SCORED 20+ TOUCHDOWNS IN A SINGLE SEASON", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["ELI MANNING","TRAVIS KELCE","JOE NAMATH","WALTER PAYTON"], label:"HOSTED SATURDAY NIGHT LIVE", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
     id: 45, title: "ROUND 45",
+    contributor: { name: "BRIAN W.", tag: "GUEST DRAFT" },
+    players: ["CAM NEWTON","LAMAR JACKSON","BARRY SANDERS","MARCUS ALLEN","BRANDON AUBREY","JORDAN MAILATA","ANTONIO GATES","MO ALIE-COX","TOM BRADY","MICHAEL VICK","RICKY WILLIAMS","JOSH GORDON","COOPER DEJEAN","DERRICK BROOKS","MIKE VRABEL","JAMES HARRISON"],
+    groups: [
+      { id:"A", players:["CAM NEWTON","LAMAR JACKSON","BARRY SANDERS","MARCUS ALLEN"], label:"WON A HEISMAN TROPHY AND AN NFL MVP", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["BRANDON AUBREY","JORDAN MAILATA","ANTONIO GATES","MO ALIE-COX"], label:"DID NOT PLAY COLLEGE FOOTBALL", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["TOM BRADY","MICHAEL VICK","RICKY WILLIAMS","JOSH GORDON"], label:"SUSPENDED FOUR OR MORE GAMES BY THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["COOPER DEJEAN","DERRICK BROOKS","MIKE VRABEL","JAMES HARRISON"], label:"DEFENSIVE PLAYER WHO SCORED A TOUCHDOWN IN A SUPER BOWL", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 46, title: "ROUND 46",
     players: ["D.K. METCALF","A.J. BROWN","PATRICK WILLIS","MICHAEL OHER","TREVOR LAWRENCE","MAURICE JONES-DREW","FRED TAYLOR","CALVIN RIDLEY","ARIAN FOSTER","DeMARCO MURRAY","EZEKIEL ELLIOTT","LeSEAN McCOY","TONY ROMO","JOE FLACCO","COOPER KUPP","CARSON WENTZ"],
     groups: [
       { id:"A", players:["D.K. METCALF","A.J. BROWN","PATRICK WILLIS","MICHAEL OHER"], label:"PLAYED COLLEGE FOOTBALL AT OLE MISS", color:"#B8860B", difficulty:1 },
@@ -456,7 +467,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 46, title: "ROUND 46",
+    id: 47, title: "ROUND 47",
     players: ["LAWRENCE TAYLOR","JULIUS PEPPERS","MITCHELL TRUBISKY","GIOVANI BERNARD","DERRICK HENRY","EDDIE GEORGE","STEVE McNAIR","RYAN TANNEHILL","JEROME BETTIS","EDGERRIN JAMES","FRANK GORE","CURTIS MARTIN","DEION SANDERS","TROY BROWN","MIKE VRABEL","WILLIAM PERRY"],
     groups: [
       { id:"A", players:["LAWRENCE TAYLOR","JULIUS PEPPERS","MITCHELL TRUBISKY","GIOVANI BERNARD"], label:"PLAYED COLLEGE FOOTBALL AT NORTH CAROLINA", color:"#B8860B", difficulty:1 },
@@ -466,7 +477,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 47, title: "ROUND 47",
+    id: 48, title: "ROUND 48",
     players: ["RUSSELL WILSON","TYLER LOCKETT","BOBBY WAGNER","SHAUN ALEXANDER","KIRK COUSINS","LeVEON BELL","PLAXICO BURRESS","KENNETH WALKER III","MICHAEL THOMAS","WES WELKER","JULIAN EDELMAN","ANTONIO BROWN","VON MILLER","LUKE KUECHLY","AARON DONALD","NICK BOSA"],
     groups: [
       { id:"A", players:["RUSSELL WILSON","TYLER LOCKETT","BOBBY WAGNER","SHAUN ALEXANDER"], label:"PLAYED FOR THE SEATTLE SEAHAWKS", color:"#B8860B", difficulty:1 },
@@ -476,7 +487,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 48, title: "ROUND 48",
+    id: 49, title: "ROUND 49",
     players: ["ELI MANNING","ODELL BECKHAM JR.","SAQUON BARKLEY","MICHAEL STRAHAN","BRIAN DAWKINS","LeSEAN McCOY","DeSEAN JACKSON","JALEN HURTS","CALVIN JOHNSON","JULIO JONES","STEFON DIGGS","COOPER KUPP","BARRY SANDERS","MARCUS ALLEN","TONY DORSETT","ROGER STAUBACH"],
     groups: [
       { id:"A", players:["ELI MANNING","ODELL BECKHAM JR.","SAQUON BARKLEY","MICHAEL STRAHAN"], label:"PLAYED FOR THE NEW YORK GIANTS", color:"#B8860B", difficulty:1 },
@@ -486,7 +497,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 49, title: "ROUND 49",
+    id: 50, title: "ROUND 50",
     players: ["LAMAR JACKSON","RAY LEWIS","JUSTIN TUCKER","MARK ANDREWS","DREW BREES","ROD WOODSON","MIKE ALSTOTT","RYAN KERRIGAN","ROB GRONKOWSKI","TRAVIS KELCE","ANTONIO GATES","JIMMY GRAHAM","JOHN ELWAY","TERRELL DAVIS","PATRICK MAHOMES","CHRIS JONES"],
     groups: [
       { id:"A", players:["LAMAR JACKSON","RAY LEWIS","JUSTIN TUCKER","MARK ANDREWS"], label:"PLAYED FOR THE BALTIMORE RAVENS", color:"#B8860B", difficulty:1 },
@@ -496,7 +507,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 50, title: "ROUND 50",
+    id: 51, title: "ROUND 51",
     players: ["DAK PRESCOTT","MICAH PARSONS","EMMITT SMITH","MICHAEL IRVIN","DEREK CARR","KHALIL MACK","DAVANTE ADAMS","MAXX CROSBY","CHRISTIAN McCAFFREY","ALVIN KAMARA","MARSHALL FAULK","MATT FORTE","BRETT FAVRE","DAN MARINO","TROY AIKMAN","JOE MONTANA"],
     groups: [
       { id:"A", players:["DAK PRESCOTT","MICAH PARSONS","EMMITT SMITH","MICHAEL IRVIN"], label:"PLAYED FOR THE DALLAS COWBOYS", color:"#B8860B", difficulty:1 },
@@ -506,7 +517,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 51, title: "ROUND 51",
+    id: 52, title: "ROUND 52",
     players: ["ANDREW LUCK","EDGERRIN JAMES","JONATHAN TAYLOR","REGGIE WAYNE","WARREN MOON","COREY DILLON","MARCUS PETERS","BUDDA BAKER","LaDAINIAN TOMLINSON","MARCUS ALLEN","JIM BROWN","ADRIAN PETERSON","DREW BREES","PHILIP RIVERS","MATT RYAN","ELI MANNING"],
     groups: [
       { id:"A", players:["ANDREW LUCK","EDGERRIN JAMES","JONATHAN TAYLOR","REGGIE WAYNE"], label:"PLAYED FOR THE INDIANAPOLIS COLTS", color:"#B8860B", difficulty:1 },
@@ -516,7 +527,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 52, title: "ROUND 52",
+    id: 53, title: "ROUND 53",
     players: ["BEN ROETHLISBERGER","T.J. WATT","ANTONIO BROWN","LeVEON BELL","LAMAR JACKSON","TEDDY BRIDGEWATER","DEION BRANCH","ELVIS DUMERVIL","CHARLES WOODSON","ED REED","TROY POLAMALU","STEPHON GILMORE","BAKER MAYFIELD","SAM DARNOLD","JOSH ALLEN","JOSH ROSEN"],
     groups: [
       { id:"A", players:["BEN ROETHLISBERGER","T.J. WATT","ANTONIO BROWN","LeVEON BELL"], label:"PLAYED FOR THE PITTSBURGH STEELERS", color:"#B8860B", difficulty:1 },
@@ -526,7 +537,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 53, title: "ROUND 53",
+    id: 54, title: "ROUND 54",
     players: ["BARRY SANDERS","CALVIN JOHNSON","MATTHEW STAFFORD","AMON-RA ST. BROWN","MARCUS MARIOTA","JUSTIN HERBERT","PENEI SEWELL","DeFOREST BUCKNER","RANDY MOSS","JERRY RICE","DAVANTE ADAMS","ROB GRONKOWSKI","MATT CASSEL","JIMMY GAROPPOLO","CAM NEWTON","MAC JONES"],
     groups: [
       { id:"A", players:["BARRY SANDERS","CALVIN JOHNSON","MATTHEW STAFFORD","AMON-RA ST. BROWN"], label:"PLAYED FOR THE DETROIT LIONS", color:"#B8860B", difficulty:1 },
@@ -536,7 +547,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 54, title: "ROUND 54",
+    id: 55, title: "ROUND 55",
     players: ["MIKE EVANS","RONDE BARBER","JAMEIS WINSTON","BAKER MAYFIELD","SHEDEUR SANDERS","TRAVIS HUNTER","KORDELL STEWART","PHILLIP LINDSAY","MICHAEL STRAHAN","JARED ALLEN","DeMARCUS WARE","T.J. WATT","JA'MARR CHASE","MICAH PARSONS","SAUCE GARDNER","JAYDEN DANIELS"],
     groups: [
       { id:"A", players:["MIKE EVANS","RONDE BARBER","JAMEIS WINSTON","BAKER MAYFIELD"], label:"PLAYED FOR THE TAMPA BAY BUCCANEERS", color:"#B8860B", difficulty:1 },
@@ -546,7 +557,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 55, title: "ROUND 55",
+    id: 56, title: "ROUND 56",
     players: ["WALTER PAYTON","BRIAN URLACHER","DEVIN HESTER","CALEB WILLIAMS","MATT RYAN","LUKE KUECHLY","DOUG FLUTIE","ZAY FLOWERS","DAN MARINO","AARON RODGERS","DREW BREES","MATTHEW STAFFORD","KURT WARNER","STEVE YOUNG","EMMITT SMITH","TERRELL DAVIS"],
     groups: [
       { id:"A", players:["WALTER PAYTON","BRIAN URLACHER","DEVIN HESTER","CALEB WILLIAMS"], label:"PLAYED FOR THE CHICAGO BEARS", color:"#B8860B", difficulty:1 },
@@ -556,7 +567,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 56, title: "ROUND 56",
+    id: 57, title: "ROUND 57",
     players: ["BARRY SANDERS","THURMAN THOMAS","DEZ BRYANT","MASON RUDOLPH","TUA TAGOVAILOA","TYREEK HILL","JAYLEN WADDLE","BRADLEY CHUBB","TOM BRADY","PEYTON MANNING","DEION SANDERS","CHRIS LONG","TREVOR LAWRENCE","ZACH WILSON","JUSTIN FIELDS","MAC JONES"],
     groups: [
       { id:"A", players:["BARRY SANDERS","THURMAN THOMAS","DEZ BRYANT","MASON RUDOLPH"], label:"PLAYED COLLEGE FOOTBALL AT OKLAHOMA STATE", color:"#B8860B", difficulty:1 },
@@ -566,7 +577,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 57, title: "ROUND 57",
+    id: 58, title: "ROUND 58",
     players: ["DEREK CARR","DAVID CARR","TRENT DILFER","DAVANTE ADAMS","JOSH ALLEN","STEFON DIGGS","VON MILLER","JIM KELLY","JUSTIN HERBERT","DAK PRESCOTT","ROBERT GRIFFIN III","C.J. STROUD","MICHAEL VICK","LAMAR JACKSON","CAM NEWTON","RANDALL CUNNINGHAM"],
     groups: [
       { id:"A", players:["DEREK CARR","DAVID CARR","TRENT DILFER","DAVANTE ADAMS"], label:"PLAYED COLLEGE FOOTBALL AT FRESNO STATE", color:"#B8860B", difficulty:1 },
@@ -576,7 +587,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 58, title: "ROUND 58",
+    id: 59, title: "ROUND 59",
     players: ["TROY AIKMAN","JONATHAN OGDEN","MAURICE JONES-DREW","KENNY CLARK","TERRELL SUGGS","PAT TILLMAN","JAKE PLUMMER","BROCK OSWEILER","DERRICK HENRY","JONATHAN TAYLOR","EZEKIEL ELLIOTT","TODD GURLEY","TOM BRADY","JULIAN EDELMAN","ROB GRONKOWSKI","DEVIN McCOURTY"],
     groups: [
       { id:"A", players:["TROY AIKMAN","JONATHAN OGDEN","MAURICE JONES-DREW","KENNY CLARK"], label:"PLAYED COLLEGE FOOTBALL AT UCLA", color:"#B8860B", difficulty:1 },
@@ -586,7 +597,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 59, title: "ROUND 59",
+    id: 60, title: "ROUND 60",
     players: ["RANDY MOSS","CHAD PENNINGTON","BYRON LEFTWICH","AHMAD BRADSHAW","KIRK COUSINS","JUSTIN JEFFERSON","DALVIN COOK","T.J. HOCKENSON","J.J. WATT","WARREN SAPP","MYLES GARRETT","AARON DONALD","WALTER PAYTON","RAY LEWIS","BARRY SANDERS","REGGIE WHITE"],
     groups: [
       { id:"A", players:["RANDY MOSS","CHAD PENNINGTON","BYRON LEFTWICH","AHMAD BRADSHAW"], label:"PLAYED COLLEGE FOOTBALL AT MARSHALL", color:"#B8860B", difficulty:1 },
@@ -596,7 +607,7 @@ const PUZZLES = [
     ]
   },
   {
-    id: 60, title: "ROUND 60",
+    id: 61, title: "ROUND 61",
     players: ["MICHAEL VICK","KAM CHANCELLOR","TYROD TAYLOR","DeANGELO HALL","CAM NEWTON","BO JACKSON","RONNIE BROWN","CADILLAC WILLIAMS","JA'MARR CHASE","CALVIN JOHNSON","LARRY FITZGERALD","MARVIN HARRISON JR.","TOM BRADY","BEN ROETHLISBERGER","RUSSELL WILSON","KURT WARNER"],
     groups: [
       { id:"A", players:["MICHAEL VICK","KAM CHANCELLOR","TYROD TAYLOR","DeANGELO HALL"], label:"PLAYED COLLEGE FOOTBALL AT VIRGINIA TECH", color:"#B8860B", difficulty:1 },
@@ -606,7 +617,6 @@ const PUZZLES = [
     ]
   }
 ];
-
 const DIFF_LABELS = ["","1ST & EASY","2ND DOWN","3RD & LONG","4TH & GOAL"];
 const DIFF_EMOJIS = {1:"🟨",2:"🟩",3:"🟦",4:"🟥"};
 
@@ -723,10 +733,12 @@ const buildShare = (puzzle, solvedOnly, wrong, ms, streak, mode, won) => {
   // render as a full board, or the share card lies.
   const rows=[1,2,3,4].map(d=>{const g=solvedOnly.find(s=>s.difficulty===d);return g?DIFF_EMOJIS[d].repeat(4):"⬛⬛⬛⬛";}).join("\n");
   const header = mode==="daily" ? `DRAFT #${getTodaysPuzzleNumber()} 🏈` : "DRAFT — PRACTICE 🏈";
+  // Guest drafts carry the contributor's credit into every share.
+  const guestLine = puzzle.contributor ? `\n⭐ ${puzzle.contributor.tag||"GUEST DRAFT"} BY ${puzzle.contributor.name}` : "";
   const line = won ? `⚡ ${fmt(ms)}${wrong===0?" · 🔒 CLEAN GAME":""}` : "🏴 TURNOVER ON DOWNS";
   const streakLine = (mode==="daily" && streak>=3) ? `\n🔥 ${streak}-day streak` : "";
   const cta = won ? `\nCan you beat ${fmt(ms)}?` : "\nThink you can solve it?";
-  return `${header}\n${line}\n\n${rows}${streakLine}\n${cta}\nplaydraft.app`;
+  return `${header}${guestLine}\n${line}\n\n${rows}${streakLine}\n${cta}\nplaydraft.app`;
 };
 
 // ============================================================
@@ -799,6 +811,29 @@ function HowTo({dark,onClose}) {
 // ============================================================
 // TILE — mobile optimized
 // ============================================================
+function ContributorBanner({contributor,dark}) {
+  if(!contributor) return null;
+  return (
+    <div style={{
+      display:"flex",alignItems:"center",justifyContent:"center",gap:"8px",
+      background:dark?"linear-gradient(90deg,#1a1408,#2a2010,#1a1408)":"linear-gradient(90deg,#f5edda,#faf3e2,#f5edda)",
+      border:"1px solid #C8A96E",borderRadius:"8px",padding:"9px 12px",marginBottom:"12px",
+      animation:"fadeUp 0.5s ease"
+    }}>
+      <span style={{fontSize:"13px",lineHeight:1}}>⭐</span>
+      <div style={{textAlign:"center"}}>
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"3px",color:"#C8A96E",lineHeight:1.2}}>
+          {contributor.tag||"GUEST DRAFT"}
+        </div>
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"2px",color:dark?"#e0d5c5":"#1a1a2e",lineHeight:1.2}}>
+          BUILT BY {contributor.name}
+        </div>
+      </div>
+      <span style={{fontSize:"13px",lineHeight:1}}>⭐</span>
+    </div>
+  );
+}
+
 function Tile({name,selected,onClick,dark,shaking}) {
   return (
     <button onClick={onClick} style={{
@@ -935,7 +970,13 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
           <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"16px",color:"#C8A96E",textAlign:"center",marginBottom:"6px",letterSpacing:"2px"}}>🔥 {streak}-DAY STREAK</div>
         )}
 
-        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:"#888",textAlign:"center",marginBottom:"20px",fontStyle:"italic"}}>{puzzle.title}</div>
+        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:"#888",textAlign:"center",marginBottom:puzzle.contributor?"4px":"20px",fontStyle:"italic"}}>{puzzle.title}</div>
+
+        {puzzle.contributor&&(
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:"#C8A96E",textAlign:"center",marginBottom:"20px"}}>
+            ⭐ {puzzle.contributor.tag||"GUEST DRAFT"} BY {puzzle.contributor.name}
+          </div>
+        )}
 
         {/* Time prominent */}
         <div style={{textAlign:"center",marginBottom:"20px"}}>
@@ -1330,6 +1371,9 @@ function Game({puzzle,dark,onFinish,mode}) {
   return (
     <div style={{background:bg,display:"flex",flexDirection:"column",padding:"16px 12px 32px"}}>
       <div style={{maxWidth:"460px",margin:"0 auto",width:"100%",display:"flex",flexDirection:"column"}}>
+
+        {/* Guest contributor banner — renders only when puzzle.contributor exists */}
+        <ContributorBanner contributor={puzzle.contributor} dark={dark}/>
 
         {/* Top bar */}
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"12px"}}>
