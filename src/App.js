@@ -382,16 +382,16 @@ const PUZZLES = [
       { id:"A", players:["JOE NAMATH","AARON RODGERS","BRETT FAVRE","DARRELLE REVIS"], label:"PLAYED FOR THE NEW YORK JETS", color:"#B8860B", difficulty:1 },
       { id:"B", players:["CAM NEWTON","KYLER MURRAY","BAKER MAYFIELD","JOE BURROW"], label:"WON THE HEISMAN TROPHY AND WAS DRAFTED FIRST OVERALL", color:"#2E6B3E", difficulty:2 },
       { id:"C", players:["FRANK GORE","ADRIAN PETERSON","DERRICK HENRY","WALTER PAYTON"], label:"RUSHED FOR 1,000+ YARDS IN A SEASON AT AGE 30 OR OLDER", color:"#1B4F8A", difficulty:3 },
-      { id:"D", players:["MICHAEL STRAHAN","TERRY CREWS","TRAVIS KELCE","ROB GRONKOWSKI"], label:"PLAYED IN THE NFL AND HOSTED A TV GAME SHOW", color:"#8B1A2A", difficulty:4 }
+      { id:"D", players:["MICHAEL STRAHAN","TERRY CREWS","TRAVIS KELCE","ROB GRONKOWSKI"], label:"HOSTED A NATIONAL TV SHOW", color:"#8B1A2A", difficulty:4 }
     ]
   },
   {
     id: 39, title: "ROUND 39",
-    players: ["MATTHEW STAFFORD","COOPER KUPP","AARON DONALD","ODELL BECKHAM JR.","JOE THEISMANN","ROBERT GRIFFIN III","KIRK COUSINS","JAYDEN DANIELS","TIM TEBOW","EMMITT SMITH","PERCY HARVIN","ANTHONY RICHARDSON","TRACY PORTER","JAMES HARRISON","TY LAW","MALCOLM SMITH"],
+    players: ["MATTHEW STAFFORD","COOPER KUPP","AARON DONALD","ODELL BECKHAM JR.","JOE THEISMANN","ROBERT GRIFFIN III","KIRK COUSINS","JAYDEN DANIELS","KURT WARNER","MARSHALL FAULK","ISAAC BRUCE","TORRY HOLT","TRACY PORTER","JAMES HARRISON","TY LAW","MALCOLM SMITH"],
     groups: [
       { id:"A", players:["MATTHEW STAFFORD","COOPER KUPP","AARON DONALD","ODELL BECKHAM JR."], label:"PLAYED FOR THE RAMS SUPER BOWL LVI-WINNING TEAM", color:"#B8860B", difficulty:1 },
       { id:"B", players:["JOE THEISMANN","ROBERT GRIFFIN III","KIRK COUSINS","JAYDEN DANIELS"], label:"PLAYED QUARTERBACK FOR WASHINGTON", color:"#2E6B3E", difficulty:2 },
-      { id:"C", players:["TIM TEBOW","EMMITT SMITH","PERCY HARVIN","ANTHONY RICHARDSON"], label:"PLAYED COLLEGE FOOTBALL AT FLORIDA", color:"#1B4F8A", difficulty:3 },
+      { id:"C", players:["KURT WARNER","MARSHALL FAULK","ISAAC BRUCE","TORRY HOLT"], label:"PLAYED FOR THE RAMS BEFORE THEY RETURNED TO LOS ANGELES", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["TRACY PORTER","JAMES HARRISON","TY LAW","MALCOLM SMITH"], label:"RETURNED AN INTERCEPTION FOR A TOUCHDOWN IN A SUPER BOWL", color:"#8B1A2A", difficulty:4 }
     ]
   },
@@ -702,6 +702,10 @@ const LAUNCH_DATE = new Date(2026, 6, 3);
 //   const FEEDBACK_URL = "mailto:you@example.com?subject=DRAFT Feedback";
 const FEEDBACK_URL = "https://forms.gle/s2Jk2vvLfLTJLPLd8";
 
+// Puzzle submission form. Paste your Google Form URL here to turn the
+// "build your own" CTA on. Left empty, the CTA renders nothing.
+const SUBMIT_PUZZLE_URL = "";
+
 const getTodaysPuzzle = () => {
   const today = new Date();
   today.setHours(0,0,0,0);
@@ -993,6 +997,23 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
             </div>
           ))}
         </div>
+
+        {/* Build-your-own CTA — contextual on guest drafts, quieter otherwise */}
+        {SUBMIT_PUZZLE_URL&&(
+          <a href={SUBMIT_PUZZLE_URL} target="_blank" rel="noopener noreferrer" style={{
+            display:"block",textDecoration:"none",textAlign:"center",
+            border:`1px solid ${puzzle.contributor?"#C8A96E":(dark?"#2a2a2a":"#ddd")}`,
+            background:puzzle.contributor?(dark?"rgba(200,169,110,0.08)":"rgba(200,169,110,0.12)"):"transparent",
+            borderRadius:"8px",padding:"12px 14px",marginBottom:"18px"
+          }}>
+            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",color:"#C8A96E",lineHeight:1.3}}>
+              {puzzle.contributor?`${puzzle.contributor.name} BUILT THIS ONE`:"BUILD YOUR OWN DRAFT"}
+            </div>
+            <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:dark?"#9a9a9a":"#777",marginTop:"3px"}}>
+              {puzzle.contributor?"Submit yours — get your name on the board →":"Submit a puzzle, get credited on the board →"}
+            </div>
+          </a>
+        )}
 
         {/* Category reveals */}
         <div style={{marginBottom:"20px"}}>
