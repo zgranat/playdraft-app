@@ -626,6 +626,19 @@ const defaultStats = () => ({streak:0,bestStreak:0,played:0,won:0,scores:[],last
 const loadStats = () => { try{const s=localStorage.getItem("draft_v1");return s?JSON.parse(s):defaultStats();}catch{return defaultStats();} };
 const saveStats = s => { try{localStorage.setItem("draft_v1",JSON.stringify(s));}catch{} };
 
+// Fire-and-forget daily gameplay event (start/win/loss/share). Silently
+// no-ops if it fails — never blocks or breaks gameplay.
+const trackEvent = (type, extra = {}) => {
+  try {
+    const id = localStorage.getItem('pd_anon_id') || 'unknown';
+    fetch('/api/event', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, id, ...extra }),
+    }).catch(() => {});
+  } catch {}
+};
+
 // A stored streak is only still alive if the last daily was today or yesterday.
 // Without this, the UI keeps advertising a streak a missed day already broke.
 const liveStreak = st => {
@@ -959,9 +972,9 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
   const streak=mode==="daily"?liveStreak(st):0;
   const shareText=buildShare(puzzle,solvedOnly||solved,wrong,ms,streak,mode,won);
 
-  const copy=()=>{navigator.clipboard.writeText(shareText).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2200);});};
-  const shareToX=()=>window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`,"_blank");
-  const nativeShare=()=>{ if(navigator.share){navigator.share({title:"DRAFT",text:shareText,url:"https://playdraft.app"});}else{copy();} };
+  const copy=()=>{navigator.clipboard.writeText(shareText).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2200);});if(mode==="daily")trackEvent('share');};
+  const shareToX=()=>{window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`,"_blank");if(mode==="daily")trackEvent('share');};
+  const nativeShare=()=>{ if(navigator.share){navigator.share({title:"DRAFT",text:shareText,url:"https://playdraft.app"});}else{copy();} if(mode==="daily")trackEvent('share'); };
 
   return (
     <div style={{background:bg,borderRadius:"12px",padding:"24px 18px 28px",width:"100%",maxWidth:"460px",margin:"16px auto 0",border:`2px solid ${won?"#C8A96E":"#8B1A2A"}`,animation:"fadeUp 0.5s ease"}}>
@@ -1337,6 +1350,8 @@ function Game({puzzle,dark,onFinish,mode}) {
   const toastRef=useRef(null);
   const bg=dark?"#0a0a0a":"#faf7f0";
 
+  useEffect(()=>{ if(mode==="daily") trackEvent('start'); },[]);
+
   const showToast=(msg,dur=1800)=>{clearTimeout(toastRef.current);setToast(typeof msg==="string"?{title:msg}:msg);toastRef.current=setTimeout(()=>setToast(null),dur);};
   const handleTile=name=>{if(over)return;setSelected(prev=>prev.includes(name)?prev.filter(p=>p!==name):prev.length<4?[...prev,name]:prev);};
 
@@ -1356,7 +1371,7 @@ function Game({puzzle,dark,onFinish,mode}) {
         setTimerOn(false);setOver(true);
         // Show result panel after last category lock-in animation completes
         setTimeout(()=>setShowResult(true),900);
-        if(mode==="daily") recordDailyResult(true, fmt(timeMs), timeMs, wrong);
+        if(mode==="daily"){ recordDailyResult(true, fmt(timeMs), timeMs, wrong); trackEvent('win',{wrong}); }
       }
     } else {
       const oneAway=puzzle.groups.some(g=>selected.filter(p=>g.players.includes(p)).length===3);
@@ -1382,7 +1397,7 @@ function Game({puzzle,dark,onFinish,mode}) {
         });
         // Show result panel after all reveals complete
         setTimeout(()=>setShowResult(true),700+(remaining.length*600)+400);
-        if(mode==="daily") recordDailyResult(false, null, null, nw);
+        if(mode==="daily"){ recordDailyResult(false, null, null, nw); trackEvent('loss',{wrong:nw}); }
       }
     }
   };
