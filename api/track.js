@@ -1,4 +1,6 @@
-// Records a unique visitor for "today" (Eastern Time) in a Redis SET.
+// Records a unique visitor for "today" (Eastern Time) in a Redis SET,
+// and splits them into new vs. returning using a persistent all-time
+// "ever seen" set (visitors:all, no expiry).
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -38,10 +40,26 @@ export default async function handler(req, res) {
       });
     }
 
-    // Expire after 45 days so old buckets don't accumulate
+    // Expire after 45 days so old daily buckets don't accumulate
     await fetch(`${base}/expire/${encodeURIComponent(key)}/3888000`, { headers });
 
-    return res.status(200).json({ ok: true, key, result: addBody.slice(0, 120) });
+    // New vs. returning: check the persistent all-time set first, then
+    // add this id to it (SADD to visitors:all never expires).
+    const seenRes = await fetch(
+      `${base}/sismember/visitors:all/${encodeURIComponent(anonId)}`,
+      { headers }
+    );
+    const seenBody = await seenRes.text();
+    let alreadySeen = false;
+    try { alreadySeen = JSON.parse(seenBody).result === 1; } catch {}
+
+    await fetch(`${base}/sadd/visitors:all/${encodeURIComponent(anonId)}`, { headers });
+
+    const bucketKey = alreadySeen ? `visitors:returning:${today}` : `visitors:new:${today}`;
+    await fetch(`${base}/sadd/${encodeURIComponent(bucketKey)}/${encodeURIComponent(anonId)}`, { headers });
+    await fetch(`${base}/expire/${encodeURIComponent(bucketKey)}/3888000`, { headers });
+
+    return res.status(200).json({ ok: true, key, result: addBody.slice(0, 120), new: !alreadySeen });
   } catch (err) {
     return res.status(200).json({ ok: false, error: String(err).slice(0, 300) });
   }
