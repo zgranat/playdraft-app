@@ -719,6 +719,104 @@ const FEEDBACK_URL = "https://forms.gle/s2Jk2vvLfLTJLPLd8";
 // "build your own" CTA on. Left empty, the CTA renders nothing.
 const SUBMIT_PUZZLE_URL = "";
 
+// ============================================================
+// FEATURED WEEKLY PUZZLE
+// ------------------------------------------------------------
+// A themed puzzle that runs alongside the daily, resetting Tuesday
+// 6am ET (after Monday Night Football, so real-game themes can be
+// authored off completed results). Date-bounded, NOT modulo — a
+// themed puzzle is tied to a real-world moment and must not rotate
+// back around. When no week is active, FEATURED_FALLBACK runs so
+// the slot is never empty.
+// ============================================================
+const FEATURED_RESET_HOUR = 6; // 6am ET Tuesday
+
+const FEATURED_PUZZLES = [
+  {
+    id: "wk-2026-08-18",
+    weekLabel: "WEEK OF AUG 18",
+    themeTitle: "FANTASY FOOTBALL DRAMA",
+    themeBlurb: "The sleepers, the busts, the injuries, and the positional freaks that make or break a fantasy season.",
+    activeFrom: "2026-08-18",
+    activeUntil: "2026-08-25",
+    title: "FEATURED · FANTASY FOOTBALL DRAMA",
+    players: [
+      "LEVEON BELL","TRENT RICHARDSON","MELVIN GORDON","TODD GURLEY",
+      "DAVID JOHNSON","SAQUON BARKLEY","NICK CHUBB","CHRISTIAN MCCAFFREY",
+      "PATRICK MAHOMES","JONATHAN TAYLOR","COOPER KUPP","ARIAN FOSTER",
+      "TAYSOM HILL","CORDARRELLE PATTERSON","DEEBO SAMUEL","TY MONTGOMERY"
+    ],
+    groups: [
+      { id:"A", players:["LEVEON BELL","TRENT RICHARDSON","MELVIN GORDON","TODD GURLEY"], label:"TOP-ROUND FANTASY FOOTBALL DRAFT PICKS WIDELY CONSIDERED HISTORIC BUSTS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["DAVID JOHNSON","SAQUON BARKLEY","NICK CHUBB","CHRISTIAN MCCAFFREY"], label:"TOP FANTASY FOOTBALL DRAFT PICKS WHOSE SEASON WAS WRECKED BY A MAJOR INJURY", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["PATRICK MAHOMES","JONATHAN TAYLOR","COOPER KUPP","ARIAN FOSTER"], label:"WENT FROM AFTERTHOUGHT TO LEADING THEIR POSITION IN FANTASY POINTS", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["TAYSOM HILL","CORDARRELLE PATTERSON","DEEBO SAMUEL","TY MONTGOMERY"], label:"PRODUCED FANTASY-RELEVANT STATS AT MULTIPLE POSITIONS IN THE SAME NFL CAREER", color:"#8B1A2A", difficulty:4 }
+    ]
+  }
+];
+
+// Runs whenever no dated week is active. Never leaves the slot broken.
+const FEATURED_FALLBACK = null;
+
+// ET wall-clock parts — matches the daily reset timezone convention.
+const etNow = () => {
+  const f = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/New_York',
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', hour12: false
+  });
+  const out = {};
+  f.formatToParts(new Date()).forEach(x => { out[x.type] = x.value; });
+  return out;
+};
+
+// The date the featured week is "counted as". Before 6am ET the
+// previous day still owns the slot, so a Tuesday-5am visitor sees
+// last week's puzzle rather than a half-published new one.
+const featuredDateKey = () => {
+  const p = etNow();
+  let d = new Date(Number(p.year), Number(p.month) - 1, Number(p.day));
+  if (Number(p.hour) < FEATURED_RESET_HOUR) d = new Date(d.getTime() - 86400000);
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${d.getFullYear()}-${mm}-${dd}`;
+};
+
+const getFeaturedPuzzle = () => {
+  const key = featuredDateKey();
+  const active = FEATURED_PUZZLES.find(f => key >= f.activeFrom && key < f.activeUntil);
+  return active || FEATURED_FALLBACK;
+};
+
+// Featured results live in their own store. They must never touch
+// draft_v1 — the daily streak is the product, and a weekly bonus
+// puzzle inflating or breaking it would be wrong.
+const loadFeatured = () => {
+  try { const s = localStorage.getItem("pd_featured_v1"); return s ? JSON.parse(s) : {}; }
+  catch { return {}; }
+};
+const getFeaturedResult = id => { const all = loadFeatured(); return id ? (all[id] || null) : null; };
+const recordFeaturedResult = (puzzle, won, ms, wrong) => {
+  if (!puzzle || !puzzle.id) return;
+  try {
+    const all = loadFeatured();
+    if (all[puzzle.id]) return;            // one attempt, same as daily
+    all[puzzle.id] = {
+      won: !!won, ms: won ? ms : null, wrong: wrong || 0,
+      theme: puzzle.themeTitle, week: puzzle.weekLabel,
+      at: new Date().toISOString()
+    };
+    localStorage.setItem("pd_featured_v1", JSON.stringify(all));
+  } catch {}
+};
+// Trophy case: every featured puzzle ever played, newest first.
+const featuredHistory = () => {
+  const all = loadFeatured();
+  return Object.entries(all)
+    .map(([id, r]) => ({ id, ...r }))
+    .sort((a, b) => String(b.at).localeCompare(String(a.at)));
+};
+
 const getTodaysPuzzle = () => {
   const today = new Date();
   today.setHours(0,0,0,0);
@@ -734,7 +832,7 @@ const getTodaysPuzzleNumber = () => {
   launch.setHours(0,0,0,0);
   return Math.max(0, Math.floor((today - launch) / 86400000)) + 1;
 };
-const getPuzzle = (mode, idx) => mode==="daily" ? getTodaysPuzzle() : PUZZLES[idx % PUZZLES.length];
+const getPuzzle = (mode, idx) => mode==="featured" ? getFeaturedPuzzle() : (mode==="daily" ? getTodaysPuzzle() : PUZZLES[idx % PUZZLES.length]);
 
 // Pick a random practice puzzle, avoiding today's daily and recently played
 const getRandomPracticePuzzle = (recentlyPlayed = []) => {
@@ -749,7 +847,9 @@ const buildShare = (puzzle, solvedOnly, wrong, ms, streak, mode, won) => {
   // Only groups the player actually cracked get colour — a loss must not
   // render as a full board, or the share card lies.
   const rows=[1,2,3,4].map(d=>{const g=solvedOnly.find(s=>s.difficulty===d);return g?DIFF_EMOJIS[d].repeat(4):"⬛⬛⬛⬛";}).join("\n");
-  const header = mode==="daily" ? `DRAFT #${getTodaysPuzzleNumber()} 🏈` : "DRAFT — PRACTICE 🏈";
+  const header = mode==="featured"
+    ? `DRAFT — FEATURED 🏈\n⭐ ${puzzle.weekLabel||"THIS WEEK"}: ${puzzle.themeTitle||"FEATURED PUZZLE"}`
+    : (mode==="daily" ? `DRAFT #${getTodaysPuzzleNumber()} 🏈` : "DRAFT — PRACTICE 🏈");
   // Guest drafts carry the contributor's credit into every share.
   const guestLine = puzzle.contributor ? `\n⭐ ${puzzle.contributor.tag||"GUEST DRAFT"} BY ${puzzle.contributor.name}` : "";
   const line = won ? `⚡ ${fmt(ms)}${wrong===0?" · 🔒 CLEAN GAME":""}` : "🏴 TURNOVER ON DOWNS";
@@ -828,6 +928,59 @@ function HowTo({dark,onClose}) {
 // ============================================================
 // TILE — mobile optimized
 // ============================================================
+
+// ============================================================
+// FEATURED BANNER — sits above the daily CTA on the landing page.
+// Deliberately styled as a secondary card, not a competing hero:
+// the daily puzzle is the habit and stays the primary route in.
+// Three states: unplayed / played-this-week / nothing active.
+// ============================================================
+function FeaturedBanner({dark,onPlay}) {
+  const puzzle = getFeaturedPuzzle();
+  if (!puzzle) return null;
+  const result = getFeaturedResult(puzzle.id);
+  const fg = dark ? "#d4c9b8" : "#1a1a2e";
+  const shellBase = {
+    width:"100%", maxWidth:"330px", marginBottom:"16px", textAlign:"left",
+    border:"1px solid rgba(200,169,110,0.55)", borderRadius:"10px",
+    padding:"13px 14px", background: dark ? "rgba(200,169,110,0.07)" : "rgba(200,169,110,0.10)"
+  };
+  const kicker = (
+    <div style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"5px"}}>
+      <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"2px",background:"#C8A96E",color:"#0f1923",padding:"2px 6px",borderRadius:"3px"}}>FEATURED</span>
+      <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:dark?"#7a7a7a":"#999"}}>{puzzle.weekLabel}</span>
+    </div>
+  );
+
+  // Already played this week — show the result, offer a share, no replay.
+  // Replaying would break the shared-score contract the daily relies on.
+  if (result) {
+    return (
+      <div style={shellBase}>
+        {kicker}
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"19px",letterSpacing:"1.5px",color:fg,lineHeight:1.1}}>{puzzle.themeTitle}</div>
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:result.won?"#2E6B3E":"#8B1A2A",marginTop:"6px"}}>
+          {result.won
+            ? `✅ SOLVED · ${4-(result.wrong||0)} DOWN${4-(result.wrong||0)===1?"":"S"} LEFT${result.wrong===0?" · 🔒 CLEAN":""}`
+            : "🏴 TURNOVER ON DOWNS"}
+        </div>
+        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:dark?"#777":"#999",marginTop:"4px"}}>
+          Back next Tuesday with a new theme.
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <button onClick={onPlay} style={{...shellBase,cursor:"pointer",display:"block",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}>
+      {kicker}
+      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"19px",letterSpacing:"1.5px",color:fg,lineHeight:1.1}}>{puzzle.themeTitle}</div>
+      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",fontStyle:"italic",color:dark?"#9a9a9a":"#777",marginTop:"3px",lineHeight:1.35}}>{puzzle.themeBlurb}</div>
+      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:"#C8A96E",marginTop:"7px"}}>PLAY THIS WEEK'S FEATURED →</div>
+    </button>
+  );
+}
+
 function ContributorBanner({contributor,dark}) {
   if(!contributor) return null;
   return (
@@ -964,17 +1117,25 @@ function ReminderSignup({dark}) {
 // ============================================================
 // RESULT PANEL — inline, shown below the revealed board
 // ============================================================
-function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mode}) {
+function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mode,onPlayFeatured}) {
   const [copied,setCopied]=useState(false);
   const bg=dark?"#111":"#faf7f0",fg=dark?"#e0d5c5":"#1a1a2e";
   const st=loadStats();
   const cleanGame=wrong===0;
   const streak=mode==="daily"?liveStreak(st):0;
+  const isFeatured=mode==="featured";
   const shareText=buildShare(puzzle,solvedOnly||solved,wrong,ms,streak,mode,won);
 
-  const copy=()=>{navigator.clipboard.writeText(shareText).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2200);});if(mode==="daily")trackEvent('share');};
-  const shareToX=()=>{window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`,"_blank");if(mode==="daily")trackEvent('share');};
-  const nativeShare=()=>{ if(navigator.share){navigator.share({title:"DRAFT",text:shareText,url:"https://playdraft.app"});}else{copy();} if(mode==="daily")trackEvent('share'); };
+  // Daily shares count toward the daily 'share' key; featured shares count
+  // toward that puzzle's own featured_share key so Featured Puzzle sharing
+  // shows up in stats instead of vanishing.
+  const fireShareEvent=()=>{
+    if(mode==="daily") trackEvent('share');
+    else if(mode==="featured") trackEvent('featured_share',{featured:puzzle.id});
+  };
+  const copy=()=>{navigator.clipboard.writeText(shareText).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2200);});fireShareEvent();};
+  const shareToX=()=>{window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`,"_blank");fireShareEvent();};
+  const nativeShare=()=>{ if(navigator.share){navigator.share({title:"DRAFT",text:shareText,url:"https://playdraft.app"});}else{copy();} fireShareEvent(); };
 
   return (
     <div style={{background:bg,borderRadius:"12px",padding:"24px 18px 28px",width:"100%",maxWidth:"460px",margin:"16px auto 0",border:`2px solid ${won?"#C8A96E":"#8B1A2A"}`,animation:"fadeUp 0.5s ease"}}>
@@ -987,7 +1148,13 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
           <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"16px",color:"#C8A96E",textAlign:"center",marginBottom:"6px",letterSpacing:"2px"}}>🔥 {streak}-DAY STREAK</div>
         )}
 
-        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:"#888",textAlign:"center",marginBottom:puzzle.contributor?"4px":"20px",fontStyle:"italic"}}>{puzzle.title}</div>
+        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:"#888",textAlign:"center",marginBottom:puzzle.contributor?"4px":(isFeatured?"4px":"20px"),fontStyle:"italic"}}>{puzzle.title}</div>
+
+        {isFeatured&&(
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#666":"#999",textAlign:"center",marginBottom:"20px"}}>
+            FEATURED PUZZLES DON'T AFFECT YOUR DAILY STREAK
+          </div>
+        )}
 
         {puzzle.contributor&&(
           <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:"#C8A96E",textAlign:"center",marginBottom:"20px"}}>
@@ -1010,6 +1177,30 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
             </div>
           ))}
         </div>
+
+        {/* Featured cross-promo — only on the daily solve page, and only
+            when this week's featured is still unplayed. The daily is the
+            habit; this is the second thing you do, never the first. */}
+        {mode==="daily"&&(()=>{
+          const f=getFeaturedPuzzle();
+          if(!f||getFeaturedResult(f.id)) return null;
+          return (
+            <button onClick={onPlayFeatured} style={{
+              display:"block",width:"100%",textAlign:"left",cursor:"pointer",
+              border:"1px solid rgba(200,169,110,0.55)",
+              background:dark?"rgba(200,169,110,0.07)":"rgba(200,169,110,0.10)",
+              borderRadius:"8px",padding:"12px 14px",marginBottom:"18px",
+              WebkitTapHighlightColor:"transparent",touchAction:"manipulation"
+            }}>
+              <div style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"4px"}}>
+                <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"2px",background:"#C8A96E",color:"#0f1923",padding:"2px 6px",borderRadius:"3px"}}>FEATURED</span>
+                <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:dark?"#7a7a7a":"#999"}}>{f.weekLabel}</span>
+              </div>
+              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"1.5px",color:"#C8A96E",lineHeight:1.2}}>{f.themeTitle}</div>
+              <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",color:dark?"#9a9a9a":"#777",marginTop:"3px"}}>One more before you go →</div>
+            </button>
+          );
+        })()}
 
         {/* Build-your-own CTA — contextual on guest drafts, quieter otherwise */}
         {SUBMIT_PUZZLE_URL&&(
@@ -1223,6 +1414,32 @@ function LockerRoom({dark,onClose,onPlay}) {
           </>
         )}
 
+        {/* Featured trophy case — weekly puzzles expire, but the wins
+            they produced don't. Turns expiry from "your result vanished"
+            into a collection worth coming back to fill. */}
+        {(()=>{
+          const hist=featuredHistory();
+          if(!hist.length) return null;
+          return (
+            <div style={{marginTop:"22px"}}>
+              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"3px",color:"#C8A96E",marginBottom:"8px"}}>FEATURED PUZZLES</div>
+              <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",overflow:"hidden"}}>
+                {hist.map((f,i)=>(
+                  <div key={f.id} style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"10px",padding:"11px 13px",borderTop:i===0?"none":`1px solid ${border}`}}>
+                    <div style={{minWidth:0}}>
+                      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"1px",color:fg,lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{f.theme||"FEATURED PUZZLE"}</div>
+                      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"2px",color:dark?"#666":"#999",marginTop:"2px"}}>{f.week||""}</div>
+                    </div>
+                    <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"1px",color:f.won?"#2E6B3E":"#8B1A2A",flexShrink:0,textAlign:"right"}}>
+                      {f.won?`${f.wrong===0?"🔒 CLEAN":`${4-(f.wrong||0)} LEFT`}`:"🏴 LOSS"}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
+
         {!doneToday&&(
           <button onClick={onPlay} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"3px",padding:"16px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"8px",cursor:"pointer",marginTop:"10px"}}>
             {streak>0?"KEEP THE STREAK ALIVE":"PLAY TODAY'S DRAFT"}
@@ -1237,7 +1454,7 @@ function LockerRoom({dark,onClose,onPlay}) {
 // ============================================================
 // LANDING — mobile first
 // ============================================================
-function Landing({onPlay,dark,mode}) {
+function Landing({onPlay,onPlayFeatured,dark,mode}) {
   const bg=dark?"#0a0a0a":"#faf7f0",fg=dark?"#d4c9b8":"#1a1a2e";
   const isPractice=mode==="practice";
   const sports=[{icon:"🏈",name:"NFL",status:"live"},{icon:"🏀",name:"NBA",status:"soon"},{icon:"⚾",name:"MLB",status:"soon"},{icon:"🏒",name:"NHL",status:"soon"}];
@@ -1294,6 +1511,8 @@ function Landing({onPlay,dark,mode}) {
         );
       })()}
 
+      {!isPractice&&<FeaturedBanner dark={dark} onPlay={onPlayFeatured}/>}
+
       <button
         onClick={onPlay}
         style={{fontFamily:"'Bebas Neue',cursive",fontSize:"20px",letterSpacing:"4px",padding:"20px 0",width:"100%",maxWidth:"330px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"10px",cursor:"pointer",boxShadow:"0 4px 20px rgba(200,169,110,0.4)",marginBottom:"24px",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}
@@ -1334,7 +1553,7 @@ function Landing({onPlay,dark,mode}) {
 // ============================================================
 // GAME — mobile optimized
 // ============================================================
-function Game({puzzle,dark,onFinish,mode}) {
+function Game({puzzle,dark,onFinish,mode,onPlayFeatured}) {
   const [tiles,setTiles]=useState(()=>shuffle(puzzle.players));
   const [selected,setSelected]=useState([]);
   const [solved,setSolved]=useState([]);
@@ -1350,7 +1569,7 @@ function Game({puzzle,dark,onFinish,mode}) {
   const toastRef=useRef(null);
   const bg=dark?"#0a0a0a":"#faf7f0";
 
-  useEffect(()=>{ if(mode==="daily") trackEvent('start'); },[]);
+  useEffect(()=>{ if(mode==="daily") trackEvent('start'); else if(mode==="featured") trackEvent('featured_start',{featured:puzzle.id}); },[]);
 
   const showToast=(msg,dur=1800)=>{clearTimeout(toastRef.current);setToast(typeof msg==="string"?{title:msg}:msg);toastRef.current=setTimeout(()=>setToast(null),dur);};
   const handleTile=name=>{if(over)return;setSelected(prev=>prev.includes(name)?prev.filter(p=>p!==name):prev.length<4?[...prev,name]:prev);};
@@ -1372,6 +1591,7 @@ function Game({puzzle,dark,onFinish,mode}) {
         // Show result panel after last category lock-in animation completes
         setTimeout(()=>setShowResult(true),900);
         if(mode==="daily"){ recordDailyResult(true, fmt(timeMs), timeMs, wrong); trackEvent('win',{wrong}); }
+        else if(mode==="featured"){ recordFeaturedResult(puzzle, true, timeMs, wrong); trackEvent('featured_win',{wrong,featured:puzzle.id}); }
       }
     } else {
       const oneAway=puzzle.groups.some(g=>selected.filter(p=>g.players.includes(p)).length===3);
@@ -1398,6 +1618,7 @@ function Game({puzzle,dark,onFinish,mode}) {
         // Show result panel after all reveals complete
         setTimeout(()=>setShowResult(true),700+(remaining.length*600)+400);
         if(mode==="daily"){ recordDailyResult(false, null, null, nw); trackEvent('loss',{wrong:nw}); }
+        else if(mode==="featured"){ recordFeaturedResult(puzzle, false, null, nw); trackEvent('featured_loss',{wrong:nw,featured:puzzle.id}); }
       }
     }
   };
@@ -1463,7 +1684,7 @@ function Game({puzzle,dark,onFinish,mode}) {
           </div>
         )}
 
-        {showResult&&<ResultPanel puzzle={puzzle} solved={[...solved,...revealedGroups]} solvedOnly={solved} wrong={wrong} ms={timeMs} dark={dark} onPlayAgain={onFinish} won={solved.length===4} mode={mode}/>}
+        {showResult&&<ResultPanel puzzle={puzzle} solved={[...solved,...revealedGroups]} solvedOnly={solved} wrong={wrong} ms={timeMs} dark={dark} onPlayAgain={onFinish} won={solved.length===4} mode={mode} onPlayFeatured={onPlayFeatured}/>}
       </div>
     </div>
   );
@@ -1505,7 +1726,16 @@ export default function App() {
   const [mode,setMode]=useState("daily");
   const [practicePuzzle,setPracticePuzzle]=useState(()=>getRandomPracticePuzzle());
   const [recentPractice,setRecentPractice]=useState([]);
-  const puzzle = mode==="daily" ? getTodaysPuzzle() : practicePuzzle;
+  const featuredPuzzle = getFeaturedPuzzle();
+  const puzzle = mode==="featured" ? (featuredPuzzle||getTodaysPuzzle())
+               : (mode==="daily" ? getTodaysPuzzle() : practicePuzzle);
+  // Featured is entered only from the banner or the solve-page CTA —
+  // never from the header toggle. Keeps daily the default route in.
+  const playFeatured = () => {
+    if(!getFeaturedPuzzle()) return;
+    setMode("featured");
+    setScreen("game");
+  };
   const handleModeChange=m=>{
     setMode(m);
     setScreen("home");
@@ -1517,6 +1747,12 @@ export default function App() {
     }
   };
   const handleFinish=()=>{
+    if(mode==="featured"){
+      // Featured is a one-off, not a loop — always return to the daily home.
+      setMode("daily");
+      setScreen("home");
+      return;
+    }
     if(mode==="practice"){
       // Pick a new random puzzle for next round, stay in game (don't go home)
       const newRecent=[...recentPractice,practicePuzzle.id].slice(-Math.max(1,PUZZLES.length-2));
@@ -1541,8 +1777,8 @@ export default function App() {
         button{-webkit-tap-highlight-color:transparent;}
       `}</style>
       <Header dark={dark} onDark={()=>setDark(d=>!d)} onStats={()=>setScreen("locker")} onHome={()=>setScreen("home")} onHow={()=>setScreen("howto")} onScoring={()=>setScreen("scoring")} mode={mode} onMode={handleModeChange}/>
-      {screen==="home"&&<Landing onPlay={()=>setScreen("game")} dark={dark} mode={mode}/>}
-      {screen==="game"&&<Game key={`${puzzle.id}-${mode}`} puzzle={puzzle} dark={dark} mode={mode} onFinish={handleFinish}/>}
+      {screen==="home"&&<Landing onPlay={()=>{if(mode==="featured")setMode("daily");setScreen("game");}} onPlayFeatured={playFeatured} dark={dark} mode={mode==="featured"?"daily":mode}/>}
+      {screen==="game"&&<Game key={`${puzzle.id}-${mode}`} puzzle={puzzle} dark={dark} mode={mode} onFinish={handleFinish} onPlayFeatured={playFeatured}/>}
       {screen==="howto"&&<HowTo dark={dark} onClose={()=>setScreen("home")}/>}
       {screen==="scoring"&&<ScoringPage dark={dark} onClose={()=>setScreen("home")}/>}
       {screen==="locker"&&<LockerRoom dark={dark} onClose={()=>setScreen("home")} onPlay={()=>{setMode("daily");setScreen("game");}}/>}
