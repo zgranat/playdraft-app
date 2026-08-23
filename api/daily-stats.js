@@ -1,6 +1,15 @@
 // Runs daily via Vercel Cron. Emails yesterday's performance readout:
 // visitors, funnel (started -> finished -> solved), abandons, solve
 // rate, and share rate.
+//
+// ACTIVE_FEATURED_ID: update this each time a new Featured Puzzle ships —
+// must match the `id` field on the live entry in FEATURED_PUZZLES in
+// src/App.js (e.g. "wk-2026-08-18"). Featured events are keyed by puzzle
+// id, not by day, so this readout shows the whole week's cumulative
+// Featured activity rather than just yesterday's slice of it. Leave this
+// empty ('') when no Featured Puzzle is live and the section is skipped.
+const ACTIVE_FEATURED_ID = 'wk-2026-08-18';
+
 export default async function handler(req, res) {
   const {
     UPSTASH_REDIS_REST_URL,
@@ -58,6 +67,29 @@ export default async function handler(req, res) {
     const avgWrong = finished > 0 ? Math.round((wrongSum / finished) * 10) / 10 : 0;
     const cleanRate = pct(clean, won);              // of solvers, % with zero wrong guesses
 
+    // Featured Puzzle totals — cumulative for the whole week, not just
+    // yesterday, since these events are keyed by puzzle id rather than day.
+    let featured = null;
+    if (ACTIVE_FEATURED_ID) {
+      const [fStarted, fWon, fLost, fShared, fWrongSum, fClean] = await Promise.all([
+        scard(`evt:featured_start:${ACTIVE_FEATURED_ID}`),
+        scard(`evt:featured_win:${ACTIVE_FEATURED_ID}`),
+        scard(`evt:featured_loss:${ACTIVE_FEATURED_ID}`),
+        scard(`evt:featured_share:${ACTIVE_FEATURED_ID}`),
+        getInt(`evt:wrongsum:${ACTIVE_FEATURED_ID}`),
+        scard(`evt:clean:${ACTIVE_FEATURED_ID}`),
+      ]);
+      const fFinished = fWon + fLost;
+      featured = {
+        id: ACTIVE_FEATURED_ID,
+        started: fStarted, won: fWon, lost: fLost, shared: fShared,
+        finished: fFinished,
+        solveRate: pct(fWon, fFinished),
+        avgWrong: fFinished > 0 ? Math.round((fWrongSum / fFinished) * 10) / 10 : 0,
+        cleanRate: pct(fClean, fWon),
+      };
+    }
+
     const row = (label, value, sub) => `
       <tr>
         <td style="padding:8px 14px;font-family:Georgia,serif;color:#555;">${label}</td>
@@ -82,6 +114,19 @@ export default async function handler(req, res) {
           ${row('Clean game rate', `${cleanRate}%`, 'of solvers')}
           ${row('Shared', shared, `(${shareRate}% of finishers)`)}
         </table>
+        ${featured ? `
+        <h3 style="font-family:Georgia,serif;margin:18px 0 2px;">Featured Puzzle — ${featured.id}</h3>
+        <p style="color:#888;margin-top:0;font-size:13px;">Cumulative for this week's featured, not just yesterday</p>
+        <table style="width:100%;border-collapse:collapse;border:1px solid #eee;">
+          ${row('Started', featured.started)}
+          ${row('Finished', featured.finished)}
+          ${row('Solved', featured.won)}
+          ${row('Failed', featured.lost)}
+          ${row('Solve rate', `${featured.solveRate}%`, 'of finishers')}
+          ${row('Avg wrong guesses', featured.avgWrong, 'per finisher')}
+          ${row('Clean game rate', `${featured.cleanRate}%`, 'of solvers')}
+          ${row('Shared', featured.shared)}
+        </table>` : ''}
       </div>`;
 
     const emailRes = await fetch('https://api.resend.com/emails', {
@@ -106,6 +151,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true, date: yesterday, visitors, newVisitors, returningVisitors, started, finished, won, lost,
       abandoned, shared, solveRate, completionRate, abandonRate, shareRate, newRate, avgWrong, cleanRate,
+      featured,
     });
   } catch (err) {
     return res.status(500).json({ error: String(err).slice(0, 300) });
