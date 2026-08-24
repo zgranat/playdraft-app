@@ -717,7 +717,7 @@ const FEEDBACK_URL = "https://forms.gle/s2Jk2vvLfLTJLPLd8";
 
 // Puzzle submission form. Paste your Google Form URL here to turn the
 // "build your own" CTA on. Left empty, the CTA renders nothing.
-const SUBMIT_PUZZLE_URL = "";
+const SUBMIT_PUZZLE_URL = "https://www.playdraft.app/submit.html";
 
 // ============================================================
 // FEATURED WEEKLY PUZZLE
