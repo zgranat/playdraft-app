@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit a Draft — PlayDraft</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+
+  :root { --gold:#C8A96E; --ink:#1a1a2e; --bg:#faf7f0; --card:#fff; --border:#ddd6c4; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: 'Crimson Pro', Georgia, serif;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 32px 20px 60px;
+  }
+  .title {
+    font-family: 'Bebas Neue', cursive; font-size: clamp(40px,10vw,64px);
+    letter-spacing: 3px; color: var(--gold); line-height: 0.9; margin-bottom: 6px;
+    text-shadow: 3px 3px 0 rgba(15,25,35,0.15);
+  }
+  .subtitle { font-style: italic; color: #666; margin-bottom: 28px; text-align: center; max-width: 420px; }
+  form { width: 100%; max-width: 460px; }
+  .field { margin-bottom: 18px; }
+  label {
+    display: block; font-family: 'Bebas Neue', cursive; font-size: 12px;
+    letter-spacing: 2px; color: #888; margin-bottom: 6px;
+  }
+  label .req { color: var(--gold); }
+  label .hint { font-family: 'Crimson Pro', Georgia, serif; font-style: italic; letter-spacing: 0; color: #aaa; font-size: 12px; text-transform: none; }
+  input[type=text], input[type=email], textarea {
+    width: 100%; font-family: 'Crimson Pro', Georgia, serif; font-size: 15px;
+    padding: 11px 12px; border: 1.5px solid var(--border); border-radius: 8px;
+    background: var(--card); color: var(--ink); resize: vertical;
+  }
+  input:focus, textarea:focus { outline: none; border-color: var(--gold); }
+  textarea.category { min-height: 70px; }
+  .category-example {
+    font-size: 12px; font-style: italic; color: #aaa; margin-top: 4px;
+  }
+  button {
+    width: 100%; font-family: 'Bebas Neue', cursive; font-size: 18px; letter-spacing: 3px;
+    padding: 16px; background: var(--gold); color: #0f1923; border: none;
+    border-radius: 10px; cursor: pointer; margin-top: 8px;
+  }
+  button:disabled { opacity: 0.6; cursor: default; }
+  .msg { text-align: center; margin-top: 16px; font-family: 'Bebas Neue', cursive; letter-spacing: 2px; }
+  .msg.ok { color: #2E6B3E; }
+  .msg.err { color: #8B1A2A; }
+  .back { margin-top: 28px; }
+  .back a { color: #999; font-size: 13px; }
+</style>
+</head>
+<body>
+
+  <div class="title">SUBMIT A DRAFT</div>
+  <div class="subtitle">Got a theme with 16 real NFL players hiding in 4 groups of 4? Send it our way — get credited on the board if it makes the cut.</div>
+
+  <form id="puzzleForm">
+    <div class="field">
+      <label for="name">YOUR NAME OR HANDLE <span class="req">*</span></label>
+      <input type="text" id="name" name="name" maxlength="100" required>
+    </div>
+
+    <div class="field">
+      <label for="tag">SHOW OR TAG <span class="hint">(optional — defaults to "GUEST DRAFT")</span></label>
+      <input type="text" id="tag" name="tag" maxlength="100" placeholder="e.g. Late-Round Fantasy Football">
+    </div>
+
+    <div class="field">
+      <label for="email">EMAIL <span class="req">*</span></label>
+      <input type="email" id="email" name="email" maxlength="100" required>
+    </div>
+
+    <div class="field">
+      <label for="theme">PUZZLE THEME <span class="req">*</span></label>
+      <input type="text" id="theme" name="theme" maxlength="100" placeholder="e.g. Draft Day Steals" required>
+    </div>
+
+    <div class="field">
+      <label for="blurb">ONE-LINE BLURB <span class="hint">(optional)</span></label>
+      <input type="text" id="blurb" name="blurb" maxlength="300" placeholder="A short tagline for the puzzle">
+    </div>
+
+    <div class="field">
+      <label for="category1">CATEGORY 1 <span class="req">*</span></label>
+      <textarea class="category" id="category1" name="category1" maxlength="500" required></textarea>
+      <div class="category-example">e.g. "Sixth-round Pro Bowlers: Terrell Davis, Antonio Brown, Shannon Sharpe, Donald Driver"</div>
+    </div>
+
+    <div class="field">
+      <label for="category2">CATEGORY 2 <span class="req">*</span></label>
+      <textarea class="category" id="category2" name="category2" maxlength="500" required></textarea>
+    </div>
+
+    <div class="field">
+      <label for="category3">CATEGORY 3 <span class="req">*</span></label>
+      <textarea class="category" id="category3" name="category3" maxlength="500" required></textarea>
+    </div>
+
+    <div class="field">
+      <label for="category4">CATEGORY 4 <span class="req">*</span></label>
+      <textarea class="category" id="category4" name="category4" maxlength="500" required></textarea>
+    </div>
+
+    <div class="field">
+      <label for="notes">SOURCES / NOTES <span class="hint">(optional — links or reasoning speed up verification)</span></label>
+      <textarea id="notes" name="notes" maxlength="1500" style="min-height:60px;"></textarea>
+    </div>
+
+    <button type="submit" id="submitBtn">SUBMIT DRAFT</button>
+    <div id="msg"></div>
+  </form>
+
+  <div class="back"><a href="/">&larr; Back to PlayDraft</a></div>
+
+<script>
+  const form = document.getElementById('puzzleForm');
+  const btn = document.getElementById('submitBtn');
+  const msg = document.getElementById('msg');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    btn.disabled = true;
+    btn.textContent = 'SUBMITTING...';
+    msg.textContent = '';
+    msg.className = 'msg';
+
+    const payload = {
+      name: document.getElementById('name').value,
+      tag: document.getElementById('tag').value,
+      email: document.getElementById('email').value,
+      theme: document.getElementById('theme').value,
+      blurb: document.getElementById('blurb').value,
+      category1: document.getElementById('category1').value,
+      category2: document.getElementById('category2').value,
+      category3: document.getElementById('category3').value,
+      category4: document.getElementById('category4').value,
+      notes: document.getElementById('notes').value,
+    };
+
+    try {
+      const res = await fetch('/api/submit-puzzle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (res.ok && data.ok) {
+        form.reset();
+        msg.textContent = "Got it — we'll take a look and follow up if it makes the board.";
+        msg.className = 'msg ok';
+        btn.textContent = 'SUBMIT DRAFT';
+        btn.disabled = false;
+      } else {
+        msg.textContent = data.error || 'Something went wrong — try again?';
+        msg.className = 'msg err';
+        btn.textContent = 'SUBMIT DRAFT';
+        btn.disabled = false;
+      }
+    } catch (err) {
+      msg.textContent = 'Network error — try again?';
+      msg.className = 'msg err';
+      btn.textContent = 'SUBMIT DRAFT';
+      btn.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html>
