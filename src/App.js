@@ -735,22 +735,22 @@ const FEATURED_PUZZLES = [
   {
     id: "wk-2026-08-18",
     weekLabel: "WEEK OF AUG 23",
-    themeTitle: "FANTASY FOOTBALL DRAMA",
-    themeBlurb: "The sleepers, the busts, the injuries, and the positional freaks that make or break a fantasy season.",
+    themeTitle: "2025 FANTASY REWIND",
+    themeBlurb: "The MVPs, the busts, the waiver-wire miracles, and the guys who broke your heart — all from the season that just happened.",
     activeFrom: "2026-08-23",
     activeUntil: "2026-09-01",
-    title: "FEATURED · FANTASY FOOTBALL DRAMA",
+    title: "FEATURED · 2025 FANTASY REWIND",
     players: [
-      "LEVEON BELL","TRENT RICHARDSON","MELVIN GORDON","TODD GURLEY",
-      "DAVID JOHNSON","SAQUON BARKLEY","NICK CHUBB","CHRISTIAN MCCAFFREY",
-      "PATRICK MAHOMES","JONATHAN TAYLOR","COOPER KUPP","ARIAN FOSTER",
-      "TAYSOM HILL","CORDARRELLE PATTERSON","DEEBO SAMUEL","TY MONTGOMERY"
+      "CHRISTIAN MCCAFFREY","DERRICK HENRY","JAXON SMITH-NJIGBA","PUKA NACUA",
+      "JUSTIN JEFFERSON","GARRETT WILSON","ASHTON JEANTY","BRIAN THOMAS JR",
+      "JAVONTE WILLIAMS","MICHAEL WILSON","JACORY CROSKEY-MERRITT","TRE TUCKER",
+      "BRANDON AIYUK","JAHMYR GIBBS","EMEKA EGBUKA","JERRY JEUDY"
     ],
     groups: [
-      { id:"A", players:["LEVEON BELL","TRENT RICHARDSON","MELVIN GORDON","TODD GURLEY"], label:"TOP-ROUND FANTASY FOOTBALL DRAFT PICKS WIDELY CONSIDERED HISTORIC BUSTS", color:"#B8860B", difficulty:1 },
-      { id:"B", players:["DAVID JOHNSON","SAQUON BARKLEY","NICK CHUBB","CHRISTIAN MCCAFFREY"], label:"TOP FANTASY FOOTBALL DRAFT PICKS WHOSE SEASON WAS WRECKED BY A MAJOR INJURY", color:"#2E6B3E", difficulty:2 },
-      { id:"C", players:["PATRICK MAHOMES","JONATHAN TAYLOR","COOPER KUPP","ARIAN FOSTER"], label:"WENT FROM AFTERTHOUGHT TO LEADING THEIR POSITION IN FANTASY POINTS", color:"#1B4F8A", difficulty:3 },
-      { id:"D", players:["TAYSOM HILL","CORDARRELLE PATTERSON","DEEBO SAMUEL","TY MONTGOMERY"], label:"PRODUCED FANTASY-RELEVANT STATS AT MULTIPLE POSITIONS IN THE SAME NFL CAREER", color:"#8B1A2A", difficulty:4 }
+      { id:"A", players:["CHRISTIAN MCCAFFREY","DERRICK HENRY","JAXON SMITH-NJIGBA","PUKA NACUA"], label:"TOP FANTASY SCORERS AT THEIR POSITION DURING THE 2025 NFL SEASON", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["JUSTIN JEFFERSON","GARRETT WILSON","ASHTON JEANTY","BRIAN THOMAS JR"], label:"AMONG THE BIGGEST FANTASY FOOTBALL BUSTS OF THE 2025 SEASON", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JAVONTE WILLIAMS","MICHAEL WILSON","JACORY CROSKEY-MERRITT","TRE TUCKER"], label:"UNHERALDED 2025 PLAYERS WHO DELIVERED A LEAGUE-WINNING STRETCH FROM NOWHERE", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["BRANDON AIYUK","JAHMYR GIBBS","EMEKA EGBUKA","JERRY JEUDY"], label:"TALENTED 2025 FANTASY PLAYERS DERAILED BY INCONSISTENCY OR SITUATION", color:"#8B1A2A", difficulty:4 }
     ]
   }
 ];
@@ -1186,7 +1186,10 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
 
         {/* Featured cross-promo — only on the daily solve page, and only
             when this week's featured is still unplayed. The daily is the
-            habit; this is the second thing you do, never the first. */}
+            habit; this is the second thing you do, never the first. Same
+            nested-CTA-bar treatment as the landing page card, so it reads
+            as an obvious button in both places rather than two different
+            visual languages for the same action. */}
         {mode==="daily"&&(()=>{
           const f=getFeaturedPuzzle();
           if(!f||getFeaturedResult(f.id)) return null;
@@ -1202,8 +1205,11 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
                 <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"2px",background:"#C8A96E",color:"#0f1923",padding:"2px 6px",borderRadius:"3px"}}>FEATURED</span>
                 <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:dark?"#7a7a7a":"#999"}}>{f.weekLabel}</span>
               </div>
-              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"1.5px",color:"#C8A96E",lineHeight:1.2}}>{f.themeTitle}</div>
-              <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",color:dark?"#9a9a9a":"#777",marginTop:"3px"}}>One more before you go →</div>
+              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"1.5px",color:dark?"#d4c9b8":"#1a1a2e",lineHeight:1.2}}>{f.themeTitle}</div>
+              <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:dark?"#9a9a9a":"#777",marginTop:"3px",lineHeight:1.35}}>{f.themeBlurb}</div>
+              <div style={{marginTop:"10px",padding:"9px",textAlign:"center",border:"1.5px solid rgba(200,169,110,0.7)",borderRadius:"7px",background:dark?"rgba(200,169,110,0.10)":"rgba(200,169,110,0.14)"}}>
+                <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:"#C8A96E"}}>PLAY THIS WEEK'S FEATURED PUZZLE</span>
+              </div>
             </button>
           );
         })()}
