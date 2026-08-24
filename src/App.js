@@ -734,11 +734,11 @@ const FEATURED_RESET_HOUR = 6; // 6am ET Tuesday
 const FEATURED_PUZZLES = [
   {
     id: "wk-2026-08-18",
-    weekLabel: "WEEK OF AUG 18",
+    weekLabel: "WEEK OF AUG 23",
     themeTitle: "FANTASY FOOTBALL DRAMA",
     themeBlurb: "The sleepers, the busts, the injuries, and the positional freaks that make or break a fantasy season.",
-    activeFrom: "2026-08-18",
-    activeUntil: "2026-08-25",
+    activeFrom: "2026-08-23",
+    activeUntil: "2026-09-01",
     title: "FEATURED · FANTASY FOOTBALL DRAMA",
     players: [
       "LEVEON BELL","TRENT RICHARDSON","MELVIN GORDON","TODD GURLEY",
@@ -935,13 +935,13 @@ function HowTo({dark,onClose}) {
 // the daily puzzle is the habit and stays the primary route in.
 // Three states: unplayed / played-this-week / nothing active.
 // ============================================================
-function FeaturedBanner({dark,onPlay}) {
+function FeaturedBanner({dark}) {
   const puzzle = getFeaturedPuzzle();
   if (!puzzle) return null;
   const result = getFeaturedResult(puzzle.id);
   const fg = dark ? "#d4c9b8" : "#1a1a2e";
   const shellBase = {
-    width:"100%", maxWidth:"330px", marginBottom:"16px", textAlign:"left",
+    width:"100%", maxWidth:"330px", marginBottom:"12px", textAlign:"left",
     border:"1px solid rgba(200,169,110,0.55)", borderRadius:"10px",
     padding:"13px 14px", background: dark ? "rgba(200,169,110,0.07)" : "rgba(200,169,110,0.10)"
   };
@@ -952,8 +952,9 @@ function FeaturedBanner({dark,onPlay}) {
     </div>
   );
 
-  // Already played this week — show the result, offer a share, no replay.
-  // Replaying would break the shared-score contract the daily relies on.
+  // Already played this week — show the result, no replay. Replaying would
+  // break the shared-score contract the daily relies on. This card never
+  // carries a button; when unplayed, the button lives beside it in Landing.
   if (result) {
     return (
       <div style={shellBase}>
@@ -972,12 +973,11 @@ function FeaturedBanner({dark,onPlay}) {
   }
 
   return (
-    <button onClick={onPlay} style={{...shellBase,cursor:"pointer",display:"block",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}>
+    <div style={shellBase}>
       {kicker}
       <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"19px",letterSpacing:"1.5px",color:fg,lineHeight:1.1}}>{puzzle.themeTitle}</div>
       <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",fontStyle:"italic",color:dark?"#9a9a9a":"#777",marginTop:"3px",lineHeight:1.35}}>{puzzle.themeBlurb}</div>
-      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:"#C8A96E",marginTop:"7px"}}>PLAY THIS WEEK'S FEATURED →</div>
-    </button>
+    </div>
   );
 }
 
@@ -1511,7 +1511,25 @@ function Landing({onPlay,onPlayFeatured,dark,mode}) {
         );
       })()}
 
-      {!isPractice&&<FeaturedBanner dark={dark} onPlay={onPlayFeatured}/>}
+      {!isPractice&&<FeaturedBanner dark={dark}/>}
+
+      {/* Explicit second button — deliberately distinct from the daily CTA:
+          outlined/lighter vs. the daily's solid fill, so the hierarchy reads
+          at a glance (daily = primary habit, featured = secondary pick).
+          Only rendered when a featured puzzle exists and is still unplayed —
+          matches the same gate the old in-card link used. */}
+      {!isPractice&&(()=>{
+        const fp = getFeaturedPuzzle();
+        if(!fp || getFeaturedResult(fp.id)) return null;
+        return (
+          <button
+            onClick={onPlayFeatured}
+            style={{fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",padding:"15px 0",width:"100%",maxWidth:"330px",background:dark?"rgba(200,169,110,0.08)":"rgba(200,169,110,0.12)",color:"#C8A96E",border:"1.5px solid rgba(200,169,110,0.55)",borderRadius:"10px",cursor:"pointer",marginBottom:"16px",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}
+          >
+            PLAY THIS WEEK'S FEATURED PUZZLE
+          </button>
+        );
+      })()}
 
       <button
         onClick={onPlay}
