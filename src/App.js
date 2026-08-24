@@ -1573,10 +1573,19 @@ function Landing({onPlay,onPlayFeatured,dark,mode}) {
         ))}
       </div>
 
-      {/* Feedback link */}
-      <a href={FEEDBACK_URL} target="_blank" rel="noopener noreferrer" style={{marginTop:"32px",fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#555":"#999",textDecoration:"none",borderBottom:`1px dashed ${dark?"#333":"#c8bfae"}`,paddingBottom:"2px"}}>
-        SPOT AN ERROR? SEND FEEDBACK →
-      </a>
+      {/* Feedback + submit links — visible on the homepage without playing
+          anything, unlike the post-solve CTA which only shows after you
+          finish a puzzle. */}
+      <div style={{marginTop:"32px",display:"flex",gap:"14px",alignItems:"center",flexWrap:"wrap",justifyContent:"center"}}>
+        <a href={FEEDBACK_URL} target="_blank" rel="noopener noreferrer" style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#555":"#999",textDecoration:"none",borderBottom:`1px dashed ${dark?"#333":"#c8bfae"}`,paddingBottom:"2px"}}>
+          SPOT AN ERROR? SEND FEEDBACK →
+        </a>
+        {SUBMIT_PUZZLE_URL&&(
+          <a href={SUBMIT_PUZZLE_URL} target="_blank" rel="noopener noreferrer" style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#555":"#999",textDecoration:"none",borderBottom:`1px dashed ${dark?"#333":"#c8bfae"}`,paddingBottom:"2px"}}>
+            BUILD YOUR OWN DRAFT →
+          </a>
+        )}
+      </div>
     </div>
   );
 }
