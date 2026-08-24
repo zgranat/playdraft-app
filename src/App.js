@@ -935,7 +935,7 @@ function HowTo({dark,onClose}) {
 // the daily puzzle is the habit and stays the primary route in.
 // Three states: unplayed / played-this-week / nothing active.
 // ============================================================
-function FeaturedBanner({dark}) {
+function FeaturedBanner({dark,onPlay}) {
   const puzzle = getFeaturedPuzzle();
   if (!puzzle) return null;
   const result = getFeaturedResult(puzzle.id);
@@ -973,11 +973,17 @@ function FeaturedBanner({dark}) {
   }
 
   return (
-    <div style={shellBase}>
+    <button onClick={onPlay} style={{...shellBase,cursor:"pointer",display:"block",textAlign:"left",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}>
       {kicker}
       <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"19px",letterSpacing:"1.5px",color:fg,lineHeight:1.1}}>{puzzle.themeTitle}</div>
       <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",fontStyle:"italic",color:dark?"#9a9a9a":"#777",marginTop:"3px",lineHeight:1.35}}>{puzzle.themeBlurb}</div>
-    </div>
+      {/* Nested CTA bar — makes the whole card read as one obvious button
+          instead of a plain info box you might tap by accident, while
+          keeping it a single tappable unit rather than two stacked elements. */}
+      <div style={{marginTop:"11px",padding:"10px",textAlign:"center",border:"1.5px solid rgba(200,169,110,0.7)",borderRadius:"7px",background:dark?"rgba(200,169,110,0.10)":"rgba(200,169,110,0.14)"}}>
+        <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:"#C8A96E"}}>PLAY THIS WEEK'S FEATURED PUZZLE</span>
+      </div>
+    </button>
   );
 }
 
@@ -1458,40 +1464,54 @@ function Landing({onPlay,onPlayFeatured,dark,mode}) {
   const bg=dark?"#0a0a0a":"#faf7f0",fg=dark?"#d4c9b8":"#1a1a2e";
   const isPractice=mode==="practice";
   const sports=[{icon:"🏈",name:"NFL",status:"live"},{icon:"🏀",name:"NBA",status:"soon"},{icon:"⚾",name:"MLB",status:"soon"},{icon:"🏒",name:"NHL",status:"soon"}];
+  // Collapsed by default — rules + worked example were the biggest chunk of
+  // vertical space on the page before someone ever hit a button. The "HOW"
+  // nav button already opens a full rules breakdown, so this is a shortcut
+  // for people who want a peek without leaving the landing page, not the
+  // only place this information lives.
+  const [showHow,setShowHow]=useState(false);
 
   return (
     <div style={{background:bg,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-start",padding:"32px 20px 40px",textAlign:"center"}}>
 
       <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(60px,17vw,96px)",letterSpacing:"3px",color:"#C8A96E",lineHeight:0.9,marginBottom:"14px",textShadow:`3px 3px 0 ${dark?"rgba(0,0,0,0.5)":"rgba(15,25,35,0.2)"}`}}>DRAFT</div>
 
-      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"clamp(16px,4.5vw,19px)",color:dark?"#888":"#666",fontStyle:"italic",marginBottom:"14px"}}>
+      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"clamp(16px,4.5vw,19px)",color:dark?"#888":"#666",fontStyle:"italic",marginBottom:"16px"}}>
         {isPractice ? "Sharpen your game. No streak on the line." : "The daily NFL puzzle."}
       </div>
 
-      {/* Stacked rules */}
       {!isPractice&&(
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"3px",color:fg,lineHeight:2,marginBottom:"18px"}}>
-          <div>16 PLAYERS</div>
-          <div>4 HIDDEN GROUPS</div>
-          <div>4 PLAYERS PER GROUP</div>
-          <div style={{color:"#C8A96E"}}>4 CHANCES TO SOLVE</div>
-        </div>
+        <button onClick={()=>setShowHow(h=>!h)} style={{background:"none",border:"none",cursor:"pointer",display:"flex",alignItems:"center",gap:"6px",fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:dark?"#8a8a8a":"#999",padding:"4px 0",marginBottom:showHow?"14px":"20px",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}>
+          HOW IT WORKS {showHow?"▲":"▼"}
+        </button>
       )}
 
-      {/* Worked example — clearly labeled */}
-      <div style={{position:"relative",background:dark?"#141414":"#fff",border:`1px solid ${dark?"#2a2a2a":"#ddd6c4"}`,borderRadius:"10px",padding:"22px 14px 14px",maxWidth:"330px",width:"100%",marginBottom:"22px"}}>
-        <div style={{position:"absolute",top:"-9px",left:"12px",fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",background:"#C8A96E",color:"#0f1923",padding:"2px 8px",borderRadius:"4px"}}>EXAMPLE</div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"6px",marginBottom:"10px"}}>
-          {["C.J. STROUD","MATT SCHAUB","DAVID CARR","CASE KEENUM"].map((p,i)=>(
-            <div key={p} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"0.5px",padding:"10px 4px",textAlign:"center",background:dark?"#1c1c1c":"#faf7f0",border:`1.5px solid ${dark?"#2a2a2a":"#ddd6c4"}`,borderRadius:"6px",color:fg,animation:`fadeUp 0.4s ease ${i*0.08}s both`}}>{p}</div>
-          ))}
-        </div>
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"14px",color:dark?"#555":"#999",marginBottom:"10px"}}>↓ tap 4 players, hit submit ↓</div>
-        <div style={{background:"#B8860B",borderRadius:"6px",padding:"9px 10px",animation:"fadeUp 0.4s ease 0.4s both"}}>
-          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",fontWeight:"700",fontStyle:"italic",color:"#fff",lineHeight:1.2}}>STARTED AT QB FOR THE HOUSTON TEXANS</div>
-        </div>
-        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",color:dark?"#666":"#888",fontStyle:"italic",marginTop:"10px",lineHeight:1.5}}>The connection stays hidden until you crack it. 4 wrong guesses and it's a turnover.</div>
-      </div>
+      {!isPractice&&showHow&&(
+        <>
+          {/* Stacked rules */}
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"3px",color:fg,lineHeight:2,marginBottom:"18px",animation:"fadeUp 0.3s ease both"}}>
+            <div>16 PLAYERS</div>
+            <div>4 HIDDEN GROUPS</div>
+            <div>4 PLAYERS PER GROUP</div>
+            <div style={{color:"#C8A96E"}}>4 CHANCES TO SOLVE</div>
+          </div>
+
+          {/* Worked example — clearly labeled */}
+          <div style={{position:"relative",background:dark?"#141414":"#fff",border:`1px solid ${dark?"#2a2a2a":"#ddd6c4"}`,borderRadius:"10px",padding:"22px 14px 14px",maxWidth:"330px",width:"100%",marginBottom:"22px",animation:"fadeUp 0.3s ease 0.05s both"}}>
+            <div style={{position:"absolute",top:"-9px",left:"12px",fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",background:"#C8A96E",color:"#0f1923",padding:"2px 8px",borderRadius:"4px"}}>EXAMPLE</div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"6px",marginBottom:"10px"}}>
+              {["C.J. STROUD","MATT SCHAUB","DAVID CARR","CASE KEENUM"].map((p,i)=>(
+                <div key={p} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"0.5px",padding:"10px 4px",textAlign:"center",background:dark?"#1c1c1c":"#faf7f0",border:`1.5px solid ${dark?"#2a2a2a":"#ddd6c4"}`,borderRadius:"6px",color:fg}}>{p}</div>
+              ))}
+            </div>
+            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"14px",color:dark?"#555":"#999",marginBottom:"10px"}}>↓ tap 4 players, hit submit ↓</div>
+            <div style={{background:"#B8860B",borderRadius:"6px",padding:"9px 10px"}}>
+              <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",fontWeight:"700",fontStyle:"italic",color:"#fff",lineHeight:1.2}}>STARTED AT QB FOR THE HOUSTON TEXANS</div>
+            </div>
+            <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",color:dark?"#666":"#888",fontStyle:"italic",marginTop:"10px",lineHeight:1.5}}>The connection stays hidden until you crack it. 4 wrong guesses and it's a turnover.</div>
+          </div>
+        </>
+      )}
 
       {/* Streak / competition hook */}
       {!isPractice&&(()=>{
@@ -1511,32 +1531,19 @@ function Landing({onPlay,onPlayFeatured,dark,mode}) {
         );
       })()}
 
-      {!isPractice&&<FeaturedBanner dark={dark}/>}
-
-      {/* Explicit second button — deliberately distinct from the daily CTA:
-          outlined/lighter vs. the daily's solid fill, so the hierarchy reads
-          at a glance (daily = primary habit, featured = secondary pick).
-          Only rendered when a featured puzzle exists and is still unplayed —
-          matches the same gate the old in-card link used. */}
-      {!isPractice&&(()=>{
-        const fp = getFeaturedPuzzle();
-        if(!fp || getFeaturedResult(fp.id)) return null;
-        return (
-          <button
-            onClick={onPlayFeatured}
-            style={{fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",padding:"15px 0",width:"100%",maxWidth:"330px",background:dark?"rgba(200,169,110,0.08)":"rgba(200,169,110,0.12)",color:"#C8A96E",border:"1.5px solid rgba(200,169,110,0.55)",borderRadius:"10px",cursor:"pointer",marginBottom:"16px",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}
-          >
-            PLAY THIS WEEK'S FEATURED PUZZLE
-          </button>
-        );
-      })()}
-
+      {/* PRIMARY CTA — daily comes first, unconditionally, so it's the
+          obvious next action regardless of whether a featured puzzle exists. */}
       <button
         onClick={onPlay}
-        style={{fontFamily:"'Bebas Neue',cursive",fontSize:"20px",letterSpacing:"4px",padding:"20px 0",width:"100%",maxWidth:"330px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"10px",cursor:"pointer",boxShadow:"0 4px 20px rgba(200,169,110,0.4)",marginBottom:"24px",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}
+        style={{fontFamily:"'Bebas Neue',cursive",fontSize:"20px",letterSpacing:"4px",padding:"20px 0",width:"100%",maxWidth:"330px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"10px",cursor:"pointer",boxShadow:"0 4px 20px rgba(200,169,110,0.4)",marginBottom:"16px",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}
       >
         {isPractice ? "PRACTICE MODE" : "PLAY TODAY'S DRAFT"}
       </button>
+
+      {/* Featured — one single clickable card, sitting below the daily CTA
+          so it reads as "one more thing to try" rather than competing with
+          the primary habit. */}
+      {!isPractice&&<FeaturedBanner dark={dark} onPlay={onPlayFeatured}/>}
 
       {/* Sports pills */}
       <div style={{display:"flex",gap:"8px",marginBottom:"24px",flexWrap:"wrap",justifyContent:"center"}}>
