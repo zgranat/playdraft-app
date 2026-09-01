@@ -1682,7 +1682,7 @@ function Landing({onPlay,onPlayFeatured,dark,mode}) {
             <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:s.status==="live"?"#C8A96E":(dark?"#555":"#999")}}>{s.name}</span>
             {s.status==="live"
               ?<span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"7px",letterSpacing:"1px",color:"#4A7C59",background:dark?"rgba(74,124,89,0.2)":"rgba(74,124,89,0.15)",padding:"1px 4px",borderRadius:"3px"}}>LIVE</span>
-              :<span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"7px",letterSpacing:"1px",color:dark?"#444":"#bbb",background:dark?"rgba(255,255,255,0.05)":"rgba(0,0,0,0.05)",padding:"1px 4px",borderRadius:"3px"}}>SOON</span>
+              :<span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"1px",color:dark?"#777":"#888",background:dark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.06)",padding:"2px 5px",borderRadius:"3px",whiteSpace:"nowrap"}}>COMING SOON</span>
             }
           </div>
         ))}
