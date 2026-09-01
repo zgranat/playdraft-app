@@ -836,22 +836,22 @@ const FEATURED_PUZZLES = [
   {
     id: "wk-2026-09-01",
     weekLabel: "WEEK OF SEP 1",
-    themeTitle: "FANTASY LEGENDS",
-    themeBlurb: "Draft season is here. Before you argue about this year's board, prove you remember the seasons that built the hobby.",
+    themeTitle: "2025 FANTASY REWIND",
+    themeBlurb: "The guys who won you the title, the guys who cost you it, and the waiver adds nobody saw coming \u2014 all from the season that just happened.",
     activeFrom: "2026-09-01",
     activeUntil: "2026-09-08",
-    title: "FEATURED \u00b7 FANTASY LEGENDS",
+    title: "FEATURED \u00b7 2025 FANTASY REWIND",
     players: [
-      "ERIC DICKERSON","ADRIAN PETERSON","DERRICK HENRY","CHRIS JOHNSON",
-      "LAMAR JACKSON","AARON RODGERS","CAM NEWTON","MATT RYAN",
-      "MICHAEL THOMAS","ANTONIO BROWN","JULIO JONES","WES WELKER",
-      "PRIEST HOLMES","MARSHALL FAULK","SHAUN ALEXANDER","EMMITT SMITH"
+      "JOSH ALLEN","JONATHAN TAYLOR","PUKA NACUA","TREY McBRIDE",
+      "DAVANTE ADAMS","DK METCALF","DEEBO SAMUEL","STEFON DIGGS",
+      "JUSTIN JEFFERSON","BRIAN THOMAS JR.","LAMAR JACKSON","MATTHEW GOLDEN",
+      "MICHAEL WILSON","WAN'DALE ROBINSON","HAROLD FANNIN JR.","MATTHEW STAFFORD"
     ],
     groups: [
-      { id:"A", players:["ERIC DICKERSON","ADRIAN PETERSON","DERRICK HENRY","CHRIS JOHNSON"], label:"RUSHED FOR OVER 2,000 YARDS IN A SINGLE NFL SEASON", color:"#B8860B", difficulty:1 },
-      { id:"B", players:["LAMAR JACKSON","AARON RODGERS","CAM NEWTON","MATT RYAN"], label:"QUARTERBACKS WHO HAVE WON NFL MVP", color:"#2E6B3E", difficulty:2 },
-      { id:"C", players:["MICHAEL THOMAS","ANTONIO BROWN","JULIO JONES","WES WELKER"], label:"CAUGHT 100 OR MORE PASSES IN A SINGLE NFL SEASON", color:"#1B4F8A", difficulty:3 },
-      { id:"D", players:["PRIEST HOLMES","MARSHALL FAULK","SHAUN ALEXANDER","EMMITT SMITH"], label:"SCORED 20 OR MORE TOUCHDOWNS IN A SINGLE NFL SEASON", color:"#8B1A2A", difficulty:4 }
+      { id:"A", players:["JOSH ALLEN","JONATHAN TAYLOR","PUKA NACUA","TREY McBRIDE"], label:"FINISHED 2025 AS THE #1 FANTASY SCORER AT THEIR POSITION", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["DAVANTE ADAMS","DK METCALF","DEEBO SAMUEL","STEFON DIGGS"], label:"SIGNED OR WERE TRADED TO A NEW TEAM BEFORE THE 2025 SEASON", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JUSTIN JEFFERSON","BRIAN THOMAS JR.","LAMAR JACKSON","MATTHEW GOLDEN"], label:"AMONG THE BIGGEST FANTASY BUSTS OF THE 2025 SEASON", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["MICHAEL WILSON","WAN'DALE ROBINSON","HAROLD FANNIN JR.","MATTHEW STAFFORD"], label:"LEAGUE-WINNING WAIVER-WIRE ADDS OF THE 2025 SEASON", color:"#8B1A2A", difficulty:4 }
     ]
   }
 ];
