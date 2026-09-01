@@ -853,6 +853,27 @@ const FEATURED_PUZZLES = [
       { id:"C", players:["JUSTIN JEFFERSON","BRIAN THOMAS JR.","LAMAR JACKSON","MATTHEW GOLDEN"], label:"AMONG THE BIGGEST FANTASY BUSTS OF THE 2025 SEASON", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["MICHAEL WILSON","WAN'DALE ROBINSON","HAROLD FANNIN JR.","MATTHEW STAFFORD"], label:"LEAGUE-WINNING WAIVER-WIRE ADDS OF THE 2025 SEASON", color:"#8B1A2A", difficulty:4 }
     ]
+  },
+  {
+    id: "wk-2026-09-08",
+    weekLabel: "WEEK OF SEP 8",
+    themeTitle: "DRAFT DAY",
+    themeBlurb: "Your board is set and Week 1 is Wednesday. One last puzzle before any of it counts.",
+    activeFrom: "2026-09-08",
+    activeUntil: "2026-09-15",
+    title: "FEATURED \u00b7 DRAFT DAY",
+    players: [
+      "JAHMYR GIBBS","BIJAN ROBINSON","PUKA NACUA","JA'MARR CHASE",
+      "FERNANDO MENDOZA","JEREMIYAH LOVE","CARNELL TATE","JORDYN TYSON",
+      "PATRICK MAHOMES","JOSH ALLEN","LAMAR JACKSON","AARON RODGERS",
+      "EMMITT SMITH","MARSHALL FAULK","LaDAINIAN TOMLINSON","TERRELL DAVIS"
+    ],
+    groups: [
+      { id:"A", players:["JAHMYR GIBBS","BIJAN ROBINSON","PUKA NACUA","JA'MARR CHASE"], label:"THE FIRST FOUR PLAYERS OFF THE BOARD IN 2026 FANTASY DRAFTS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["FERNANDO MENDOZA","JEREMIYAH LOVE","CARNELL TATE","JORDYN TYSON"], label:"SELECTED IN THE FIRST ROUND OF THE 2026 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["PATRICK MAHOMES","JOSH ALLEN","LAMAR JACKSON","AARON RODGERS"], label:"QUARTERBACKS WHO HAVE WON NFL MVP", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["EMMITT SMITH","MARSHALL FAULK","LaDAINIAN TOMLINSON","TERRELL DAVIS"], label:"RUNNING BACKS IN THE PRO FOOTBALL HALL OF FAME", color:"#8B1A2A", difficulty:4 }
+    ]
   }
 ];
 
