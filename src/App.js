@@ -1490,6 +1490,42 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
           ))}
         </div>
 
+        {/* Share buttons — first action after the score, not last. The
+            emotional peak is the moment the result lands, so the prompt is
+            specific ("can anyone beat 2:14") rather than a passive label. */}
+        <div style={{marginBottom:"18px"}}>
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,textAlign:"center",marginBottom:"3px"}}>
+            {won?(cleanGame?"YOU WENT A PERFECT 4-FOR-4":`CAN ANYONE BEAT ${fmt(ms)}?`):"THINK THEY'D DO ANY BETTER?"}
+          </div>
+          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:dark?"#777":"#888",textAlign:"center",marginBottom:"10px"}}>
+            {won?"Send the card. No spoilers, just your grid and your time.":"Send the card and see how they do. It gives nothing away."}
+          </div>
+          <button onClick={nativeShare} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"17px",letterSpacing:"3px",padding:"17px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"8px",cursor:"pointer",marginBottom:"8px",boxShadow:"0 2px 8px rgba(200,169,110,0.35)"}}>
+            📲 SHARE YOUR RESULT
+          </button>
+          <div style={{display:"flex",gap:"8px"}}>
+            <button onClick={shareToX} style={{flex:1,fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",padding:"11px",background:"#000",color:"#fff",border:"none",borderRadius:"8px",cursor:"pointer"}}>
+              𝕏 POST
+            </button>
+            <button onClick={copy} style={{flex:1,fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",padding:"11px",background:copied?"#2E6B3E":(dark?"#222":"#f0ebe0"),color:copied?"#fff":(dark?"#888":"#999"),border:"none",borderRadius:"8px",cursor:"pointer",transition:"background 0.2s"}}>
+              {copied?"✓ COPIED":"COPY"}
+            </button>
+          </div>
+        </div>
+
+        {/* Category reveals */}
+        <div style={{marginBottom:"20px"}}>
+          {puzzle.groups.sort((a,b)=>a.difficulty-b.difficulty).map(g=>{
+            const s=solved.find(x=>x.id===g.id);
+            return (
+              <div key={g.id} style={{display:"flex",alignItems:"center",gap:"8px",padding:"7px 0",borderBottom:`1px solid ${dark?"#1e1e1e":"#ece4d4"}`}}>
+                <div style={{width:"11px",height:"11px",borderRadius:"3px",background:s?g.color:"#444",flexShrink:0}}/>
+                <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:s?fg:"#666"}}>{g.label}</div>
+              </div>
+            );
+          })}
+        </div>
+
         {/* Featured cross-promo — only on the daily solve page, and only
             when this week's featured is still unplayed. The daily is the
             habit; this is the second thing you do, never the first. Same
@@ -1536,35 +1572,6 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
             </div>
           </a>
         )}
-
-        {/* Category reveals */}
-        <div style={{marginBottom:"20px"}}>
-          {puzzle.groups.sort((a,b)=>a.difficulty-b.difficulty).map(g=>{
-            const s=solved.find(x=>x.id===g.id);
-            return (
-              <div key={g.id} style={{display:"flex",alignItems:"center",gap:"8px",padding:"7px 0",borderBottom:`1px solid ${dark?"#1e1e1e":"#ece4d4"}`}}>
-                <div style={{width:"11px",height:"11px",borderRadius:"3px",background:s?g.color:"#444",flexShrink:0}}/>
-                <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:s?fg:"#666"}}>{g.label}</div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Share buttons */}
-        <div style={{marginBottom:"10px"}}>
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"3px",color:"#888",textAlign:"center",marginBottom:"10px"}}>SHARE YOUR RESULT</div>
-          <div style={{display:"flex",gap:"8px",marginBottom:"8px"}}>
-            <button onClick={nativeShare} style={{flex:2,fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",padding:"14px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"8px",cursor:"pointer"}}>
-              📲 SHARE
-            </button>
-            <button onClick={shareToX} style={{flex:1,fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",padding:"14px",background:"#000",color:"#fff",border:"none",borderRadius:"8px",cursor:"pointer"}}>
-              𝕏 POST
-            </button>
-            <button onClick={copy} style={{flex:1,fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",padding:"14px",background:copied?"#2E6B3E":(dark?"#222":"#f0ebe0"),color:copied?"#fff":(dark?"#888":"#999"),border:"none",borderRadius:"8px",cursor:"pointer",transition:"background 0.2s"}}>
-              {copied?"✓ COPIED":"COPY"}
-            </button>
-          </div>
-        </div>
 
         <button onClick={onPlayAgain} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",padding:"14px",background:"transparent",color:fg,border:`2px solid ${dark?"#333":"#c8bfae"}`,borderRadius:"8px",cursor:"pointer"}}>
           PLAY AGAIN
