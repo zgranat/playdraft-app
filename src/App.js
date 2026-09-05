@@ -1377,7 +1377,7 @@ function Timer({running,onTick,dark}) {
 // ============================================================
 // REMINDER SIGNUP — opt-in, shown after a daily win
 // ============================================================
-function ReminderSignup({dark}) {
+function ReminderSignup({dark,won}) {
   const [email,setEmail]=useState("");
   const [state,setState]=useState(()=>{try{return localStorage.getItem("draft_sub")?"done":"idle";}catch{return "idle";}});
   const [err,setErr]=useState("");
@@ -1405,7 +1405,7 @@ function ReminderSignup({dark}) {
 
   return (
     <div style={{marginTop:"18px",paddingTop:"16px",borderTop:`1px solid ${dark?"#1e1e1e":"#ece4d4"}`}}>
-      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:fg,textAlign:"center"}}>🔥 DON&apos;T LOSE THE STREAK</div>
+      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:fg,textAlign:"center"}}>{won?"🔥 DON'T LOSE THE STREAK":"🏈 GET THE NEXT ONE"}</div>
       <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:dark?"#777":"#888",textAlign:"center",margin:"4px 0 10px",lineHeight:1.4}}>
         One email a day when the new puzzle drops. Nothing else, unsubscribe anytime.
       </div>
@@ -1570,7 +1570,7 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
           PLAY AGAIN
         </button>
 
-        {won&&mode==="daily"&&<ReminderSignup dark={dark}/>}
+        {mode!=="practice"&&<ReminderSignup dark={dark} won={won}/>}
 
         {/* Feedback link */}
         <div style={{marginTop:"16px",textAlign:"center"}}>
