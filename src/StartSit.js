@@ -170,6 +170,7 @@ export default function StartSit({ onExit, onCrossPromo, dark = false,
   const [clock, setClock] = useState("");
   const [nudge, setNudge] = useState("");
   const [copied, setCopied] = useState(false);
+  const [showHow, setShowHow] = useState(false);
   const [stats, setStats] = useState(loadLineupStats);
   const raf = useRef(null);
   const timers = useRef([]);
@@ -330,9 +331,8 @@ export default function StartSit({ onExit, onCrossPromo, dark = false,
       return `${SHORT[slot]} ${sq}`;
     }).join("\n");
     return `Start/Sit #${getLineupNumber()}\n${rows}\n${headline(r)}\n`
-      + `${f1(r.score)} to ${f1(puzzle.house)}, ${r.hits} of 5`
-      + (stats.streak > 1 ? `, ${stats.streak} straight` : "")
-      + `\nplaydraft.app`;
+      + `${f1(r.score)} to ${f1(puzzle.house)}, ${r.hits} of 5 calls`
+      + `\nplaydraft.app/#/start-sit`;
   };
 
   const share = r => {
@@ -376,7 +376,7 @@ export default function StartSit({ onExit, onCrossPromo, dark = false,
           fontSize: 13, fontWeight: 600, cursor: "pointer" }}>← Games</button>
         <span style={s.mark}>START<span style={{ color: C.blue }}>/</span>SIT</span>
         <span style={{ fontSize: 12, color: C.dim, fontWeight: 600 }}>
-          {practice ? "Archive" : `${stats.wins}-${stats.played - stats.wins}`}</span>
+          {practice ? "Archive" : stats.played ? `${stats.wins}-${stats.played - stats.wins}` : ""}</span>
       </div>
 
       <header style={{ padding: "18px 18px 15px", borderBottom: `1px solid ${C.line}` }}>
@@ -392,9 +392,19 @@ export default function StartSit({ onExit, onCrossPromo, dark = false,
           <span style={{ fontSize: 13, color: C.muted, lineHeight: 1.35 }}>
             The House has already set his lineup. Beat that number and you take the week.</span>
         </div>
-        <p style={{ fontSize: 12.5, color: C.muted, marginTop: 10, lineHeight: 1.5 }}>
-          Real players, real weeks. You get where he finished that year, his average, how kind
-          the defense was, and last week's score. What he did on the day is hidden.</p>
+        <button onClick={() => setShowHow(h => !h)}
+          style={{ background: "none", border: 0, cursor: "pointer", padding: "8px 0 0",
+            fontFamily: DISPLAY, fontSize: 12, letterSpacing: "2px", color: C.dim }}>
+          HOW START/SIT WORKS {showHow ? "▲" : "▼"}
+        </button>
+        {showHow && (
+          <div style={{ fontSize: 13, color: C.muted, marginTop: 6, lineHeight: 1.55 }}>
+            Ten real players, each from a real week of a real season. Start five and sit five.
+            You get where he finished that year, his average, how kind that defense was to his
+            position, and what he did the week before. What he did on the day is hidden until
+            you lock. Beat the House's score and you take the week.
+          </div>
+        )}
       </header>
 
       {puzzle.pods.map(pod => (
@@ -589,15 +599,29 @@ export default function StartSit({ onExit, onCrossPromo, dark = false,
 
           <div style={{ fontSize: 14, color: C.muted, marginTop: 7, lineHeight: 1.5 }}>
             {r.hits} of 5 calls right, {r.pct}% of perfect.
-            {!practice && ` Record ${stats.wins}-${stats.played - stats.wins}${
-              stats.streak > 1 ? `, ${stats.streak} in a row` : ""}.`}</div>
+            {!practice && ` You are ${stats.wins}-${stats.played - stats.wins} against the House.`}</div>
 
-          <div style={{ display: "flex", gap: 9, marginTop: 15, flexWrap: "wrap" }}>
-            {!practice && <button style={s.ghostBtn} onClick={() => share(r)}>
-              {copied ? "Copied" : "Share result"}</button>}
+          {!practice && (
+            <button onClick={() => share(r)}
+              style={{ width: "100%", marginTop: 16, fontFamily: DISPLAY, fontSize: 19,
+                letterSpacing: "3px", padding: "18px 0", background: C.blue, color: C.onBlue,
+                border: 0, borderRadius: 10, cursor: "pointer",
+                boxShadow: "0 4px 20px rgba(63,167,214,0.35)" }}>
+              {copied ? "COPIED — GO PASTE IT" : "CHALLENGE YOUR FRIENDS"}
+            </button>
+          )}
+          {!practice && (
+            <div style={{ fontSize: 12.5, color: C.dim, marginTop: 7, textAlign: "center",
+              lineHeight: 1.4 }}>
+              Sends your five calls and the final score. No player names, so it spoils nothing.
+            </div>
+          )}
+          <div style={{ display: "flex", gap: 9, marginTop: 14, flexWrap: "wrap" }}>
             {hasLineupArchive() && <button onClick={nextPractice}
               style={practice ? s.solidBtn : s.ghostBtn}>
-              {practice ? "Another lineup" : "Play the archive"}</button>}
+              {practice ? "Another lineup" : "Play more from the archive"}</button>}
+            {practice && copied === false && <button style={s.ghostBtn} onClick={onExit}>
+              Back to games</button>}
           </div>
 
           {onCrossPromo && <div style={{ marginTop: 13 }}>{onCrossPromo()}</div>}

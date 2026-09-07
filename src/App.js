@@ -1279,7 +1279,7 @@ function FeaturedBanner({dark,onPlay}) {
   };
   const kicker = (
     <div style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"5px"}}>
-      <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"2px",background:"#C8A96E",color:"#0f1923",padding:"2px 6px",borderRadius:"3px"}}>FEATURED</span>
+      <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"8px",letterSpacing:"1.5px",background:"transparent",color:"#C8A96E",border:"1px solid #C8A96E",padding:"1px 4px",borderRadius:"2px"}}>FEATURED</span>
       <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:dark?"#7a7a7a":"#999"}}>{puzzle.weekLabel}</span>
     </div>
   );
@@ -1570,7 +1570,7 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
               WebkitTapHighlightColor:"transparent",touchAction:"manipulation"
             }}>
               <div style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"4px"}}>
-                <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"2px",background:"#C8A96E",color:"#0f1923",padding:"2px 6px",borderRadius:"3px"}}>FEATURED</span>
+                <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"8px",letterSpacing:"1.5px",background:"transparent",color:"#C8A96E",border:"1px solid #C8A96E",padding:"1px 4px",borderRadius:"2px"}}>FEATURED</span>
                 <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:dark?"#7a7a7a":"#999"}}>{f.weekLabel}</span>
               </div>
               <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"1.5px",color:dark?"#d4c9b8":"#1a1a2e",lineHeight:1.2}}>{f.themeTitle}</div>
@@ -1814,8 +1814,6 @@ function Landing({onPlay,onPlayLineup,onPlayFeatured,dark,mode}) {
   // nav button already opens a full rules breakdown, so this is a shortcut
   // for people who want a peek without leaving the landing page, not the
   // only place this information lives.
-  const [showHow,setShowHow]=useState(false);
-
   return (
     <div style={{background:bg,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-start",padding:"32px 20px 40px",textAlign:"center"}}>
 
@@ -1824,39 +1822,6 @@ function Landing({onPlay,onPlayLineup,onPlayFeatured,dark,mode}) {
       <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"clamp(16px,4.5vw,19px)",color:dark?"#888":"#666",fontStyle:"italic",marginBottom:"16px"}}>
         {isPractice ? "Sharpen your game. No streak on the line." : "Daily NFL puzzles. Two games, one a day, every day."}
       </div>
-
-      {!isPractice&&(
-        <button onClick={()=>setShowHow(h=>!h)} style={{background:"none",border:"none",cursor:"pointer",display:"flex",alignItems:"center",gap:"6px",fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:dark?"#8a8a8a":"#999",padding:"4px 0",marginBottom:showHow?"14px":"20px",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}>
-          HOW FOUR DOWNS WORKS {showHow?"▲":"▼"}
-        </button>
-      )}
-
-      {!isPractice&&showHow&&(
-        <>
-          {/* Stacked rules */}
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"3px",color:fg,lineHeight:2,marginBottom:"18px",animation:"fadeUp 0.3s ease both"}}>
-            <div>16 PLAYERS</div>
-            <div>4 HIDDEN GROUPS</div>
-            <div>4 PLAYERS PER GROUP</div>
-            <div style={{color:"#C8A96E"}}>4 CHANCES TO SOLVE</div>
-          </div>
-
-          {/* Worked example — clearly labeled */}
-          <div style={{position:"relative",background:dark?"#141414":"#fff",border:`1px solid ${dark?"#2a2a2a":"#ddd6c4"}`,borderRadius:"10px",padding:"22px 14px 14px",maxWidth:"330px",width:"100%",marginBottom:"22px",animation:"fadeUp 0.3s ease 0.05s both"}}>
-            <div style={{position:"absolute",top:"-9px",left:"12px",fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",background:"#C8A96E",color:"#0f1923",padding:"2px 8px",borderRadius:"4px"}}>EXAMPLE</div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"6px",marginBottom:"10px"}}>
-              {["C.J. STROUD","MATT SCHAUB","DAVID CARR","CASE KEENUM"].map((p,i)=>(
-                <div key={p} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"0.5px",padding:"10px 4px",textAlign:"center",background:dark?"#1c1c1c":"#faf7f0",border:`1.5px solid ${dark?"#2a2a2a":"#ddd6c4"}`,borderRadius:"6px",color:fg}}>{p}</div>
-              ))}
-            </div>
-            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"14px",color:dark?"#555":"#999",marginBottom:"10px"}}>↓ tap 4 players, hit submit ↓</div>
-            <div style={{background:"#B8860B",borderRadius:"6px",padding:"9px 10px"}}>
-              <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",fontWeight:"700",fontStyle:"italic",color:"#fff",lineHeight:1.2}}>STARTED AT QB FOR THE HOUSTON TEXANS</div>
-            </div>
-            <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",color:dark?"#666":"#888",fontStyle:"italic",marginTop:"10px",lineHeight:1.5}}>The connection stays hidden until you crack it. 4 wrong guesses and it's a turnover.</div>
-          </div>
-        </>
-      )}
 
       {/* Streak / competition hook */}
       {!isPractice&&(()=>{
@@ -1889,6 +1854,11 @@ function Landing({onPlay,onPlayLineup,onPlayFeatured,dark,mode}) {
         >
           {isPractice ? "PRACTICE MODE" : "PLAY TODAY'S PUZZLE"}
         </button>
+        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:dark?"#888":"#666",marginTop:"7px",lineHeight:1.45}}>
+          Sixteen players, four hidden groups, four downs to sort them.
+          {(()=>{const st=loadStats(),s2=liveStreak(st);
+            return s2>0?` ${s2}-day streak on the line.`:"";})()}
+        </div>
       </div>
 
       {/* Featured — one single clickable card, sitting below the daily CTA
@@ -1912,7 +1882,8 @@ function Landing({onPlay,onPlayLineup,onPlayFeatured,dark,mode}) {
         </button>
         <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:dark?"#888":"#666",marginTop:"7px",lineHeight:1.45}}>
           Ten real players from real weeks. Start five, beat the House.
-          {(()=>{const st=loadLineupStats();return st.played?` You are ${st.wins}-${st.played-st.wins}.`:"";})()}
+          {(()=>{const st=loadLineupStats();
+            return st.played?` You are ${st.wins}-${st.played-st.wins} against him.`:"";})()}
         </div>
       </div>
 
