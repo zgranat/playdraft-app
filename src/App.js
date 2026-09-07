@@ -2171,7 +2171,7 @@ export default function App() {
       {screen==="howto"&&<HowTo dark={dark} onClose={()=>setScreen("home")}/>}
       {screen==="scoring"&&<ScoringPage dark={dark} onClose={()=>setScreen("home")}/>}
       {screen==="locker"&&<LockerRoom dark={dark} onClose={()=>setScreen("home")} onPlay={()=>{setMode("daily");setScreen("game");}}/>}
-      {screen==="startsit"&&<StartSit onExit={()=>setScreen("home")}/>}
+      {screen==="startsit"&&<StartSit dark={dark} onExit={()=>setScreen("home")}/>}
       {showOnboarding&&<OnboardingModal dark={dark} onClose={()=>setShowOnboarding(false)}/>}
       <Analytics />
     </>

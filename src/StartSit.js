@@ -17,11 +17,20 @@ const STORE = "pd_lineup_v1";
 const ORDER = ["QB", "RB", "WR", "FLEX"];
 const SHORT = { QB: "QB", RB: "RB", WR: "WR", FLEX: "FX" };
 
-const C = {
-  ink: "#0f1923", deep: "#0a1118", card: "#1b2733", cardHi: "#26343f",
-  line: "#2f4150", cream: "#faf7f0", muted: "#93a3ae", dim: "#66788a",
-  blue: "#3FA7D6", blueInk: "#04141d", grass: "#3f9e4d", brick: "#b04a36",
+/* Start/Sit lives inside PlayDraft, so it uses the site's palette rather than
+   importing a second one. Gold stays the brand colour; blue marks this game and
+   nothing else. */
+const theme = dark => dark ? {
+  bg: "#0a0a0a", panel: "#141414", panelHi: "#1c1c1c", line: "#2a2a2a",
+  fg: "#d4c9b8", muted: "#8a8a8a", dim: "#555",
+  blue: "#3FA7D6", onBlue: "#0f1923", grass: "#4A7C59", brick: "#8B1A2A",
+} : {
+  bg: "#faf7f0", panel: "#fff", panelHi: "#f4efe4", line: "#ddd6c4",
+  fg: "#1a1a2e", muted: "#666", dim: "#999",
+  blue: "#2B7FA8", onBlue: "#fff", grass: "#2E6B3E", brick: "#8B1A2A",
 };
+const DISPLAY = "'Bebas Neue',cursive";
+const BODY = "'Crimson Pro',Georgia,serif";
 
 const CLUB = {
   ARI:"#97233F",ATL:"#A71930",BAL:"#241773",BUF:"#00338D",CAR:"#0085CA",CHI:"#C83803",
@@ -124,7 +133,7 @@ function tickLine(s, e) {
 /* Photos are cached locally by scripts/fetch_headshots.py, with the remote
    URL as a fallback and initials behind both. A missing face must look
    deliberate, never broken. */
-function Face({ t, size = 50 }) {
+function Face({ t, size = 50, C }) {
   const [step, setStep] = useState(0);
   const src = step === 0 ? `/players/${t.id.split("-")[0]}.png` : t.shot;
   return (
@@ -133,8 +142,8 @@ function Face({ t, size = 50 }) {
       overflow: "hidden", background: CLUB[t.team] || C.muted,
       display: "flex", alignItems: "center", justifyContent: "center",
     }}>
-      <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700,
-        fontSize: size * 0.36, color: C.ink }}>{initials(t.name)}</span>
+      <span style={{ fontFamily: DISPLAY, fontWeight: 700,
+        fontSize: size * 0.36, color: "#fff", opacity: .85 }}>{initials(t.name)}</span>
       {step < 2 && (
         <img alt="" loading="lazy" referrerPolicy="no-referrer" src={src}
           onError={() => setStep(step + 1)}
@@ -146,7 +155,9 @@ function Face({ t, size = 50 }) {
 }
 
 /* ================================================================== */
-export default function StartSit({ onExit, onCrossPromo, mode: initialMode = "daily" }) {
+export default function StartSit({ onExit, onCrossPromo, dark = false,
+                                  mode: initialMode = "daily" }) {
+  const C = theme(dark);
   const [mode, setMode] = useState(initialMode);
   const [puzzle, setPuzzle] = useState(() =>
     initialMode === "practice" ? (getPracticeLineup() || getTodaysLineup()) : getTodaysLineup());
@@ -335,21 +346,21 @@ export default function StartSit({ onExit, onCrossPromo, mode: initialMode = "da
 
   /* ---------------- styles ---------------- */
   const s = {
-    wrap: { maxWidth: 520, margin: "0 auto", background: C.ink, color: C.cream,
-      fontFamily: "Barlow,'Helvetica Neue',Arial,sans-serif", paddingBottom: 92, minHeight: "100vh" },
+    wrap: { maxWidth: 520, margin: "0 auto", background: C.bg, color: C.fg,
+      fontFamily: BODY, paddingBottom: 92, minHeight: "100vh" },
     top: { display: "flex", alignItems: "center", gap: 12, padding: "13px 18px",
       borderBottom: `1px solid ${C.line}` },
-    mark: { fontFamily: "'Barlow Condensed',sans-serif", fontSize: 20, fontWeight: 700, flex: 1 },
+    mark: { fontFamily: DISPLAY, fontSize: 20, fontWeight: 700, flex: 1 },
     ghostBtn: { border: `1px solid ${C.line}`, borderRadius: 3, padding: "10px 18px",
-      fontFamily: "'Barlow Condensed',sans-serif", fontSize: 16, fontWeight: 600,
+      fontFamily: DISPLAY, fontSize: 16, fontWeight: 600,
       color: C.muted, background: "none", cursor: "pointer" },
     solidBtn: { border: 0, borderRadius: 3, padding: "11px 22px",
-      fontFamily: "'Barlow Condensed',sans-serif", fontSize: 18, fontWeight: 700,
-      background: C.blue, color: C.blueInk, cursor: "pointer" },
+      fontFamily: DISPLAY, fontSize: 18, fontWeight: 700,
+      background: C.blue, color: C.onBlue, cursor: "pointer" },
     pod: { borderBottom: `1px solid ${C.line}`, padding: "14px 18px" },
-    slot: { fontFamily: "'Barlow Condensed',sans-serif", fontSize: 20, fontWeight: 700 },
+    slot: { fontFamily: DISPLAY, fontSize: 20, fontWeight: 700 },
     bar: { position: "fixed", left: 0, right: 0, bottom: 0, maxWidth: 520, margin: "0 auto",
-      background: C.deep, borderTop: `1px solid ${C.line}`,
+      background: C.panelHi, borderTop: `1px solid ${C.line}`,
       padding: "11px 18px calc(11px + env(safe-area-inset-bottom))",
       display: "flex", gap: 12, alignItems: "center", zIndex: 10 },
     num: { fontVariantNumeric: "tabular-nums" },
@@ -372,11 +383,11 @@ export default function StartSit({ onExit, onCrossPromo, mode: initialMode = "da
         {practice && <div style={{ display: "inline-block", fontSize: 11, fontWeight: 700,
           letterSpacing: ".04em", background: C.line, color: C.muted,
           padding: "3px 7px", borderRadius: 2, marginBottom: 9 }}>FROM THE ARCHIVE</div>}
-        <h1 style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 32, fontWeight: 700,
+        <h1 style={{ fontFamily: DISPLAY, fontSize: 32, fontWeight: 700,
           lineHeight: 1, marginBottom: 11 }}>Start or sit</h1>
-        <div style={{ display: "flex", gap: 11, alignItems: "center", background: C.deep,
+        <div style={{ display: "flex", gap: 11, alignItems: "center", background: C.panelHi,
           border: `1px solid ${C.line}`, borderRadius: 3, padding: "11px 13px" }}>
-          <b style={{ ...s.num, fontFamily: "'Barlow Condensed',sans-serif", fontSize: 31,
+          <b style={{ ...s.num, fontFamily: DISPLAY, fontSize: 31,
             fontWeight: 700, color: C.blue, lineHeight: 1 }}>{f1(puzzle.house)}</b>
           <span style={{ fontSize: 13, color: C.muted, lineHeight: 1.35 }}>
             The House has already set his lineup. Beat that number and you take the week.</span>
@@ -392,25 +403,25 @@ export default function StartSit({ onExit, onCrossPromo, mode: initialMode = "da
             alignItems: "baseline", marginBottom: 8 }}>
             <span style={s.slot}>{pod.slot}</span>
             <span style={{ fontSize: 12, color: C.dim, fontWeight: 600 }}>
-              Start {pod.start} of {pod.tiles.length}</span>
+              {chosen(pod).length}/{pod.start} started</span>
           </div>
           <div style={{ display: "grid", gap: 7 }}>
             {pod.tiles.map(t => {
               const on = chosen(pod).includes(t.id);
               const full = !on && chosen(pod).length >= pod.start;
-              const dcol = t.oppRank <= 12 ? C.grass : t.oppRank >= 21 ? C.brick : C.cream;
+              const dcol = t.oppRank <= 12 ? C.grass : t.oppRank >= 21 ? C.brick : C.fg;
               return (
                 <button key={t.id} onClick={() => toggle(pod, t.id)} aria-pressed={on}
                   style={{ display: "flex", gap: 10, textAlign: "left", width: "100%",
-                    background: on ? C.cardHi : C.card, border: 0,
+                    background: on ? C.panelHi : C.panel, border: 0,
                     borderLeft: `3px solid ${on ? C.blue : C.line}`, borderRadius: 2,
                     padding: "9px 10px 9px 8px", cursor: "pointer", opacity: full ? 0.5 : 1,
-                    color: C.cream }}>
-                  <Face t={t} />
+                    color: C.fg }}>
+                  <Face t={t} C={C} />
                   <span style={{ flex: 1, minWidth: 0 }}>
                     <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                      <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 21,
-                        fontWeight: 600, lineHeight: 1.05, color: on ? C.blue : C.cream,
+                      <span style={{ fontFamily: DISPLAY, fontSize: 21,
+                        fontWeight: 600, lineHeight: 1.05, color: on ? C.blue : C.fg,
                         whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                         {t.name}</span>
                       <span style={{ fontSize: 10.5, fontWeight: 700, padding: "2px 5px",
@@ -421,11 +432,18 @@ export default function StartSit({ onExit, onCrossPromo, mode: initialMode = "da
                       {t.season} Week {t.week}, against {t.opp}</span>
                     <span style={{ display: "grid", gridTemplateColumns: "1fr 1fr",
                       gap: "3px 12px", marginTop: 7 }}>
-                      <Stat label={t.season} value={`${t.pos}${t.finish}`} />
-                      <Stat label="PER GAME" value={f1(t.ppg)} />
-                      <Stat label="OPP" value={`${t.oppRank}/32`} color={dcol} />
-                      <Stat label="LAST WK" value={t.prev == null ? "—" : f1(t.prev)} />
+                      <Stat C={C} label={t.season} value={`${t.pos}${t.finish}`} />
+                      <Stat C={C} label="PER GAME" value={f1(t.ppg)} />
+                      <Stat C={C} label="OPP" value={`${t.oppRank}/32`} color={dcol} />
+                      <Stat C={C} label="LAST WK" value={t.prev == null ? "—" : f1(t.prev)} />
                     </span>
+                  </span>
+                  <span style={{ alignSelf: "center", flex: "none", fontFamily: DISPLAY,
+                    fontSize: 12, letterSpacing: "1.5px", padding: "6px 10px", borderRadius: 3,
+                    border: `1px solid ${on ? C.blue : C.line}`,
+                    background: on ? C.blue : "transparent",
+                    color: on ? C.onBlue : full ? C.dim : C.muted, whiteSpace: "nowrap" }}>
+                    {on ? "STARTING" : full ? "BENCH" : "START"}
                   </span>
                 </button>
               );
@@ -440,8 +458,8 @@ export default function StartSit({ onExit, onCrossPromo, mode: initialMode = "da
           {nudge || (filled === 5 ? "Lineup set. No changes after this." : `${filled} of 5 spots filled`)}
         </span>
         <button onClick={lock} disabled={!ready}
-          style={{ ...s.solidBtn, background: ready ? C.blue : C.card,
-            color: ready ? C.blueInk : C.dim, cursor: ready ? "pointer" : "not-allowed" }}>
+          style={{ ...s.solidBtn, background: ready ? C.blue : C.panel,
+            color: ready ? C.onBlue : C.dim, cursor: ready ? "pointer" : "not-allowed" }}>
           Lock lineup</button>
       </div>
     </div>
@@ -459,12 +477,12 @@ export default function StartSit({ onExit, onCrossPromo, mode: initialMode = "da
         <span style={s.mark}>START<span style={{ color: C.blue }}>/</span>SIT</span>
       </div>
 
-      <div style={{ position: "sticky", top: 0, zIndex: 5, background: C.deep,
+      <div style={{ position: "sticky", top: 0, zIndex: 5, background: C.panelHi,
         borderBottom: `1px solid ${C.line}`, padding: "11px 18px", display: "grid",
         gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: 10 }}>
-        <Score label="YOU" value={me} color={C.blue} />
+        <Score C={C} label="YOU" value={me} color={C.blue} />
         <span style={{ fontSize: 12, color: C.dim, fontWeight: 600 }}>vs</span>
-        <Score label="THE HOUSE" value={hs} />
+        <Score C={C} label="THE HOUSE" value={hs} />
         <div style={{ gridColumn: "1/-1", textAlign: "center", fontSize: 12, color: C.muted,
           borderTop: `1px solid ${C.line}`, paddingTop: 7, minHeight: 16 }}>{clock}</div>
       </div>
@@ -484,7 +502,7 @@ export default function StartSit({ onExit, onCrossPromo, mode: initialMode = "da
               <span style={s.slot}>{pod.slot}</span>
               <span style={{ fontSize: 11, fontWeight: 700, padding: "2px 6px", borderRadius: 2,
                 background: settled && hit === pod.start ? C.blue : C.line,
-                color: settled && hit === pod.start ? C.blueInk : C.muted }}>
+                color: settled && hit === pod.start ? C.onBlue : C.muted }}>
                 {settled ? (hit === pod.start ? (pod.start > 1 ? "BOTH RIGHT" : "RIGHT CALL")
                                               : `${hit} of ${pod.start}`) : "\u00a0"}</span>
             </div>
@@ -498,9 +516,9 @@ export default function StartSit({ onExit, onCrossPromo, mode: initialMode = "da
                   <span style={{ width: 10, height: 10, borderRadius: 2, flex: "none",
                     background: !on ? "transparent"
                       : doneT ? (right ? C.grass : C.brick) : C.line }} />
-                  <Face t={t} size={32} />
+                  <Face t={t} size={32} C={C} />
                   <span style={{ flex: 1, minWidth: 0 }}>
-                    <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 18,
+                    <span style={{ fontFamily: DISPLAY, fontSize: 18,
                       fontWeight: on ? 600 : 500, lineHeight: 1.15, display: "flex",
                       alignItems: "center", gap: 6, whiteSpace: "nowrap",
                       overflow: "hidden", textOverflow: "ellipsis" }}>
@@ -517,7 +535,7 @@ export default function StartSit({ onExit, onCrossPromo, mode: initialMode = "da
                           padding: "2px 6px", borderRadius: 2,
                           background: v.tone === "boom" ? C.grass : v.tone === "bust" ? C.brick
                             : v.tone === "top" ? C.blue : C.line,
-                          color: v.tone ? (v.tone === "top" ? C.blueInk : "#fff") : C.muted }}>
+                          color: v.tone ? (v.tone === "top" ? C.onBlue : "#fff") : C.muted }}>
                           {v.word}</span>
                         <span style={{ fontSize: 12, color: C.dim, fontWeight: 600 }}>
                           {t.pos}{t.weekRank} of {t.weekField} that week</span>
@@ -535,7 +553,7 @@ export default function StartSit({ onExit, onCrossPromo, mode: initialMode = "da
 
       {phase === "done" && (
         <div style={{ padding: "20px 18px" }}>
-          <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 32, fontWeight: 700,
+          <div style={{ fontFamily: DISPLAY, fontSize: 32, fontWeight: 700,
             lineHeight: 1.05, color: r.perfect ? C.blue : r.won ? C.grass : C.brick }}>
             {r.perfect ? "Perfect lineup" : r.won ? "You beat the House" : "The House got you"}</div>
           <div style={{ fontSize: 14, color: C.muted, marginTop: 7, lineHeight: 1.5 }}>
@@ -543,11 +561,11 @@ export default function StartSit({ onExit, onCrossPromo, mode: initialMode = "da
             A perfect lineup was worth {f1(puzzle.perfect)}.</div>
 
           {sw && (
-            <Note>The House started <b>{sw.house.name}</b> at {sw.slot} where you had{" "}
+            <Note C={C}>The House started <b>{sw.house.name}</b> at {sw.slot} where you had{" "}
               <b>{sw.you.name}</b>. Worth {f1(Math.abs(sw.d))} points {sw.d > 0 ? "to you" : "to him"}.</Note>
           )}
           {loud && (
-            <Note><b>{loud.name}</b>, {loud.season} week {loud.week} against {loud.opp}.{" "}
+            <Note C={C}><b>{loud.name}</b>, {loud.season} week {loud.week} against {loud.opp}.{" "}
               {loud.pts >= loud.ppg ? "Put up" : "Managed"} {f1(loud.pts)} and finished{" "}
               {ord(loud.weekRank)} among {loud.pos}s that week.
               {loud.priorFinish ? ` He had been ${loud.pos}${loud.priorFinish} the year before.` : ""}</Note>
@@ -558,12 +576,12 @@ export default function StartSit({ onExit, onCrossPromo, mode: initialMode = "da
             {ORDER.map(slot => {
               const p = r.byPod[slot], clean = p.hit === p.of;
               return (
-                <div key={slot} style={{ background: C.deep, borderRadius: 3, padding: "8px 6px",
+                <div key={slot} style={{ background: C.panelHi, borderRadius: 3, padding: "8px 6px",
                   textAlign: "center", border: `1px solid ${clean ? C.blue : C.line}` }}>
                   <span style={{ display: "block", fontSize: 11, color: C.dim, fontWeight: 700 }}>{slot}</span>
                   <b style={{ ...s.num, display: "block", fontSize: 21, fontWeight: 700,
-                    fontFamily: "'Barlow Condensed',sans-serif",
-                    color: clean ? C.blue : C.cream }}>{f1(p.pts)}</b>
+                    fontFamily: DISPLAY,
+                    color: clean ? C.blue : C.fg }}>{f1(p.pts)}</b>
                 </div>
               );
             })}
@@ -600,31 +618,31 @@ export default function StartSit({ onExit, onCrossPromo, mode: initialMode = "da
   );
 }
 
-function Stat({ label, value, color }) {
+function Stat({ label, value, color, C }) {
   return (
     <span>
-      <i style={{ fontStyle: "normal", fontSize: 10, color: "#66788a", fontWeight: 600 }}>{label}</i>
+      <i style={{ fontStyle: "normal", fontSize: 10, color: C.dim, fontWeight: 600 }}>{label}</i>
       <b style={{ fontSize: 14, fontWeight: 600, marginLeft: 5, fontVariantNumeric: "tabular-nums",
-        color: color || "#faf7f0" }}>{value}</b>
+        color: color || C.fg }}>{value}</b>
     </span>
   );
 }
 
-function Score({ label, value, color }) {
+function Score({ label, value, color, C }) {
   return (
     <div style={{ textAlign: "center" }}>
-      <i style={{ fontStyle: "normal", display: "block", fontSize: 11, color: "#66788a",
+      <i style={{ fontStyle: "normal", display: "block", fontSize: 11, color: C.dim,
         fontWeight: 600 }}>{label}</i>
-      <b style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 35, fontWeight: 700,
+      <b style={{ fontFamily: DISPLAY, fontSize: 35, fontWeight: 700,
         lineHeight: 1, display: "block", fontVariantNumeric: "tabular-nums",
-        color: color || "#faf7f0" }}>{f1(value)}</b>
+        color: color || C.fg }}>{f1(value)}</b>
     </div>
   );
 }
 
-function Note({ children }) {
+function Note({ children, C }) {
   return (
-    <div style={{ background: "#0a1118", border: "1px solid #2f4150", borderLeft: "3px solid #3FA7D6",
+    <div style={{ background: C.panelHi, border: `1px solid ${C.line}`, borderLeft: `3px solid ${C.blue}`,
       borderRadius: 2, padding: "11px 13px", marginTop: 13, fontSize: 13.5, lineHeight: 1.5 }}>
       {children}
     </div>
