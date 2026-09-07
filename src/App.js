@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Analytics } from "@vercel/analytics/react";
+import StartSit, { playedLineupToday, loadLineupStats } from "./StartSit";
 
 // ============================================================
 // PUZZLE DATA
@@ -1097,12 +1098,26 @@ const getTodaysPuzzleNumber = () => {
 };
 const getPuzzle = (mode, idx) => mode==="featured" ? getFeaturedPuzzle() : (mode==="daily" ? getTodaysPuzzle() : PUZZLES[idx % PUZZLES.length]);
 
-// Pick a random practice puzzle, avoiding today's daily and recently played
+// Practice reaches backwards only. Everything already released is fair game;
+// today's puzzle and anything after it is not. Derived from the same day count
+// as getTodaysPuzzle so the two cannot drift apart. Note there is deliberately
+// no % PUZZLES.length wrap here: once the bank wraps, everything has been
+// released and slice covers the whole array anyway.
+const getReleasedPuzzles = () => {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const launch = new Date(LAUNCH_DATE); launch.setHours(0,0,0,0);
+  const days = Math.max(0, Math.floor((today - launch) / 86400000));
+  return PUZZLES.slice(0, Math.min(days, PUZZLES.length));
+};
+const hasPracticeArchive = () => getReleasedPuzzles().length > 0;
+
+// Pick a random practice puzzle from the archive, avoiding recently played.
+// Returns null on launch day, when there is no archive yet.
 const getRandomPracticePuzzle = (recentlyPlayed = []) => {
-  const todayId = getTodaysPuzzle().id;
-  const available = PUZZLES.filter(p => p.id !== todayId && !recentlyPlayed.includes(p.id));
-  // If we've exhausted, just exclude today's daily
-  const pool = available.length > 0 ? available : PUZZLES.filter(p => p.id !== todayId);
+  const released = getReleasedPuzzles();
+  if (!released.length) return null;
+  const fresh = released.filter(p => !recentlyPlayed.includes(p.id));
+  const pool = fresh.length ? fresh : released;
   return pool[Math.floor(Math.random() * pool.length)];
 };
 
@@ -1125,11 +1140,13 @@ const buildShare = (puzzle, solvedOnly, wrong, ms, streak, mode, won) => {
 // HEADER
 // ============================================================
 function Header({dark,onDark,onStats,onHome,onHow,onScoring,mode,onMode}) {
+  // No archive on launch day, so offering PRACTICE would just replay the daily.
+  const modes = hasPracticeArchive() ? ["daily","practice"] : ["daily"];
   return (
     <header style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 14px",height:"56px",background:dark?"#0a0a0a":"#0f1923",borderBottom:`2px solid #C8A96E`,position:"sticky",top:0,zIndex:100,gap:"8px"}}>
       <button onClick={onHome} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"26px",letterSpacing:"5px",color:"#C8A96E",background:"none",border:"none",cursor:"pointer",padding:0,flexShrink:0}}>DRAFT</button>
       <div style={{display:"flex",gap:"4px"}}>
-        {["daily","practice"].map(m=>(
+        {modes.map(m=>(
           <button key={m} onClick={()=>onMode(m)} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",padding:"6px 12px",borderRadius:"3px",cursor:"pointer",border:"1px solid",borderColor:mode===m?"#C8A96E":"#333",background:mode===m?"#C8A96E":"transparent",color:mode===m?"#0f1923":"#555",transition:"all 0.15s"}}>
             {m.toUpperCase()}
           </button>
@@ -1779,7 +1796,7 @@ function LockerRoom({dark,onClose,onPlay}) {
 // ============================================================
 // LANDING — mobile first
 // ============================================================
-function Landing({onPlay,onPlayFeatured,dark,mode}) {
+function Landing({onPlay,onPlayLineup,onPlayFeatured,dark,mode}) {
   const bg=dark?"#0a0a0a":"#faf7f0",fg=dark?"#d4c9b8":"#1a1a2e";
   const isPractice=mode==="practice";
   const sports=[{icon:"🏈",name:"NFL",status:"live"},{icon:"🏀",name:"NBA",status:"soon"},{icon:"⚾",name:"MLB",status:"soon"},{icon:"🏒",name:"NHL",status:"soon"}];
@@ -1863,6 +1880,22 @@ function Landing({onPlay,onPlayFeatured,dark,mode}) {
           so it reads as "one more thing to try" rather than competing with
           the primary habit. */}
       {!isPractice&&<FeaturedBanner dark={dark} onPlay={onPlayFeatured}/>}
+
+      {/* START/SIT — the second game. It sits below the Draft CTA and the
+          featured banner on purpose: the existing daily habit stays the first
+          thing on the page, and the featured slot the outreach emails promised
+          keeps its position. */}
+      <button
+        onClick={onPlayLineup}
+        style={{width:"100%",maxWidth:"330px",background:dark?"#141414":"#fff",border:`1px solid ${dark?"#2a2a2a":"#ddd6c4"}`,borderLeft:"4px solid #3FA7D6",borderRadius:"10px",padding:"14px 16px",marginBottom:"22px",cursor:"pointer",textAlign:"left",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}
+      >
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"22px",letterSpacing:"3px",color:"#3FA7D6",lineHeight:1}}>START/SIT</div>
+        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",marginTop:"4px",lineHeight:1.4}}>A daily fantasy call. Ten real players from real weeks. Start five, beat the House.</div>
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:dark?"#666":"#999",marginTop:"8px"}}>
+          {playedLineupToday()?"PLAYED TODAY":"TODAY'S LINEUP"}
+          {(()=>{const st=loadLineupStats();return st.played?` \u00b7 ${st.wins}-${st.played-st.wins}`:"";})()}
+        </div>
+      </button>
 
       {/* Sports pills */}
       <div style={{display:"flex",gap:"8px",marginBottom:"24px",flexWrap:"wrap",justifyContent:"center"}}>
@@ -2080,7 +2113,7 @@ export default function App() {
   const [screen,setScreen]=useState("home");
   const [showScoring,setShowScoring]=useState(false);
   const [mode,setMode]=useState("daily");
-  const [practicePuzzle,setPracticePuzzle]=useState(()=>getRandomPracticePuzzle());
+  const [practicePuzzle,setPracticePuzzle]=useState(()=>getRandomPracticePuzzle()||getTodaysPuzzle());
   const [recentPractice,setRecentPractice]=useState([]);
   const featuredPuzzle = getFeaturedPuzzle();
   const puzzle = mode==="featured" ? (featuredPuzzle||getTodaysPuzzle())
@@ -2099,7 +2132,7 @@ export default function App() {
     if(m==="practice"){
       const newRecent=[...recentPractice,practicePuzzle.id].slice(-Math.max(1,PUZZLES.length-2));
       setRecentPractice(newRecent);
-      setPracticePuzzle(getRandomPracticePuzzle(newRecent));
+      setPracticePuzzle(getRandomPracticePuzzle(newRecent)||practicePuzzle);
     }
   };
   const handleFinish=()=>{
@@ -2113,7 +2146,7 @@ export default function App() {
       // Pick a new random puzzle for next round, stay in game (don't go home)
       const newRecent=[...recentPractice,practicePuzzle.id].slice(-Math.max(1,PUZZLES.length-2));
       setRecentPractice(newRecent);
-      setPracticePuzzle(getRandomPracticePuzzle(newRecent));
+      setPracticePuzzle(getRandomPracticePuzzle(newRecent)||practicePuzzle);
     } else {
       setScreen("home");
     }
@@ -2133,11 +2166,12 @@ export default function App() {
         button{-webkit-tap-highlight-color:transparent;}
       `}</style>
       <Header dark={dark} onDark={()=>setDark(d=>!d)} onStats={()=>setScreen("locker")} onHome={()=>setScreen("home")} onHow={()=>setScreen("howto")} onScoring={()=>setScreen("scoring")} mode={mode} onMode={handleModeChange}/>
-      {screen==="home"&&<Landing onPlay={()=>{if(mode==="featured")setMode("daily");setScreen("game");}} onPlayFeatured={playFeatured} dark={dark} mode={mode==="featured"?"daily":mode}/>}
+      {screen==="home"&&<Landing onPlay={()=>{if(mode==="featured")setMode("daily");setScreen("game");}} onPlayLineup={()=>setScreen("startsit")} onPlayFeatured={playFeatured} dark={dark} mode={mode==="featured"?"daily":mode}/>}
       {screen==="game"&&<Game key={`${puzzle.id}-${mode}`} puzzle={puzzle} dark={dark} mode={mode} onFinish={handleFinish} onPlayFeatured={playFeatured}/>}
       {screen==="howto"&&<HowTo dark={dark} onClose={()=>setScreen("home")}/>}
       {screen==="scoring"&&<ScoringPage dark={dark} onClose={()=>setScreen("home")}/>}
       {screen==="locker"&&<LockerRoom dark={dark} onClose={()=>setScreen("home")} onPlay={()=>{setMode("daily");setScreen("game");}}/>}
+      {screen==="startsit"&&<StartSit onExit={()=>setScreen("home")}/>}
       {showOnboarding&&<OnboardingModal dark={dark} onClose={()=>setShowOnboarding(false)}/>}
       <Analytics />
     </>
