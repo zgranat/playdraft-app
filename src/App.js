@@ -1153,7 +1153,7 @@ function Header({dark,onDark,onStats,onHome,onHow,onScoring,mode,onMode,showMode
   const modes = hasPracticeArchive() ? ["daily","practice"] : ["daily"];
   return (
     <header style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 14px",height:"56px",background:dark?"#0a0a0a":"#0f1923",borderBottom:`2px solid #C8A96E`,position:"sticky",top:0,zIndex:100,gap:"8px"}}>
-      <button onClick={onHome} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"22px",letterSpacing:"3px",color:"#C8A96E",background:"none",border:"none",cursor:"pointer",padding:0,flexShrink:0}}>PLAYDRAFT</button>
+      <button onClick={onHome} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"26px",letterSpacing:"5px",color:"#C8A96E",background:"none",border:"none",cursor:"pointer",padding:0,flexShrink:0}}>DRAFT</button>
       <div style={{display:"flex",gap:"4px"}}>
         {showModes&&modes.map(m=>(
           <button key={m} onClick={()=>onMode(m)} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",padding:"6px 12px",borderRadius:"3px",cursor:"pointer",border:"1px solid",borderColor:mode===m?"#C8A96E":"#333",background:mode===m?"#C8A96E":"transparent",color:mode===m?"#0f1923":"#555",transition:"all 0.15s"}}>
@@ -1308,7 +1308,6 @@ function FeaturedBanner({dark,onPlay}) {
     <button onClick={onPlay} style={{...shellBase,cursor:"pointer",display:"block",textAlign:"left",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}>
       {kicker}
       <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"19px",letterSpacing:"1.5px",color:fg,lineHeight:1.1}}>{puzzle.themeTitle}</div>
-      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",fontStyle:"italic",color:dark?"#9a9a9a":"#777",marginTop:"3px",lineHeight:1.35}}>{puzzle.themeBlurb}</div>
       {/* Nested CTA bar — makes the whole card read as one obvious button
           instead of a plain info box you might tap by accident, while
           keeping it a single tappable unit rather than two stacked elements. */}
@@ -1608,7 +1607,7 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
         {/* Feedback link */}
         <div style={{marginTop:"16px",textAlign:"center"}}>
           <a href={FEEDBACK_URL} target="_blank" rel="noopener noreferrer" style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:dark?"#555":"#999",textDecoration:"none",borderBottom:`1px dashed ${dark?"#333":"#c8bfae"}`,paddingBottom:"2px"}}>
-            SPOT AN ERROR? SEND FEEDBACK →
+            CONTACT US →
           </a>
         </div>
     </div>
@@ -1817,7 +1816,7 @@ function Landing({onPlay,onPlayLineup,onPlayFeatured,dark,mode}) {
   return (
     <div style={{background:bg,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-start",padding:"32px 20px 40px",textAlign:"center"}}>
 
-      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(46px,13vw,76px)",letterSpacing:"3px",color:"#C8A96E",lineHeight:0.9,marginBottom:"12px",textShadow:`3px 3px 0 ${dark?"rgba(0,0,0,0.5)":"rgba(15,25,35,0.2)"}`}}>PLAYDRAFT</div>
+      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(60px,17vw,96px)",letterSpacing:"3px",color:"#C8A96E",lineHeight:0.9,marginBottom:"12px",textShadow:`3px 3px 0 ${dark?"rgba(0,0,0,0.5)":"rgba(15,25,35,0.2)"}`}}>DRAFT</div>
 
       <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"clamp(16px,4.5vw,19px)",color:dark?"#888":"#666",fontStyle:"italic",marginBottom:"16px"}}>
         {isPractice ? "Sharpen your game. No streak on the line." : "Daily NFL puzzles. Two games, one a day, every day."}
@@ -1866,6 +1865,23 @@ function Landing({onPlay,onPlayLineup,onPlayFeatured,dark,mode}) {
           the primary habit. */}
       {!isPractice&&<FeaturedBanner dark={dark} onPlay={onPlayFeatured}/>}
 
+      {/* Each game has its own currency: Four Downs a streak, Start/Sit a
+          record. Same prominence, same position, different thing to protect. */}
+      {(()=>{
+        const st=loadLineupStats(), done=playedLineupToday();
+        if(!st.played) return null;
+        const rec=`${st.wins}-${st.played-st.wins}`;
+        if(done) return (
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"2px",color:"#2E6B3E",marginBottom:"14px"}}>✅ TODAY'S LINEUP IS LOCKED · 🏆 {rec} AGAINST THE HOUSE</div>
+        );
+        return (
+          <div style={{marginBottom:"14px"}}>
+            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"2px",color:"#3FA7D6"}}>🏆 {rec} AGAINST THE HOUSE</div>
+            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#666":"#999",marginTop:"2px"}}>SET TODAY'S LINEUP TO IMPROVE IT</div>
+          </div>
+        );
+      })()}
+
       {/* GAME TWO — Start/Sit. Same visual weight as Four Downs, because it is
           a peer game and not an add-on. */}
       <div style={{width:"100%",maxWidth:"330px",textAlign:"left",marginBottom:"22px"}}>
@@ -1878,7 +1894,7 @@ function Landing({onPlay,onPlayLineup,onPlayFeatured,dark,mode}) {
           onClick={onPlayLineup}
           style={{fontFamily:"'Bebas Neue',cursive",fontSize:"20px",letterSpacing:"4px",padding:"20px 0",width:"100%",background:"#3FA7D6",color:"#fff",border:"none",borderRadius:"10px",cursor:"pointer",boxShadow:"0 4px 20px rgba(63,167,214,0.35)",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}
         >
-          {playedLineupToday()?"PLAY THE ARCHIVE":"PLAY TODAY'S LINEUP"}
+          {playedLineupToday()?"SET ANOTHER LINEUP":"SET TODAY'S LINEUP"}
         </button>
         <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:dark?"#888":"#666",marginTop:"7px",lineHeight:1.45}}>
           Ten real players from real weeks. Start five, beat the House.
@@ -1901,20 +1917,14 @@ function Landing({onPlay,onPlayLineup,onPlayFeatured,dark,mode}) {
         ))}
       </div>
 
-      <div style={{display:"flex",gap:"16px",flexWrap:"wrap",justifyContent:"center"}}>
-        {[["🏈","2 GAMES DAILY"],["🏴","4 DOWNS"],["⚡","BEAT THE HOUSE"],["🤯","KEEP THE STREAK"]].map(([ic,tx])=>(
-          <div key={tx} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#555":"#999",display:"flex",alignItems:"center",gap:"5px"}}>
-            <span style={{fontSize:"14px"}}>{ic}</span>{tx}
-          </div>
-        ))}
-      </div>
+
 
       {/* Feedback + submit links — visible on the homepage without playing
           anything, unlike the post-solve CTA which only shows after you
           finish a puzzle. */}
       <div style={{marginTop:"32px",display:"flex",gap:"14px",alignItems:"center",flexWrap:"wrap",justifyContent:"center"}}>
         <a href={FEEDBACK_URL} target="_blank" rel="noopener noreferrer" style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#555":"#999",textDecoration:"none",borderBottom:`1px dashed ${dark?"#333":"#c8bfae"}`,paddingBottom:"2px"}}>
-          SPOT AN ERROR? SEND FEEDBACK →
+          CONTACT US →
         </a>
         {SUBMIT_PUZZLE_URL&&(
           <a href={SUBMIT_PUZZLE_URL} target="_blank" rel="noopener noreferrer" style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#555":"#999",textDecoration:"none",borderBottom:`1px dashed ${dark?"#333":"#c8bfae"}`,paddingBottom:"2px"}}>
