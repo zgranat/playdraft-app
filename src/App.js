@@ -1023,6 +1023,27 @@ const FEATURED_PUZZLES = [
       { id:"C", players:["EMMITT SMITH","MARSHALL FAULK","LaDAINIAN TOMLINSON","TERRELL DAVIS"], label:"RETIRED RUNNING BACKS WITH A GOLD JACKET", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["FERNANDO MENDOZA","JEREMIYAH LOVE","CARNELL TATE","JORDYN TYSON"], label:"SELECTED IN THE FIRST ROUND OF THE 2026 NFL DRAFT", color:"#8B1A2A", difficulty:4 }
     ]
+  },
+  {
+    id: "wk-2026-09-15",
+    weekLabel: "WEEK OF SEP 15",
+    themeTitle: "WEEK 1 REWIND",
+    themeBlurb: "Everyone here played in Week 1. Sorting out why is the hard part.",
+    activeFrom: "2026-09-15",
+    activeUntil: "2026-09-22",
+    title: "FEATURED \u00b7 WEEK 1 REWIND",
+    players: [
+      "T.J. WATT","AIDAN HUTCHINSON","GREG ROUSSEAU","ALEX HIGHSMITH",
+      "JAHMYR GIBBS","DERRICK HENRY","D'ANDRE SWIFT","ASHTON JEANTY",
+      "A.J. BROWN","MIKE EVANS","KIRK COUSINS","ISAIAH LIKELY",
+      "MALIK NABERS","CAM SKATTEBO","TUCKER KRAFT","SAM LaPORTA"
+    ],
+    groups: [
+      { id:"A", players:["T.J. WATT","AIDAN HUTCHINSON","GREG ROUSSEAU","ALEX HIGHSMITH"], label:"RECORDED TWO OR MORE SACKS IN WEEK 1", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["JAHMYR GIBBS","DERRICK HENRY","D'ANDRE SWIFT","ASHTON JEANTY"], label:"RUSHED FOR 100 YARDS IN WEEK 1", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["A.J. BROWN","MIKE EVANS","KIRK COUSINS","ISAIAH LIKELY"], label:"PLAYED THEIR FIRST GAME FOR A NEW TEAM", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["MALIK NABERS","CAM SKATTEBO","TUCKER KRAFT","SAM LaPORTA"], label:"MISSED THE BACK HALF OF LAST SEASON WITH INJURY", color:"#8B1A2A", difficulty:4 }
+    ]
   }
 ];
 
@@ -1280,6 +1301,7 @@ function FeaturedBanner({dark,onPlay}) {
   const kicker = (
     <div style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"5px"}}>
       <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"8px",letterSpacing:"1.5px",background:"transparent",color:"#C8A96E",border:"1px solid #C8A96E",padding:"1px 4px",borderRadius:"2px"}}>FEATURED</span>
+      <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"8px",letterSpacing:"1.5px",background:"#8B1A2A",color:"#fff",padding:"1px 4px",borderRadius:"2px",marginLeft:"4px"}}>NEW</span>
       <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:dark?"#7a7a7a":"#999"}}>{puzzle.weekLabel}</span>
     </div>
   );
@@ -1570,6 +1592,7 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
             }}>
               <div style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"4px"}}>
                 <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"8px",letterSpacing:"1.5px",background:"transparent",color:"#C8A96E",border:"1px solid #C8A96E",padding:"1px 4px",borderRadius:"2px"}}>FEATURED</span>
+      <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"8px",letterSpacing:"1.5px",background:"#8B1A2A",color:"#fff",padding:"1px 4px",borderRadius:"2px",marginLeft:"4px"}}>NEW</span>
                 <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:dark?"#7a7a7a":"#999"}}>{f.weekLabel}</span>
               </div>
               <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"1.5px",color:dark?"#d4c9b8":"#1a1a2e",lineHeight:1.2}}>{f.themeTitle}</div>
