@@ -59,6 +59,20 @@ export default async function handler(req, res) {
     await fetch(`${base}/sadd/${encodeURIComponent(bucketKey)}/${encodeURIComponent(anonId)}`, { headers });
     await fetch(`${base}/expire/${encodeURIComponent(bucketKey)}/3888000`, { headers });
 
+    // Where visitors came from, by first-touch source (utm_source[/utm_content],
+    // referring site, or "direct"). Counted once per visitor per day, split
+    // new vs. returning — returning-by-source is how an ad variant's
+    // retention gets read.
+    let addedToday = 0;
+    try { addedToday = JSON.parse(addBody).result; } catch {}
+    if (addedToday === 1) {
+      const src = String((body && body.src) || 'unknown').toLowerCase()
+        .replace(/[^a-z0-9._/-]/g, '').slice(0, 60) || 'unknown';
+      const srcKey = alreadySeen ? `src:returning:${today}` : `src:new:${today}`;
+      await fetch(`${base}/hincrby/${encodeURIComponent(srcKey)}/${encodeURIComponent(src)}/1`, { headers });
+      await fetch(`${base}/expire/${encodeURIComponent(srcKey)}/3888000`, { headers });
+    }
+
     return res.status(200).json({ ok: true, key, result: addBody.slice(0, 120), new: !alreadySeen });
   } catch (err) {
     return res.status(200).json({ ok: false, error: String(err).slice(0, 300) });

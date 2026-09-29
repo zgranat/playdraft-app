@@ -6,7 +6,15 @@
 // scatter one puzzle's activity across seven separate buckets.
 const DAILY_TYPES = new Set(['start', 'win', 'loss', 'share']);
 const FEATURED_TYPES = new Set(['featured_start', 'featured_win', 'featured_loss', 'featured_share']);
-const ALLOWED = new Set([...DAILY_TYPES, ...FEATURED_TYPES]);
+// Per-game comparison. fd_open = opened Four Downs; lineup_* = Start/Sit
+// (open, lock in a lineup, beat/lose to the House, share). Bucketed by day
+// like the daily Four Downs events.
+const COMPARE_TYPES = new Set(['fd_open', 'lineup_open', 'lineup_start', 'lineup_win', 'lineup_loss', 'lineup_share']);
+const ALLOWED = new Set([...DAILY_TYPES, ...FEATURED_TYPES, ...COMPARE_TYPES]);
+// Finishing a game, per game. Credited to the player's first-touch source so
+// an ad variant can be judged on finished games, not clicks.
+const FINISH_GAME = { win: 'fourdowns', loss: 'fourdowns', lineup_win: 'startsit', lineup_loss: 'startsit' };
+const cleanSrc = s => String(s || 'unknown').toLowerCase().replace(/[^a-z0-9._/-]/g, '').slice(0, 60) || 'unknown';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -60,6 +68,19 @@ export default async function handler(req, res) {
     // client-side pd_featured_v1 store, not from these server counters,
     // so a 45-day expiry here doesn't affect anyone's saved results.
     await fetch(`${base}/expire/${encodeURIComponent(key)}/3888000`, { headers });
+
+    // Finishes by source and game: counted once per player per game per day
+    // (only when the SADD above added a new member, so replays don't inflate).
+    if (FINISH_GAME[type]) {
+      let added = 0;
+      try { added = JSON.parse(await addRes.text()).result; } catch {}
+      if (added === 1) {
+        const finKey = `src:finish:${today}`;
+        const field = `${FINISH_GAME[type]}|${cleanSrc(body.src)}`;
+        await fetch(`${base}/hincrby/${encodeURIComponent(finKey)}/${encodeURIComponent(field)}/1`, { headers });
+        await fetch(`${base}/expire/${encodeURIComponent(finKey)}/3888000`, { headers });
+      }
+    }
 
     // For finishers (win/loss, daily or featured), also roll up wrong-guess
     // count and clean-game rate. wrongsum is a plain counter (not a set) so

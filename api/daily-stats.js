@@ -119,6 +119,80 @@ export default async function handler(req, res) {
       };
     }
 
+    // ---- Game head-to-head and traffic sources, over the last 7 days ----
+    // Single days at this traffic level are noise, so both tables sum a week
+    // ending yesterday. Start/Sit events (lineup_*) and fd_open exist from
+    // 2026-09-29 on; earlier days read as zero.
+    const hgetall = async (key) => {
+      const r = await fetch(`${base}/hgetall/${encodeURIComponent(key)}`, { headers });
+      if (!r.ok) return {};
+      let arr = [];
+      try { arr = JSON.parse(await r.text()).result || []; } catch {}
+      const out = {};
+      for (let i = 0; i + 1 < arr.length; i += 2) out[arr[i]] = Number(arr[i + 1]) || 0;
+      return out;
+    };
+    const week = [];
+    for (let i = 1; i <= 7; i++) {
+      week.push(new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' })
+        .format(new Date(Date.now() - i * 86400000)));
+    }
+    const sumWeek = async (type) =>
+      (await Promise.all(week.map(d => scard(`evt:${type}:${d}`)))).reduce((a, b) => a + b, 0);
+    const [fdOpen, fdStart, fdWin, fdLoss, fdShare, ssOpen, ssStart, ssWin, ssLoss, ssShare] =
+      await Promise.all(['fd_open', 'start', 'win', 'loss', 'share',
+        'lineup_open', 'lineup_start', 'lineup_win', 'lineup_loss', 'lineup_share'].map(sumWeek));
+    const games = {
+      fourdowns: { opened: fdOpen, played: fdStart, finished: fdWin + fdLoss, won: fdWin, shared: fdShare },
+      startsit: { opened: ssOpen, played: ssStart, finished: ssWin + ssLoss, won: ssWin, shared: ssShare },
+    };
+
+    const sources = {};   // source -> { new, returning, fourdowns, startsit }
+    const bump = (src, field, n) => {
+      sources[src] = sources[src] || { new: 0, returning: 0, fourdowns: 0, startsit: 0 };
+      sources[src][field] += n;
+    };
+    const srcDays = await Promise.all(week.map(d => Promise.all([
+      hgetall(`src:new:${d}`), hgetall(`src:returning:${d}`), hgetall(`src:finish:${d}`),
+    ])));
+    for (const [n, r, f] of srcDays) {
+      Object.entries(n).forEach(([s, v]) => bump(s, 'new', v));
+      Object.entries(r).forEach(([s, v]) => bump(s, 'returning', v));
+      Object.entries(f).forEach(([k, v]) => {
+        const [game, ...rest] = k.split('|');
+        if (game === 'fourdowns' || game === 'startsit') bump(rest.join('|') || 'unknown', game, v);
+      });
+    }
+    const sourceRows = Object.entries(sources)
+      .sort((a, b) => (b[1].new + b[1].returning) - (a[1].new + a[1].returning))
+      .slice(0, 12);
+
+    const cell = 'padding:6px 10px;font-family:Georgia,serif;';
+    const vsRow = (label, a, b) => `
+      <tr><td style="${cell}color:#555;">${label}</td>
+      <td style="${cell}font-weight:bold;text-align:right;">${a}</td>
+      <td style="${cell}font-weight:bold;text-align:right;">${b}</td></tr>`;
+    const gamesHtml = `
+        <h3 style="font-family:Georgia,serif;margin:18px 0 2px;">Four Downs vs Start/Sit</h3>
+        <p style="color:#888;margin-top:0;font-size:13px;">Last 7 days (${week[6]} to ${week[0]}), unique players per day, summed</p>
+        <table style="width:100%;border-collapse:collapse;border:1px solid #eee;">
+          <tr><td style="${cell}"></td><td style="${cell}text-align:right;color:#888;">Four Downs</td><td style="${cell}text-align:right;color:#888;">Start/Sit</td></tr>
+          ${vsRow('Opened', games.fourdowns.opened, games.startsit.opened)}
+          ${vsRow('Played', `${games.fourdowns.played}`, `${games.startsit.played}`)}
+          ${vsRow('Finished', games.fourdowns.finished, games.startsit.finished)}
+          ${vsRow('Won', `${games.fourdowns.won} <span style="color:#999;font-weight:normal;">solved</span>`, `${games.startsit.won} <span style="color:#999;font-weight:normal;">beat House</span>`)}
+          ${vsRow('Shared', games.fourdowns.shared, games.startsit.shared)}
+        </table>`;
+    const sourcesHtml = `
+        <h3 style="font-family:Georgia,serif;margin:18px 0 2px;">Where players came from</h3>
+        <p style="color:#888;margin-top:0;font-size:13px;">Last 7 days, by first-touch source (utm_source/utm_content, referrer, or direct)</p>
+        ${sourceRows.length ? `
+        <table style="width:100%;border-collapse:collapse;border:1px solid #eee;font-size:13px;">
+          <tr><td style="${cell}color:#888;">Source</td><td style="${cell}text-align:right;color:#888;">New</td><td style="${cell}text-align:right;color:#888;">Back</td><td style="${cell}text-align:right;color:#888;">FD fin.</td><td style="${cell}text-align:right;color:#888;">S/S fin.</td></tr>
+          ${sourceRows.map(([s, v]) => `
+          <tr><td style="${cell}">${s}</td><td style="${cell}text-align:right;">${v.new}</td><td style="${cell}text-align:right;">${v.returning}</td><td style="${cell}text-align:right;">${v.fourdowns}</td><td style="${cell}text-align:right;">${v.startsit}</td></tr>`).join('')}
+        </table>` : '<p style="color:#888;font-size:13px;">No source data yet (tracking started 2026-09-29).</p>'}`;
+
     const row = (label, value, sub) => `
       <tr>
         <td style="padding:8px 14px;font-family:Georgia,serif;color:#555;">${label}</td>
@@ -156,6 +230,8 @@ export default async function handler(req, res) {
           ${row('Clean game rate', show(featured.cleanRate, '%'), 'of solvers')}
           ${row('Shared', featured.shared)}
         </table>` : ''}
+        ${gamesHtml}
+        ${sourcesHtml}
       </div>`;
 
     // No finishers means no solve rate to report. Say what actually happened
@@ -186,7 +262,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true, date: yesterday, visitors, newVisitors, returningVisitors, started, finished, won, lost,
       abandoned, shared, solveRate, completionRate, abandonRate, shareRate, newRate, avgWrong, cleanRate,
-      featuredIdSource, featured,
+      featuredIdSource, featured, games, sources,
     });
   } catch (err) {
     return res.status(500).json({ error: String(err).slice(0, 300) });
