@@ -18,6 +18,7 @@ const FEATURED_WINDOWS = [
   { id: 'wk-2026-09-08', activeFrom: '2026-09-08', activeUntil: '2026-09-15' },
   { id: 'wk-2026-09-15', activeFrom: '2026-09-15', activeUntil: '2026-09-22' },
   { id: 'wk-2026-09-22', activeFrom: '2026-09-22', activeUntil: '2026-09-29' },
+  { id: 'wk-2026-09-29', activeFrom: '2026-09-29', activeUntil: '2026-10-06' },
 ];
 
 // Same comparison the site uses: key >= activeFrom && key < activeUntil.
