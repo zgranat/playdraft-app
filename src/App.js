@@ -990,12 +990,36 @@ const saveStats = s => { try{localStorage.setItem("draft_v1",JSON.stringify(s));
 // no-ops if it fails — never blocks or breaks gameplay.
 const trackEvent = (type, extra = {}) => {
   try {
+    if (localStorage.getItem('pd_me') === '1') return;   // owner's own plays never count
     const id = localStorage.getItem('pd_anon_id') || 'unknown';
+    const src = localStorage.getItem('pd_src') || 'unknown';
     fetch('/api/event', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type, id, ...extra }),
+      body: JSON.stringify({ type, id, src, ...extra }),
     }).catch(() => {});
+  } catch {}
+};
+
+// First-touch source for this browser: utm_source (+ utm_content), else the
+// referring site, else "direct". Stored once and sent with every visit and
+// event, so a player who arrived from an ad is still credited to that ad when
+// they come back three days later with no UTM in the URL.
+const captureSource = () => {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('me') === '1') localStorage.setItem('pd_me', '1');
+    if (params.get('me') === '0') localStorage.removeItem('pd_me');
+    if (localStorage.getItem('pd_src')) return;
+    const clean = s => String(s || '').toLowerCase().replace(/[^a-z0-9._-]/g, '').slice(0, 40);
+    let src = clean(params.get('utm_source'));
+    const content = clean(params.get('utm_content'));
+    if (!src) {
+      let host = '';
+      try { host = new URL(document.referrer).hostname.replace(/^www\./, ''); } catch {}
+      src = host && !host.endsWith('playdraft.app') ? clean(host) : 'direct';
+    }
+    localStorage.setItem('pd_src', content ? `${src}/${content}` : src);
   } catch {}
 };
 
@@ -2309,10 +2333,12 @@ export default function App() {
         anonId = Math.random().toString(36).slice(2) + Date.now().toString(36);
         localStorage.setItem('pd_anon_id', anonId);
       }
+      captureSource();
+      if (localStorage.getItem('pd_me') === '1') return;   // owner's own visits never count
       fetch('/api/track', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: anonId }),
+        body: JSON.stringify({ id: anonId, src: localStorage.getItem('pd_src') || 'unknown' }),
       }).catch(() => {});
     } catch {}
   }, []);
@@ -2335,6 +2361,12 @@ export default function App() {
   },[]);
   const [showScoring,setShowScoring]=useState(false);
   const [mode,setMode]=useState("daily");
+  // Server-side "opened" for each game, so the stats email can compare them
+  // on equal terms. Fires however the player arrived (button or deep link).
+  // Start/Sit sends its own lineup_open from StartSit.js.
+  useEffect(()=>{
+    if(screen==="game" && mode==="daily") trackEvent("fd_open");
+  },[screen,mode]);
   const [practicePuzzle,setPracticePuzzle]=useState(()=>getRandomPracticePuzzle()||getTodaysPuzzle());
   const [recentPractice,setRecentPractice]=useState([]);
   const featuredPuzzle = getFeaturedPuzzle();

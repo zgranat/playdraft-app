@@ -73,10 +73,28 @@ const saveLineupStats = s => { try { localStorage.setItem(STORE, JSON.stringify(
 export const playedLineupToday = () => loadLineupStats().lastNumber === getLineupNumber();
 
 /* ---------- events: namespaced so the funnels never mix ---------- */
+// Vercel custom events only reach a paid plan's dashboard, so every
+// non-practice event is also sent to /api/event (Redis) under a lineup_*
+// type. That server copy is what the daily stats email reports.
+const SERVER_EVENTS = { opened: "lineup_open", locked: "lineup_start",
+  won: "lineup_win", lost: "lineup_loss", shared: "lineup_share" };
 function ev(name, props = {}) {
   try {
     if (typeof window !== "undefined" && window.va)
       window.va("event", { name: `lineup_${name}`, ...props });
+  } catch {}
+  try {
+    const type = SERVER_EVENTS[name];
+    if (!type || localStorage.getItem("pd_me") === "1") return;
+    fetch("/api/event", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        type,
+        id: localStorage.getItem("pd_anon_id") || "unknown",
+        src: localStorage.getItem("pd_src") || "unknown",
+      }),
+    }).catch(() => {});
   } catch {}
 }
 
