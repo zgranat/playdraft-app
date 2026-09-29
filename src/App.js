@@ -1205,6 +1205,27 @@ const FEATURED_PUZZLES = [
       { id:"C", players:["DAK PRESCOTT","PATRICK MAHOMES","BRYCE YOUNG","KIRK COUSINS"], label:"THREW 3+ TOUCHDOWN PASSES IN A WEEK 2 WIN", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["JAXON SMITH-NJIGBA","CeeDEE LAMB","STEFON DIGGS","DARREN WALLER"], label:"CAUGHT MULTIPLE TOUCHDOWN PASSES IN WEEK 2", color:"#8B1A2A", difficulty:4 }
     ]
+  },
+  {
+    id: "wk-2026-09-29",
+    weekLabel: "WEEK OF SEP 29",
+    themeTitle: "WEEK 3 REWIND",
+    themeBlurb: "A walk-off in Rio, a pile of injuries, and five teams still perfect. Everyone here was part of the story.",
+    activeFrom: "2026-09-29",
+    activeUntil: "2026-10-06",
+    title: "FEATURED · WEEK 3 REWIND",
+    players: [
+      "LAMAR JACKSON","DERRICK HENRY","DAK PRESCOTT","ZAY FLOWERS",
+      "DE'VON ACHANE","BREECE HALL","TRAVIS ETIENNE JR.","BAKER MAYFIELD",
+      "PATRICK MAHOMES","JOSH ALLEN","BROCK PURDY","JAMES COOK",
+      "JAXON SMITH-NJIGBA","GARRETT WILSON","KENYON SADIQ","DRAKE LONDON"
+    ],
+    groups: [
+      { id:"A", players:["LAMAR JACKSON","DERRICK HENRY","DAK PRESCOTT","ZAY FLOWERS"], label:"PLAYED IN THE NFL'S FIRST GAME IN RIO DE JANEIRO", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["DE'VON ACHANE","BREECE HALL","TRAVIS ETIENNE JR.","BAKER MAYFIELD"], label:"LEFT THEIR WEEK 3 GAME WITH AN INJURY", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["PATRICK MAHOMES","JOSH ALLEN","BROCK PURDY","JAMES COOK"], label:"PLAYS FOR A TEAM THAT STARTED 3-0", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["JAXON SMITH-NJIGBA","GARRETT WILSON","KENYON SADIQ","DRAKE LONDON"], label:"HAD 100+ RECEIVING YARDS IN WEEK 3", color:"#8B1A2A", difficulty:4 }
+    ]
   }
 ];
 
