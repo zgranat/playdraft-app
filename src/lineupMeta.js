@@ -13,7 +13,7 @@ export const getLineupNumber = () => {
 // calls/upsets/fades are running totals for the Locker Room; log keeps the
 // last 30 daily results as { n, o: "W"|"L"|"P", hits }.
 const blankStats = () => ({ played: 0, wins: 0, pushes: 0, streak: 0, best: 0, lastNumber: 0, recent: [],
-  calls: 0, upsets: 0, fades: 0, bestPct: null, log: [] });
+  calls: 0, upsets: 0, fades: 0, bestPct: null, perfects: 0, log: [] });
 export const loadLineupStats = () => {
   try {
     const s = localStorage.getItem(LINEUP_STORE);

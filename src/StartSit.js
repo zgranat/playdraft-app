@@ -133,7 +133,9 @@ function lineupPercentile(tiles, score) {
   const sums = allLineups(tiles), r = x => Math.round(x * 10);
   const below = sums.filter(s => r(s) < r(score)).length;
   const ties = sums.filter(s => r(s) === r(score)).length;
-  return { pct: Math.round(((below + (ties - 1) / 2) / (sums.length - 1)) * 100), n: sums.length };
+  const best = Math.max(...sums);
+  return { pct: Math.round(((below + (ties - 1) / 2) / (sums.length - 1)) * 100), n: sums.length,
+    best: Math.round(best * 10) / 10, perfect: r(score) >= r(best) };
 }
 
 /* The box score fills in as the number climbs. */
@@ -316,11 +318,12 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
       next.upsets = (next.upsets || 0) + r.won;
       next.fades = (next.fades || 0) + r.calls.length;
       next.bestPct = Math.max(next.bestPct ?? 0, r.pct);
+      next.perfects = (next.perfects || 0) + (r.perfect ? 1 : 0);
       next.log = [...(next.log || []),
         { n: getLineupNumber(), o: r.outcome === "won" ? "W" : r.outcome === "push" ? "P" : "L",
-          hits: r.won, v: 2 }].slice(-30);
+          hits: r.won, v: 2, ...(r.perfect ? { p: 1 } : {}) }].slice(-30);
       setStats(next); saveLineupStats(next);
-      ev(r.outcome === "won" ? "won" : r.outcome === "push" ? "push" : "lost", { calls: r.won, pct: r.pct });
+      ev(r.outcome === "won" ? "won" : r.outcome === "push" ? "push" : "lost", { calls: r.won, pct: r.pct, perfect: r.perfect ? 1 : 0 });
       try {
         fetch("/api/lineup-score", { method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ n: getLineupNumber(), score: r.score, calls: r.won,
@@ -351,7 +354,8 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
     const line = r.outcome === "push" ? `Push ${f1(r.score)}-${f1(puzzle.house)}`
       : `${r.outcome === "won" ? "W" : "L"} ${f1(r.score)}-${f1(puzzle.house)}`;
     const fieldLine = field && field.players >= 5 ? `\nBetter than ${field.pct}% of players today` : "";
-    return `PlayDraft Start/Sit #${getLineupNumber()} · ${puzzle.season}\n${sq}\n${line} vs the House${fieldLine}`
+    const perfectLine = r.perfect ? "\n\u{1F3C6} Perfect lineup" : "";
+    return `PlayDraft Start/Sit #${getLineupNumber()} · ${puzzle.season}\n${sq}${perfectLine}\n${line} vs the House${fieldLine}`
       + `\nplaydraft.app/#/start-sit`;
   };
   const share = r => {
@@ -618,31 +622,43 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
           color: C.call }}>{puzzle.season} · WEEK {puzzle.week}{done ? " · FINAL" : ""}</div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: 8 }}>
           <div>
-            <div style={{ fontFamily: DISPLAY, fontWeight: 700, fontSize: 18, color: C.muted }}>The House</div>
-            <div style={{ ...s.num, fontFamily: DISPLAY, fontWeight: 800, fontSize: 50, lineHeight: 1,
-              color: done && r.outcome === "won" ? C.dim : C.fg }}>{f1(hsNow)}</div>
-            <div style={{ fontSize: 12.5, color: C.muted }}>Proj {f1(houseProj)}</div>
-          </div>
-          <div style={{ textAlign: "right" }}>
             <div style={{ fontFamily: DISPLAY, fontWeight: 700, fontSize: 18 }}>Your Team</div>
             <div style={{ ...s.num, fontFamily: DISPLAY, fontWeight: 800, fontSize: 50, lineHeight: 1,
               color: meNow > hsNow + 0.05 ? C.win : done && r.outcome === "lost" ? C.dim : C.fg }}>{f1(meNow)}</div>
             <div style={{ fontSize: 12.5, color: C.muted }}>Proj {f1(myProj)}</div>
           </div>
+          <div style={{ textAlign: "right" }}>
+            <div style={{ fontFamily: DISPLAY, fontWeight: 700, fontSize: 18, color: C.muted }}>The House</div>
+            <div style={{ ...s.num, fontFamily: DISPLAY, fontWeight: 800, fontSize: 50, lineHeight: 1,
+              color: done && r.outcome === "won" ? C.dim : C.fg }}>{f1(hsNow)}</div>
+            <div style={{ fontSize: 12.5, color: C.muted }}>Proj {f1(houseProj)}</div>
+          </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 10, fontSize: 12.5, fontWeight: 700 }}>
-          <span style={{ ...s.num, color: C.muted, minWidth: 34 }}>{Math.round((1 - p) * 100)}%</span>
+          <span style={{ ...s.num, color: C.win, minWidth: 34 }}>{Math.round(p * 100)}%</span>
           <div role="img" aria-label={`Your win probability ${Math.round(p * 100)} percent`}
             style={{ flex: 1, height: 8, borderRadius: 4, background: C.line, overflow: "hidden", display: "flex" }}>
-            <div style={{ width: `${(1 - p) * 100}%`, background: C.dim, transition: "width .25s ease" }} />
-            <div style={{ flex: 1, background: C.winFill }} />
+            <div style={{ width: `${p * 100}%`, background: C.winFill, transition: "width .25s ease" }} />
+            <div style={{ flex: 1, background: C.dim }} />
           </div>
-          <span style={{ ...s.num, color: C.win, minWidth: 34, textAlign: "right" }}>{Math.round(p * 100)}%</span>
+          <span style={{ ...s.num, color: C.muted, minWidth: 34, textAlign: "right" }}>{Math.round((1 - p) * 100)}%</span>
         </div>
       </div>
 
       {done && (
         <div style={{ padding: "16px 16px 4px" }}>
+          {r.perfect && (
+            <div style={{ background: "#B45309", color: "#fff", borderRadius: 12, padding: "14px 16px", marginBottom: 10,
+              display: "flex", alignItems: "center", gap: 12 }}>
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z" /><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3" /></svg>
+              <div>
+                <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 26, lineHeight: 1, letterSpacing: ".03em" }}>PERFECT LINEUP</div>
+                <div style={{ fontSize: 14, marginTop: 3 }}>The best of all {r.n} lineups you could have set.</div>
+              </div>
+            </div>
+          )}
           <div style={{ display: "flex", alignItems: "center", gap: 10, background: C.ink, color: C.onInk,
             borderRadius: 12, padding: "12px 14px" }}>
             <span style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 20, background: C.onInk, color: C.ink,
@@ -652,6 +668,13 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
                 : r.outcome === "lost" ? `The House won by ${f1(-r.diff)}`
                 : r.calls.length ? "Dead even with the House" : "You started the House's lineup. Push."}</span>
           </div>
+          {!r.perfect && (
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 10,
+              background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "10px 14px" }}>
+              <span style={{ fontSize: 14, color: C.muted }}>Best possible <b style={{ ...s.num, color: C.fg }}>{f1(r.best)}</b></span>
+              <span style={{ ...s.num, fontSize: 14, fontWeight: 700 }}>{f1(r.best - r.score)} off perfect</span>
+            </div>
+          )}
           <div style={{ fontSize: 13.5, color: C.muted, marginTop: 10, lineHeight: 1.45 }}>
             Your lineup beat {r.pct}% of the {r.n} lineups you could have set.
             {field && field.players >= 5 ? ` Better than ${field.pct}% of the ${field.players} players today.` : ""}
@@ -695,10 +718,10 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6, padding: "10px 8px 10px 14px", minWidth: 0 }}>
                 <div style={{ minWidth: 0 }}>
                   <div style={{ fontSize: 14.5, fontWeight: 600, color: x.call ? C.fg : C.dim,
-                    whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{shortName(x.hs.name)}</div>
-                  {done && <div style={{ fontSize: 11, color: C.dim, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{statLine(x.hs.stats)}</div>}
+                    whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{shortName(x.me.name)}</div>
+                  {done && <div style={{ fontSize: 11, color: C.dim, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{statLine(x.me.stats)}</div>}
                 </div>
-                <div style={{ ...s.num, fontSize: 17, fontWeight: 700, color: hsCol }}>{e ? f1(x.hs.pts * e) : "–"}</div>
+                <div style={{ ...s.num, fontSize: 17, fontWeight: 700, color: meCol }}>{e ? f1(x.me.pts * e) : "–"}</div>
               </div>
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 1,
                 background: x.call ? C.callFill : C.line, color: x.call ? "#fff" : C.muted,
@@ -707,11 +730,11 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
                 {isLive && <span style={{ fontSize: 9.5, letterSpacing: ".1em" }}>LIVE</span>}
               </div>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6, padding: "10px 14px 10px 8px", minWidth: 0 }}>
-                <div style={{ ...s.num, fontSize: 17, fontWeight: 700, color: meCol }}>{e ? f1(x.me.pts * e) : "–"}</div>
+                <div style={{ ...s.num, fontSize: 17, fontWeight: 700, color: hsCol }}>{e ? f1(x.hs.pts * e) : "–"}</div>
                 <div style={{ minWidth: 0, textAlign: "right" }}>
                   <div style={{ fontSize: 14.5, fontWeight: 600, color: x.call ? C.fg : C.dim,
-                    whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{shortName(x.me.name)}</div>
-                  {done && <div style={{ fontSize: 11, color: C.dim, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{statLine(x.me.stats)}</div>}
+                    whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{shortName(x.hs.name)}</div>
+                  {done && <div style={{ fontSize: 11, color: C.dim, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{statLine(x.hs.stats)}</div>}
                 </div>
               </div>
             </div>
@@ -735,6 +758,7 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
                 </div>
               ))}
             </div>
+            {r.perfect && <div style={{ fontSize: 15, fontWeight: 700, color: dark ? "#FDBA74" : "#B45309" }}>Perfect lineup</div>}
             <div style={{ ...s.num, fontSize: 15 }}>{r.outcome === "won" ? "W" : r.outcome === "lost" ? "L" : "Push"} {f1(r.score)}–{f1(puzzle.house)} vs the House</div>
           </div>
           {!practice && (

@@ -1903,6 +1903,7 @@ function ScoringPage({dark,game:initial="fourdowns",onClose}) {
             🟩⬜⬜⬜⬜⬜🟥<br/>
             W 102.3-94.4 vs the House
           </div>))}
+        {box("🏆 PERFECT LINEUP","Out of every lineup you could have set from the twelve players, one scores the most. Start exactly that seven and you've set a perfect lineup. Every result shows how far you were from it.")}
         {box("📈 YOUR RECORD","Every daily lineup goes on your record against the House: wins, losses and pushes, plus your win streak. Archive lineups are practice and don't count.")}
         </>) : (<>
         <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"normal",marginBottom:"18px",lineHeight:1.6}}>Speed and accuracy are everything. Everyone can win; the best players win faster.</div>
@@ -1970,7 +1971,7 @@ function LockerRoom({dark,game:initial="fourdowns",onClose,onPlay,onPlayLineup})
   // One brag card for both games; each line only appears once that game has been played.
   const brag=["🏈 PLAYDRAFT — MY LOCKER ROOM",
     !empty&&`FOUR DOWNS: 🔥 ${streak}-day streak · best ${st.bestStreak||0} · ⚡ fastest ${d.bestMs?fmt(d.bestMs):"—"} · 🔒 ${d.clean} clean`,
-    ls.played&&`START/SIT: 🏆 ${lineupRecord(ls)} vs the House${ls.upsets?` · 🎯 ${ls.upsets} calls won`:""}`,
+    ls.played&&`START/SIT: 🏆 ${lineupRecord(ls)} vs the House${ls.upsets?` · 🎯 ${ls.upsets} calls won`:""}${ls.perfects?` · 🏆 ${ls.perfects} perfect`:""}`,
     "","playdraft.app"].filter(x=>x!==false&&x!==0).join("\n");
   const shareBrag=()=>{ if(navigator.share){navigator.share({title:"DRAFT",text:brag,url:"https://playdraft.app"});} else {navigator.clipboard.writeText(brag).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2200);});} };
 
@@ -2015,6 +2016,10 @@ function LockerRoom({dark,game:initial="fourdowns",onClose,onPlay,onPlayLineup})
                 <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"8px",marginBottom:"8px"}}>
                   <Stat label="CALLS WON / DAY" value={lsAvgCalls||"—"}/>
                   <Stat label="BEST LINEUP" value={ls.bestPct!=null&&lsLog.length?`${ls.bestPct}%`:"—"} hint={ls.bestPct!=null&&lsLog.length?"of lineups beaten":null}/>
+                </div>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"8px",marginBottom:"8px"}}>
+                  <Stat label="PERFECT LINEUPS" value={ls.perfects||0} hint="best possible score"/>
+                  <Stat label="WIN STREAK" value={ls.streak||0} hint={ls.best?`best ${ls.best}`:null}/>
                 </div>
                 <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"16px",marginBottom:"8px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                   <div>
