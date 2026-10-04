@@ -124,18 +124,18 @@ function allLineups(tiles) {
   q.forEach(qb => pairs(r).forEach(rs => pairs(w).forEach(ws => te.forEach(tt => {
     r.concat(w, te).filter(x => !rs.includes(x) && !ws.includes(x) && x !== tt).forEach(fx => {
       const seven = [qb, ...rs, ...ws, tt, fx];
-      seen.set(seven.map(t => t.id).sort().join("|"), seven.reduce((s, t) => s + t.pts, 0));
+      seen.set(seven.map(t => t.id).sort().join("|"), { pts: seven.reduce((s, t) => s + t.pts, 0), ids: seven.map(t => t.id) });
     });
   }))));
   return [...seen.values()];
 }
 function lineupPercentile(tiles, score) {
-  const sums = allLineups(tiles), r = x => Math.round(x * 10);
+  const all = allLineups(tiles), sums = all.map(x => x.pts), r = x => Math.round(x * 10);
   const below = sums.filter(s => r(s) < r(score)).length;
   const ties = sums.filter(s => r(s) === r(score)).length;
-  const best = Math.max(...sums);
+  const top = all.reduce((a, x) => (x.pts > a.pts ? x : a));
   return { pct: Math.round(((below + (ties - 1) / 2) / (sums.length - 1)) * 100), n: sums.length,
-    best: Math.round(best * 10) / 10, perfect: r(score) >= r(best) };
+    best: Math.round(top.pts * 10) / 10, bestIds: top.ids, perfect: r(score) >= r(top.pts) };
 }
 
 /* The box score fills in as the number climbs. */
@@ -266,8 +266,14 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
     const score = Math.round(sum(aligned, byId, "pts") * 10) / 10;
     const diff = Math.round((score - puzzle.house) * 10) / 10;
     const calls = rows.filter(r => r.call);
+    const pr = lineupPercentile(puzzle.tiles, score);
+    // Moves from the House's lineup to the perfect one, slot by slot.
+    const bestAligned = alignToHouse(pr.bestIds, house, byId);
+    const moves = bestAligned.map((id, k) => ({ k, inn: byId[id], out: byId[house[k]] }))
+      .filter(m => m.inn.id !== m.out.id)
+      .map(m => ({ ...m, gain: m.inn.pts - m.out.pts, made: aligned.includes(m.inn.id) }));
     return { rows, score, diff, calls, won: calls.filter(r => r.outcome === "won").length,
-      outcome: diff > 0 ? "won" : diff < 0 ? "lost" : "push", ...lineupPercentile(puzzle.tiles, score) };
+      outcome: diff > 0 ? "won" : diff < 0 ? "lost" : "push", ...pr, moves };
   }, [aligned, byId, house, puzzle]);
 
   /* Same starts tick in fast and cancel out; your calls score last. */
@@ -669,10 +675,19 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
                 : r.calls.length ? "Dead even with the House" : "You started the House's lineup. Push."}</span>
           </div>
           {!r.perfect && (
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 10,
-              background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "10px 14px" }}>
-              <span style={{ fontSize: 14, color: C.muted }}>Best possible <b style={{ ...s.num, color: C.fg }}>{f1(r.best)}</b></span>
-              <span style={{ ...s.num, fontSize: 14, fontWeight: 700 }}>{f1(r.best - r.score)} off perfect</span>
+            <div style={{ marginTop: 10, background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "12px 14px" }}>
+              <div style={{ fontSize: 15, fontWeight: 700 }}>
+                {r.moves.length === 0 ? "The House's lineup was perfect today."
+                  : `Perfect was ${r.moves.length} move${r.moves.length > 1 ? "s" : ""} away. You made ${r.moves.filter(m => m.made).length} of them.`}</div>
+              <div style={{ ...s.num, fontSize: 13.5, color: C.muted, marginTop: 2 }}>
+                Best possible {f1(r.best)} · you were {f1(r.best - r.score)} off</div>
+              {r.moves.filter(m => !m.made).map(m => (
+                <div key={m.k} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10,
+                  marginTop: 8, paddingTop: 8, borderTop: `1px solid ${C.line}` }}>
+                  <span style={{ fontSize: 14 }}>Missed: <b>{shortName(m.inn.name)}</b> over {shortName(m.out.name)} at {SLOT_SHORT[m.k]}</span>
+                  <span style={{ ...s.num, fontFamily: DISPLAY, fontWeight: 800, fontSize: 18, color: C.win }}>+{f1(m.gain)}</span>
+                </div>
+              ))}
             </div>
           )}
           <div style={{ fontSize: 13.5, color: C.muted, marginTop: 10, lineHeight: 1.45 }}>
