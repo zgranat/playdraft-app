@@ -1544,54 +1544,32 @@ function OnboardingModal({dark,onClose}) {
 // the daily puzzle is the habit and stays the primary route in.
 // Three states: unplayed / played-this-week / nothing active.
 // ============================================================
+// One line inside the Four Downs card: the weekly featured puzzle, or this
+// week's result once it's played (no replays: the score is shared).
 function FeaturedBanner({dark,onPlay}) {
   const puzzle = getFeaturedPuzzle();
   if (!puzzle) return null;
   const result = getFeaturedResult(puzzle.id);
-  const fg = dark ? "#d4c9b8" : "#1a1a2e";
-  const shellBase = {
-    width:"100%", maxWidth:"330px", marginBottom:"12px", textAlign:"left",
-    border:"1px solid rgba(200,169,110,0.55)", borderRadius:"10px",
-    padding:"13px 14px", background: dark ? "rgba(200,169,110,0.07)" : "rgba(200,169,110,0.10)"
-  };
-  const kicker = (
-    <div style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"5px"}}>
-      <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"8px",letterSpacing:"1.5px",background:"transparent",color:"#C8A96E",border:"1px solid #C8A96E",padding:"1px 4px",borderRadius:"2px"}}>FEATURED</span>
-      <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"8px",letterSpacing:"1.5px",background:"#8B1A2A",color:"#fff",padding:"1px 4px",borderRadius:"2px",marginLeft:"4px"}}>NEW</span>
-      <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:dark?"#7a7a7a":"#999"}}>{puzzle.weekLabel}</span>
+  const line = {display:"flex",alignItems:"center",justifyContent:"space-between",gap:"8px",width:"100%",
+    marginTop:"10px",padding:"10px 12px",borderRadius:"8px",textAlign:"left",
+    border:"1px solid rgba(200,169,110,0.5)",background:dark?"rgba(200,169,110,0.07)":"rgba(200,169,110,0.10)"};
+  const label = (
+    <span style={{minWidth:0}}>
+      <span style={{display:"block",fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:"#C8A96E"}}>★ THIS WEEK&apos;S FEATURED</span>
+      <span style={{display:"block",fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"1px",color:dark?"#d4c9b8":"#1a1a2e",lineHeight:1.1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{puzzle.themeTitle}</span>
+    </span>
+  );
+  if (result) return (
+    <div style={line}>
+      {label}
+      <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"1px",color:result.won?"#2E6B3E":"#8B1A2A",flexShrink:0}}>
+        {result.won?`✅ SOLVED${result.wrong===0?" · 🔒":""}`:"🏴 LOSS"}</span>
     </div>
   );
-
-  // Already played this week — show the result, no replay. Replaying would
-  // break the shared-score contract the daily relies on. This card never
-  // carries a button; when unplayed, the button lives beside it in Landing.
-  if (result) {
-    return (
-      <div style={shellBase}>
-        {kicker}
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"19px",letterSpacing:"1.5px",color:fg,lineHeight:1.1}}>{puzzle.themeTitle}</div>
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:result.won?"#2E6B3E":"#8B1A2A",marginTop:"6px"}}>
-          {result.won
-            ? `✅ SOLVED · ${4-(result.wrong||0)} DOWN${4-(result.wrong||0)===1?"":"S"} LEFT${result.wrong===0?" · 🔒 CLEAN":""}`
-            : "🏴 TURNOVER ON DOWNS"}
-        </div>
-        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:dark?"#777":"#999",marginTop:"4px"}}>
-          Back next Tuesday with a new theme.
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <button onClick={onPlay} style={{...shellBase,cursor:"pointer",display:"block",textAlign:"left",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}>
-      {kicker}
-      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"19px",letterSpacing:"1.5px",color:fg,lineHeight:1.1}}>{puzzle.themeTitle}</div>
-      {/* Nested CTA bar — makes the whole card read as one obvious button
-          instead of a plain info box you might tap by accident, while
-          keeping it a single tappable unit rather than two stacked elements. */}
-      <div style={{marginTop:"11px",padding:"10px",textAlign:"center",border:"1.5px solid rgba(200,169,110,0.7)",borderRadius:"7px",background:dark?"rgba(200,169,110,0.10)":"rgba(200,169,110,0.14)"}}>
-        <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:"#C8A96E"}}>PLAY THIS WEEK'S FEATURED PUZZLE</span>
-      </div>
+    <button onClick={onPlay} style={{...line,cursor:"pointer",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}>
+      {label}
+      <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:"#C8A96E",flexShrink:0}}>PLAY →</span>
     </button>
   );
 }
@@ -2188,131 +2166,64 @@ function LockerRoom({dark,game:initial="fourdowns",onClose,onPlay,onPlayLineup})
 // ============================================================
 // LANDING — mobile first
 // ============================================================
-function Landing({onPlay,onPlayLineup,onPlayFeatured,dark,mode}) {
-  const bg=dark?"#0a0a0a":"#faf7f0",fg=dark?"#d4c9b8":"#1a1a2e";
+function Landing({onPlay,onPlayLineup,onPlayFeatured,onPractice,dark,mode}) {
+  const bg=dark?"#0a0a0a":"#faf7f0", card=dark?"#141414":"#fff", border=dark?"#222":"#e8e0d0";
+  const muted=dark?"#888":"#666";
   const isPractice=mode==="practice";
-  const sports=[{icon:"🏈",name:"NFL",status:"live"},{icon:"🏀",name:"NBA",status:"soon"},{icon:"⚾",name:"MLB",status:"soon"},{icon:"🏒",name:"NHL",status:"soon"}];
-  // Collapsed by default — rules + worked example were the biggest chunk of
-  // vertical space on the page before someone ever hit a button. The "HOW"
-  // nav button already opens a full rules breakdown, so this is a shortcut
-  // for people who want a peek without leaving the landing page, not the
-  // only place this information lives.
+  const fd=loadStats(), streak=liveStreak(fd), fdDone=fd.lastPlayed===new Date().toDateString();
+  const ls=loadLineupStats(), lsDone=playedLineupToday();
+  const bigBtn=(color,text)=>({fontFamily:"'Bebas Neue',cursive",fontSize:"20px",letterSpacing:"4px",padding:"17px 0",width:"100%",background:color,color:text,border:"none",borderRadius:"10px",cursor:"pointer",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"});
+  const status=(color,txt)=>(
+    <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"1.5px",color,margin:"0 0 10px"}}>{txt}</div>
+  );
+  const gameCard=(accent,children)=>(
+    <div style={{width:"100%",maxWidth:"360px",textAlign:"left",background:card,border:`1px solid ${border}`,borderTop:`4px solid ${accent}`,borderRadius:"12px",padding:"16px 16px 14px",marginBottom:"14px"}}>{children}</div>
+  );
+  const title=(name,accent,tag)=>(
+    <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",gap:"8px",marginBottom:"4px"}}>
+      <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"28px",letterSpacing:"3px",color:accent,lineHeight:1}}>{name}</span>
+      <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:dark?"#666":"#999"}}>{tag}</span>
+    </div>
+  );
+  const blurb=t=><div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14.5px",color:muted,lineHeight:1.45,marginBottom:"8px"}}>{t}</div>;
+  const textLink=(label,onClick)=>(
+    <button onClick={onClick} style={{background:"none",border:"none",padding:"8px 0 0",cursor:"pointer",fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:dark?"#777":"#999"}}>{label}</button>
+  );
+
   return (
-    <div style={{background:bg,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-start",padding:"32px 20px 40px",textAlign:"center"}}>
-
-      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(60px,17vw,96px)",letterSpacing:"3px",color:"#C8A96E",lineHeight:0.9,marginBottom:"12px",textShadow:`3px 3px 0 ${dark?"rgba(0,0,0,0.5)":"rgba(15,25,35,0.2)"}`}}>DRAFT</div>
-
-      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"clamp(16px,4.5vw,19px)",color:dark?"#888":"#666",fontStyle:"italic",marginBottom:"16px"}}>
-        {isPractice ? "Sharpen your game. No streak on the line." : "Daily NFL puzzles. Two games, one a day, every day."}
+    <div style={{background:bg,display:"flex",flexDirection:"column",alignItems:"center",padding:"24px 18px 40px",textAlign:"center"}}>
+      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"17px",color:muted,fontStyle:"italic",marginBottom:"18px"}}>
+        {isPractice?"Practice mode. No streak on the line.":"Two daily NFL games. New ones every morning."}
       </div>
 
-      {/* Streak / competition hook */}
-      {!isPractice&&(()=>{
-        const st=loadStats(), s=liveStreak(st);
-        const doneToday = st.lastPlayed===new Date().toDateString();
-        if(s>0 && doneToday) return (
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"2px",color:"#2E6B3E",marginBottom:"14px"}}>✅ TODAY'S FOUR DOWNS IS IN THE BOOKS · 🔥 {s}-DAY STREAK</div>
-        );
-        if(s>0) return (
-          <div style={{marginBottom:"14px"}}>
-            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"2px",color:"#C8A96E"}}>🔥 {s}-DAY STREAK ON THE LINE</div>
-            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#666":"#999",marginTop:"2px"}}>SOLVE TODAY'S FOUR DOWNS TO KEEP IT ALIVE</div>
-          </div>
-        );
-        return (
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:dark?"#666":"#999",marginBottom:"14px"}}>SOLVE CLEAN 🔒 · SHARE YOUR TIME ⚡ · START A STREAK 🔥</div>
-        );
-      })()}
+      {/* Start/Sit leads: the fantasy game is the one with no real competitor. */}
+      {!isPractice&&gameCard("#3FA7D6",<>
+        {title("START/SIT","#3FA7D6","DAILY FANTASY")}
+        {blurb("Nine start/sit calls on real NFL weeks. The House starts the higher average. Find where he's wrong.")}
+        {ls.played>0&&status(lsDone?"#2E6B3E":"#3FA7D6",
+          lsDone?`✅ TODAY'S LINEUP IS LOCKED · ${lineupRecord(ls)} VS THE HOUSE`:`🏆 ${lineupRecord(ls)} VS THE HOUSE`)}
+        <button onClick={onPlayLineup} style={bigBtn("#3FA7D6","#fff")}>
+          {lsDone?"PLAY FROM THE ARCHIVE":"SET TODAY'S LINEUP"}</button>
+      </>)}
 
-      {/* GAME ONE — Four Downs. Named now that it is one of two, rather than
-          being the unnamed purpose of the whole page. */}
-      <div style={{width:"100%",maxWidth:"330px",textAlign:"left",marginBottom:"16px"}}>
-        <div style={{display:"flex",alignItems:"baseline",gap:"8px",marginBottom:"6px"}}>
-          <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"24px",letterSpacing:"3px",color:"#C8A96E",lineHeight:1}}>FOUR DOWNS</span>
-          <span style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",fontStyle:"italic",color:dark?"#777":"#888"}}>test your NFL knowledge</span>
-        </div>
-        <button
-          onClick={onPlay}
-          style={{fontFamily:"'Bebas Neue',cursive",fontSize:"20px",letterSpacing:"4px",padding:"20px 0",width:"100%",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"10px",cursor:"pointer",boxShadow:"0 4px 20px rgba(200,169,110,0.4)",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}
-        >
-          {isPractice ? "PRACTICE MODE" : "PLAY TODAY'S PUZZLE"}
-        </button>
-        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:dark?"#888":"#666",marginTop:"7px",lineHeight:1.45}}>
-          Sixteen players, four hidden groups, four downs to sort them.
-          {(()=>{const st=loadStats(),s2=liveStreak(st);
-            return s2>0?` ${s2}-day streak on the line.`:"";})()}
-        </div>
-      </div>
+      {gameCard("#C8A96E",<>
+        {title("FOUR DOWNS","#C8A96E","DAILY PUZZLE")}
+        {blurb("Sixteen players, four hidden groups, four downs to sort them.")}
+        {!isPractice&&(streak>0||fdDone)&&status(fdDone?"#2E6B3E":"#C8A96E",
+          fdDone?`✅ SOLVED TODAY${streak>0?` · 🔥 ${streak}-DAY STREAK`:""}`:`🔥 ${streak}-DAY STREAK ON THE LINE`)}
+        <button onClick={onPlay} style={bigBtn("#C8A96E","#0f1923")}>
+          {isPractice?"PLAY A PRACTICE PUZZLE":"PLAY TODAY'S PUZZLE"}</button>
+        {!isPractice&&<FeaturedBanner dark={dark} onPlay={onPlayFeatured}/>}
+        {!isPractice&&onPractice&&hasPracticeArchive()&&textLink("PRACTICE FROM THE ARCHIVE →",onPractice)}
+      </>)}
 
-      {/* Featured — one single clickable card, sitting below the daily CTA
-          so it reads as "one more thing to try" rather than competing with
-          the primary habit. */}
-      {!isPractice&&<FeaturedBanner dark={dark} onPlay={onPlayFeatured}/>}
-
-      {/* Each game has its own currency: Four Downs a streak, Start/Sit a
-          record. Same prominence, same position, different thing to protect. */}
-      {(()=>{
-        const st=loadLineupStats(), done=playedLineupToday();
-        if(!st.played) return null;
-        const rec=lineupRecord(st);
-        if(done) return (
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"2px",color:"#2E6B3E",marginBottom:"14px"}}>✅ TODAY'S LINEUP IS LOCKED · 🏆 {rec} AGAINST THE HOUSE</div>
-        );
-        return (
-          <div style={{marginBottom:"14px"}}>
-            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"2px",color:"#3FA7D6"}}>🏆 {rec} AGAINST THE HOUSE</div>
-            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#666":"#999",marginTop:"2px"}}>SET TODAY'S LINEUP TO IMPROVE IT</div>
-          </div>
-        );
-      })()}
-
-      {/* GAME TWO — Start/Sit. Same visual weight as Four Downs, because it is
-          a peer game and not an add-on. */}
-      <div style={{width:"100%",maxWidth:"330px",textAlign:"left",marginBottom:"22px"}}>
-        <div style={{display:"flex",alignItems:"baseline",gap:"8px",marginBottom:"6px",flexWrap:"wrap"}}>
-          <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"24px",letterSpacing:"3px",color:"#3FA7D6",lineHeight:1}}>START/SIT</span>
-          <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",background:"#3FA7D6",color:"#fff",padding:"2px 6px",borderRadius:"4px"}}>NEW</span>
-          <span style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",fontStyle:"italic",color:dark?"#777":"#888"}}>a daily fantasy call</span>
-        </div>
-        <button
-          onClick={onPlayLineup}
-          style={{fontFamily:"'Bebas Neue',cursive",fontSize:"20px",letterSpacing:"4px",padding:"20px 0",width:"100%",background:"#3FA7D6",color:"#fff",border:"none",borderRadius:"10px",cursor:"pointer",boxShadow:"0 4px 20px rgba(63,167,214,0.35)",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}
-        >
-          {playedLineupToday()?"SET ANOTHER LINEUP":"SET TODAY'S LINEUP"}
-        </button>
-        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:dark?"#888":"#666",marginTop:"7px",lineHeight:1.45}}>
-          Nine real start/sit calls. The House starts the higher average; find where he's wrong.
-          {(()=>{const st=loadLineupStats();
-            return st.played?` You are ${lineupRecord(st)} against him.`:"";})()}
-        </div>
-      </div>
-
-      {/* Sports pills */}
-      <div style={{display:"flex",gap:"8px",marginBottom:"24px",flexWrap:"wrap",justifyContent:"center"}}>
-        {sports.map(s=>(
-          <div key={s.name} style={{display:"flex",alignItems:"center",gap:"5px",padding:"7px 12px",borderRadius:"20px",border:`1px solid ${s.status==="live"?"#C8A96E":(dark?"#222":"#e0d8cc")}`,background:s.status==="live"?(dark?"rgba(200,169,110,0.1)":"rgba(200,169,110,0.08)"):"transparent"}}>
-            <span style={{fontSize:"12px"}}>{s.icon}</span>
-            <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:s.status==="live"?"#C8A96E":(dark?"#555":"#999")}}>{s.name}</span>
-            {s.status==="live"
-              ?<span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"7px",letterSpacing:"1px",color:"#4A7C59",background:dark?"rgba(74,124,89,0.2)":"rgba(74,124,89,0.15)",padding:"1px 4px",borderRadius:"3px"}}>LIVE</span>
-              :<span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"1px",color:dark?"#777":"#888",background:dark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.06)",padding:"2px 5px",borderRadius:"3px",whiteSpace:"nowrap"}}>COMING SOON</span>
-            }
-          </div>
-        ))}
-      </div>
-
-
-
-      {/* Feedback + submit links — visible on the homepage without playing
-          anything, unlike the post-solve CTA which only shows after you
-          finish a puzzle. */}
-      <div style={{marginTop:"32px",display:"flex",gap:"14px",alignItems:"center",flexWrap:"wrap",justifyContent:"center"}}>
+      <div style={{marginTop:"18px",display:"flex",gap:"14px",alignItems:"center",flexWrap:"wrap",justifyContent:"center"}}>
         <a href={FEEDBACK_URL} target="_blank" rel="noopener noreferrer" style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#555":"#999",textDecoration:"none",borderBottom:`1px dashed ${dark?"#333":"#c8bfae"}`,paddingBottom:"2px"}}>
           CONTACT US →
         </a>
         {SUBMIT_PUZZLE_URL&&(
           <a href={SUBMIT_PUZZLE_URL} target="_blank" rel="noopener noreferrer" style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#555":"#999",textDecoration:"none",borderBottom:`1px dashed ${dark?"#333":"#c8bfae"}`,paddingBottom:"2px"}}>
-            BUILD YOUR OWN DRAFT →
+            BUILD YOUR OWN PUZZLE →
           </a>
         )}
       </div>
@@ -2586,13 +2497,13 @@ export default function App() {
         button:focus-visible{outline:2px solid #C8A96E;outline-offset:2px;}
         button{-webkit-tap-highlight-color:transparent;}
       `}</style>
-      <Header dark={dark} onDark={()=>setDark(d=>!d)} onStats={()=>openHelp("locker")} onHome={()=>setScreen("home")} onHow={()=>openHelp("howto")} onScoring={()=>openHelp("scoring")} mode={mode} onMode={handleModeChange} showModes={screen!=="startsit"}/>
-      {screen==="home"&&<Landing onPlay={()=>{if(mode==="featured")setMode("daily");evFourDowns("opened",{mode});setScreen("game");}} onPlayLineup={()=>setScreen("startsit")} onPlayFeatured={playFeatured} dark={dark} mode={mode==="featured"?"daily":mode}/>}
+      <Header dark={dark} onDark={()=>setDark(d=>!d)} onStats={()=>openHelp("locker")} onHome={()=>setScreen("home")} onHow={()=>openHelp("howto")} onScoring={()=>openHelp("scoring")} mode={mode} onMode={handleModeChange} showModes={screen==="game"&&mode!=="featured"}/>
+      {screen==="home"&&<Landing onPlay={()=>{if(mode==="featured")setMode("daily");evFourDowns("opened",{mode});setScreen("game");}} onPlayLineup={()=>setScreen("startsit")} onPlayFeatured={playFeatured} onPractice={()=>{handleModeChange("practice");setScreen("game");}} dark={dark} mode={mode==="featured"?"daily":mode}/>}
       {screen==="game"&&<Game key={`${puzzle.id}-${mode}`} puzzle={puzzle} dark={dark} mode={mode} onFinish={handleFinish} onPlayFeatured={playFeatured}/>}
       {screen==="howto"&&<HowTo dark={dark} game={helpFor} onClose={closeHelp} onPlay={g=>{if(g==="startsit")setScreen("startsit");else{setMode("daily");setScreen("game");}}}/>}
       {screen==="scoring"&&<ScoringPage dark={dark} game={helpFor} onClose={closeHelp}/>}
       {screen==="locker"&&<LockerRoom dark={dark} game={helpFor} onClose={closeHelp} onPlay={()=>{setMode("daily");setScreen("game");}} onPlayLineup={()=>setScreen("startsit")}/>}
-      {screen==="startsit"&&<Suspense fallback={<div style={{minHeight:"100vh"}}/>}><StartSit dark={dark} onExit={()=>setScreen("home")}/></Suspense>}
+      {screen==="startsit"&&<Suspense fallback={<div style={{minHeight:"100vh"}}/>}><StartSit dark={dark} onExit={()=>setScreen("home")} mode={playedLineupToday()?"practice":"daily"}/></Suspense>}
       {/* The tutorial explains Four Downs, so it waits until someone opens
           Four Downs. Showing it to a Start/Sit deep link (every ad click)
           described the wrong game. */}
