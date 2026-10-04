@@ -1381,18 +1381,18 @@ function Header({dark,onDark,onStats,onHome,onHow,onScoring,mode,onMode,showMode
   // No archive on launch day, so offering PRACTICE would just replay the daily.
   const modes = hasPracticeArchive() ? ["daily","practice"] : ["daily"];
   return (
-    <header style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 14px",height:"56px",background:dark?"#0a0a0a":"#0f1923",borderBottom:`2px solid #C8A96E`,position:"sticky",top:0,zIndex:100,gap:"8px"}}>
-      <button onClick={onHome} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"26px",letterSpacing:"5px",color:"#C8A96E",background:"none",border:"none",cursor:"pointer",padding:0,flexShrink:0}}>DRAFT</button>
+    <header style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 14px",height:"56px",background:dark?"#0B0F19":"#FFFFFF",borderBottom:`1px solid ${dark?"#263042":"#E5E7EB"}`,position:"sticky",top:0,zIndex:100,gap:"8px"}}>
+      <button onClick={onHome} style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"26px",fontWeight:800,letterSpacing:"1px",color:dark?"#F3F4F6":"#111827",background:"none",border:"none",cursor:"pointer",padding:0,flexShrink:0}}>DRAFT</button>
       <div style={{display:"flex",gap:"4px"}}>
         {showModes&&modes.map(m=>(
-          <button key={m} onClick={()=>onMode(m)} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",padding:"6px 12px",borderRadius:"3px",cursor:"pointer",border:"1px solid",borderColor:mode===m?"#C8A96E":"#333",background:mode===m?"#C8A96E":"transparent",color:mode===m?"#0f1923":"#555",transition:"all 0.15s"}}>
+          <button key={m} onClick={()=>onMode(m)} style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"12px",letterSpacing:"0.7px",padding:"6px 12px",borderRadius:"3px",cursor:"pointer",border:"1px solid",borderColor:mode===m?"#B45309":(dark?"#374151":"#D1D5DB"),background:mode===m?"#B45309":"transparent",color:mode===m?"#fff":(dark?"#A3ACBA":"#4B5563"),transition:"all 0.15s"}}>
             {m.toUpperCase()}
           </button>
         ))}
       </div>
       <div style={{display:"flex",gap:"8px",alignItems:"center"}}>
-        <button onClick={onHow} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"1px",padding:"5px 10px",background:"transparent",border:"1px solid #333",color:"#888",borderRadius:"3px",cursor:"pointer"}}>HOW</button>
-        <button onClick={onScoring} style={{fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"1px",padding:"5px 8px",background:"transparent",border:"1px solid #333",color:"#888",borderRadius:"3px",cursor:"pointer"}}>⭐</button>
+        <button onClick={onHow} style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"11px",letterSpacing:"0.3px",padding:"5px 10px",background:"transparent",border:`1px solid ${dark?"#374151":"#D1D5DB"}`,color:dark?"#A3ACBA":"#4B5563",borderRadius:"8px",cursor:"pointer"}}>HOW</button>
+        <button onClick={onScoring} style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"14px",letterSpacing:"0.3px",padding:"5px 8px",background:"transparent",border:`1px solid ${dark?"#374151":"#D1D5DB"}`,color:dark?"#A3ACBA":"#4B5563",borderRadius:"8px",cursor:"pointer"}}>⭐</button>
         <button onClick={onStats} style={{background:"none",border:"none",cursor:"pointer",fontSize:"18px",padding:"2px"}}>📊</button>
         <button onClick={onDark} style={{background:"none",border:"none",cursor:"pointer",fontSize:"18px",padding:"2px"}}>{dark?"☀️":"🌙"}</button>
       </div>
@@ -1407,20 +1407,20 @@ function Header({dark,onDark,onStats,onHome,onHow,onScoring,mode,onMode,showMode
 // player came from, so the HOW button inside Start/Sit explains Start/Sit.
 function GameTabs({game,setGame,dark}) {
   const tab=(id,label,color)=>(
-    <button key={id} onClick={()=>setGame(id)} style={{flex:1,fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"2px",padding:"10px 0",borderRadius:"6px",cursor:"pointer",
-      border:`1px solid ${game===id?color:(dark?"#2a2a2a":"#ddd6c4")}`,background:game===id?color:"transparent",color:game===id?"#fff":(dark?"#777":"#888")}}>{label}</button>
+    <button key={id} onClick={()=>setGame(id)} style={{flex:1,fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"15px",letterSpacing:"0.7px",padding:"10px 0",borderRadius:"6px",cursor:"pointer",
+      border:`1px solid ${game===id?color:(dark?"#2a2a2a":"#E5E7EB")}`,background:game===id?color:"transparent",color:game===id?"#fff":(dark?"#777":"#888")}}>{label}</button>
   );
-  return <div style={{display:"flex",gap:"8px",marginBottom:"18px"}}>{tab("fourdowns","FOUR DOWNS","#C8A96E")}{tab("startsit","START/SIT","#3FA7D6")}</div>;
+  return <div style={{display:"flex",gap:"8px",marginBottom:"18px"}}>{tab("fourdowns","FOUR DOWNS","#B45309")}{tab("startsit","START/SIT","#1D4ED8")}</div>;
 }
 
 function HelpSteps({steps,dark,accent}) {
-  const fg=dark?"#d4c9b8":"#1a1a2e", card=dark?"#141414":"#fff", border=dark?"#222":"#e8e0d0";
+  const fg=dark?"#E5E7EB":"#111827", card=dark?"#131A26":"#fff", border=dark?"#222":"#E5E7EB";
   return steps.map(s=>(
     <div key={s.n} style={{display:"flex",gap:"14px",marginBottom:"12px",background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"16px"}}>
-      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"24px",color:accent,flexShrink:0,lineHeight:1,marginTop:"2px"}}>{s.n}</div>
+      <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"24px",color:accent,flexShrink:0,lineHeight:1,marginTop:"2px"}}>{s.n}</div>
       <div>
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,marginBottom:"3px"}}>{s.icon} {s.title}</div>
-        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13.5px",color:dark?"#888":"#666",lineHeight:1.5}}>{s.desc}</div>
+        <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"13px",letterSpacing:"0.7px",color:fg,marginBottom:"3px"}}>{s.icon} {s.title}</div>
+        <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"13.5px",color:dark?"#888":"#666",lineHeight:1.5}}>{s.desc}</div>
       </div>
     </div>
   ));
@@ -1428,34 +1428,34 @@ function HelpSteps({steps,dark,accent}) {
 
 function HowTo({dark,game:initial="fourdowns",onClose,onPlay}) {
   const [game,setGame]=useState(initial);
-  const bg=dark?"#0a0a0a":"#faf7f0", fg=dark?"#d4c9b8":"#1a1a2e", card=dark?"#141414":"#fff", border=dark?"#222":"#e8e0d0";
-  const ss=game==="startsit", accent=ss?"#3FA7D6":"#C8A96E";
+  const bg=dark?"#0B0F19":"#F3F4F6", fg=dark?"#E5E7EB":"#111827", card=dark?"#131A26":"#fff", border=dark?"#222":"#E5E7EB";
+  const ss=game==="startsit", accent=ss?"#1D4ED8":"#B45309";
   return (
     <div style={{background:bg,minHeight:"calc(100vh - 52px)",padding:"20px 16px 40px",overflowY:"auto"}}>
       <div style={{maxWidth:"480px",margin:"0 auto"}}>
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(32px,8vw,48px)",letterSpacing:"4px",color:"#C8A96E",marginBottom:"12px"}}>HOW TO PLAY</div>
+        <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"clamp(32px,8vw,48px)",letterSpacing:"1.4px",color:"#B45309",marginBottom:"12px"}}>HOW TO PLAY</div>
         <GameTabs game={game} setGame={setGame} dark={dark}/>
-        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"italic",marginBottom:"18px",lineHeight:1.6}}>
+        <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"normal",marginBottom:"18px",lineHeight:1.6}}>
           {ss?"Nine fantasy calls on real NFL weeks. Beat the House.":"Group the players. Find the connection. Beat your time."}</div>
         {ss ? (
           <>
             <HelpSteps dark={dark} accent={accent} steps={[
-              {n:"01",icon:"🏈",title:"NINE CALLS",desc:"QB, two RBs, three WRs, a TE and two FLEX. Each call is two real players from real weeks of real seasons. Start one, sit the other."},
-              {n:"02",icon:"🏠",title:"THE HOUSE",desc:"The House always starts the player with the higher season average, and his pick is tagged on the card. Follow him on every call and you push."},
-              {n:"03",icon:"🔎",title:"READ THE CARD",desc:"Each card shows only what a manager knew at kickoff. Find the calls where the House's simple rule is wrong."},
-              {n:"04",icon:"📺",title:"THE GAMES PLAY OUT",desc:"Lock your lineup and watch both scores climb, position by position. 0.5 PPR. Each call goes to whoever actually scored more that week."},
+              {n:"01",icon:"🏈",title:"ONE REAL WEEK",desc:"Nine players from the same week of a real NFL season: two QBs, three RBs, four WRs. The season is on the screen; the week is revealed at kickoff."},
+              {n:"02",icon:"🏠",title:"THE HOUSE",desc:"The House sets the same roster by season average: QB, two RBs, two WRs and a FLEX. You start with his lineup. Keep it and you push."},
+              {n:"03",icon:"🔎",title:"MAKE YOUR CALLS",desc:"Tap a slot to swap players. Tap a name for his season so far: last three games, usage, the matchup. Nothing after kickoff is shown."},
+              {n:"04",icon:"📺",title:"KICKOFF",desc:"Lock it and the week plays out in seconds. Slots where you match the House cancel out; your calls score last. 0.5 PPR."},
               {n:"05",icon:"🏆",title:"BEAT THE HOUSE",desc:"Outscore the House's lineup to win the day. Your record against him lives in the Locker Room."},
             ]}/>
             <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
-              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:fg,marginBottom:"8px"}}>📋 THE CARD</div>
+              <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"12px",letterSpacing:"0.7px",color:fg,marginBottom:"8px"}}>📋 THE CARD</div>
               {[["AVG","Points per game this season, before this week. The only number the House reads."],
-                ["L3","Points per game over his last three games. Hot or cold."],
-                ["TCH / TGT / ATT","Touches (RB), targets (WR, TE) or dropbacks plus runs (QB) per game, last three. Usage is opportunity."],
-                ["OPP","How generous that defense has been to his position this season. 1st is the softest. Green is a good matchup, red a tough one."],
-                ["VEGAS","Points his team was expected to score, from the betting line. High totals mean more chances."]].map(([k,d],i)=>(
+                ["LAST 3","His last three games, green when hot, red when cold."],
+                ["TCH / TGT / ATT","Touches (RB), targets (WR) or dropbacks plus runs (QB) per game, last three. Usage is opportunity."],
+                ["VS POS","How generous that defense has been to his position this season. 1st is the softest. Green is a good matchup, red a tough one."],
+                ["PLAYER CARD","Tap a name: age, years in the league, team record and every game he's played that season so far."]].map(([k,d],i)=>(
                 <div key={k} style={{display:"flex",gap:"10px",padding:"6px 0",borderTop:i?`1px solid ${border}`:"none"}}>
-                  <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"1px",color:accent,minWidth:"92px"}}>{k}</span>
-                  <span style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:dark?"#888":"#666",lineHeight:1.45}}>{d}</span>
+                  <span style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"13px",letterSpacing:"0.3px",color:accent,minWidth:"92px"}}>{k}</span>
+                  <span style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"13px",color:dark?"#888":"#666",lineHeight:1.45}}>{d}</span>
                 </div>
               ))}
             </div>
@@ -1470,22 +1470,22 @@ function HowTo({dark,game:initial="fourdowns",onClose,onPlay}) {
               {n:"05",icon:"🔒",title:"CLEAN GAME",desc:"Solve all 4 with zero wrong downs and earn the CLEAN GAME badge on your share card."},
             ]}/>
             <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
-              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:fg,marginBottom:"10px"}}>🎨 DIFFICULTY</div>
+              <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"12px",letterSpacing:"0.7px",color:fg,marginBottom:"10px"}}>🎨 DIFFICULTY</div>
               {[["#B8860B","1ST & EASY","Most players get this right away"],["#2E6B3E","2ND DOWN","You watch the games"],["#1B4F8A","3RD & LONG","You follow closely"],["#8B1A2A","4TH & GOAL","You live and breathe NFL"]].map(([c,t,d],i)=>(
                 <div key={i} style={{display:"flex",alignItems:"center",gap:"10px",padding:"6px 0",borderBottom:i<3?`1px solid ${border}`:"none"}}>
                   <div style={{width:"11px",height:"11px",borderRadius:"3px",background:c,flexShrink:0}}/>
                   <div>
-                    <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"1px",color:fg}}>{t}</span>
-                    <span style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",color:dark?"#666":"#888",fontStyle:"italic",marginLeft:"8px"}}>{d}</span>
+                    <span style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"12px",letterSpacing:"0.3px",color:fg}}>{t}</span>
+                    <span style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"12px",color:dark?"#666":"#888",fontStyle:"normal",marginLeft:"8px"}}>{d}</span>
                   </div>
                 </div>
               ))}
             </div>
           </>
         )}
-        <button onClick={()=>onPlay?onPlay(game):onClose()} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"3px",padding:"16px",background:accent,color:ss?"#fff":"#0f1923",border:"none",borderRadius:"8px",cursor:"pointer"}}>
+        <button onClick={()=>onPlay?onPlay(game):onClose()} style={{width:"100%",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"16px",letterSpacing:"1px",padding:"16px",background:accent,color:ss?"#fff":"#111827",border:"none",borderRadius:"8px",cursor:"pointer"}}>
           {ss?"SET TODAY'S LINEUP":"PLAY FOUR DOWNS"}</button>
-        <button onClick={onClose} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"3px",padding:"13px",background:"transparent",color:"#888",border:`1px solid ${dark?"#2a2a2a":"#ccc"}`,borderRadius:"8px",cursor:"pointer",marginTop:"8px"}}>BACK</button>
+        <button onClick={onClose} style={{width:"100%",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"14px",letterSpacing:"1px",padding:"13px",background:"transparent",color:"#888",border:`1px solid ${dark?"#2a2a2a":"#ccc"}`,borderRadius:"8px",cursor:"pointer",marginTop:"8px"}}>BACK</button>
       </div>
     </div>
   );
@@ -1501,7 +1501,7 @@ function HowTo({dark,game:initial="fourdowns",onClose,onPlay}) {
 // ============================================================
 function OnboardingModal({dark,onClose}) {
   const [dontShow,setDontShow] = useState(true);
-  const card = dark?"#141414":"#fff", fg = dark?"#d4c9b8":"#1a1a2e", border = dark?"#222":"#e8e0d0";
+  const card = dark?"#131A26":"#fff", fg = dark?"#E5E7EB":"#111827", border = dark?"#222":"#E5E7EB";
   const handleClose = () => {
     try { if(dontShow) localStorage.setItem("pd_onboarding_seen","1"); } catch {}
     onClose();
@@ -1509,8 +1509,8 @@ function OnboardingModal({dark,onClose}) {
   return (
     <div onClick={handleClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.72)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:"18px"}}>
       <div onClick={e=>e.stopPropagation()} style={{background:card,border:`1px solid ${border}`,borderRadius:"14px",padding:"24px 20px 20px",maxWidth:"360px",width:"100%",maxHeight:"85vh",overflowY:"auto",animation:"popIn 0.2s ease"}}>
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(26px,7vw,32px)",letterSpacing:"3px",color:"#C8A96E",marginBottom:"4px",textAlign:"center"}}>HOW TO PLAY</div>
-        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:dark?"#888":"#777",fontStyle:"italic",marginBottom:"18px",textAlign:"center",lineHeight:1.5}}>Group the players. Find the connection. Beat your time.</div>
+        <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"clamp(26px,7vw,32px)",letterSpacing:"1px",color:"#B45309",marginBottom:"4px",textAlign:"center"}}>HOW TO PLAY</div>
+        <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"13px",color:dark?"#888":"#777",fontStyle:"normal",marginBottom:"18px",textAlign:"center",lineHeight:1.5}}>Group the players. Find the connection. Beat your time.</div>
         {[
           {icon:"🏈",title:"16 PLAYERS, 4 GROUPS",desc:"Sort 16 NFL players into 4 hidden groups of 4."},
           {icon:"🤯",title:"FIND THE CONNECTION",desc:"Each group shares something in common — some are obvious, some are traps."},
@@ -1519,16 +1519,16 @@ function OnboardingModal({dark,onClose}) {
           <div key={i} style={{display:"flex",gap:"12px",marginBottom:"13px",alignItems:"flex-start"}}>
             <div style={{fontSize:"19px",lineHeight:1.3}}>{s.icon}</div>
             <div>
-              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"1.5px",color:fg,marginBottom:"2px"}}>{s.title}</div>
-              <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:dark?"#999":"#666",lineHeight:1.45}}>{s.desc}</div>
+              <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"12px",letterSpacing:"0.5px",color:fg,marginBottom:"2px"}}>{s.title}</div>
+              <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"13px",color:dark?"#999":"#666",lineHeight:1.45}}>{s.desc}</div>
             </div>
           </div>
         ))}
         <label style={{display:"flex",alignItems:"center",gap:"8px",margin:"12px 0 16px",cursor:"pointer",userSelect:"none"}}>
-          <input type="checkbox" checked={dontShow} onChange={e=>setDontShow(e.target.checked)} style={{width:"16px",height:"16px",accentColor:"#C8A96E",cursor:"pointer",flexShrink:0}}/>
-          <span style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:dark?"#888":"#777"}}>Don't show this again</span>
+          <input type="checkbox" checked={dontShow} onChange={e=>setDontShow(e.target.checked)} style={{width:"16px",height:"16px",accentColor:"#B45309",cursor:"pointer",flexShrink:0}}/>
+          <span style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"13px",color:dark?"#888":"#777"}}>Don't show this again</span>
         </label>
-        <button onClick={handleClose} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"3px",padding:"14px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"8px",cursor:"pointer"}}>GOT IT — LET'S PLAY</button>
+        <button onClick={handleClose} style={{width:"100%",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"15px",letterSpacing:"1px",padding:"14px",background:"#B45309",color:"#fff",border:"none",borderRadius:"8px",cursor:"pointer"}}>GOT IT — LET'S PLAY</button>
       </div>
     </div>
   );
@@ -1552,24 +1552,24 @@ function FeaturedBanner({dark,onPlay}) {
   const result = getFeaturedResult(puzzle.id);
   const line = {display:"flex",alignItems:"center",justifyContent:"space-between",gap:"8px",width:"100%",
     marginTop:"10px",padding:"10px 12px",borderRadius:"8px",textAlign:"left",
-    border:"1px solid rgba(200,169,110,0.5)",background:dark?"rgba(200,169,110,0.07)":"rgba(200,169,110,0.10)"};
+    border:`1px solid ${dark?"#263042":"#E5E7EB"}`,background:dark?"#131A26":"#F9FAFB"};
   const label = (
     <span style={{minWidth:0}}>
-      <span style={{display:"block",fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:"#C8A96E"}}>★ THIS WEEK&apos;S FEATURED</span>
-      <span style={{display:"block",fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"1px",color:dark?"#d4c9b8":"#1a1a2e",lineHeight:1.1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{puzzle.themeTitle}</span>
+      <span style={{display:"block",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"10px",letterSpacing:"0.7px",color:"#B45309"}}>★ THIS WEEK&apos;S FEATURED</span>
+      <span style={{display:"block",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"16px",letterSpacing:"0.3px",color:dark?"#E5E7EB":"#111827",lineHeight:1.1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{puzzle.themeTitle}</span>
     </span>
   );
   if (result) return (
     <div style={line}>
       {label}
-      <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"1px",color:result.won?"#2E6B3E":"#8B1A2A",flexShrink:0}}>
+      <span style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"12px",letterSpacing:"0.3px",color:result.won?"#2E6B3E":"#8B1A2A",flexShrink:0}}>
         {result.won?`✅ SOLVED${result.wrong===0?" · 🔒":""}`:"🏴 LOSS"}</span>
     </div>
   );
   return (
     <button onClick={onPlay} style={{...line,cursor:"pointer",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}>
       {label}
-      <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:"#C8A96E",flexShrink:0}}>PLAY →</span>
+      <span style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"13px",letterSpacing:"0.7px",color:"#B45309",flexShrink:0}}>PLAY →</span>
     </button>
   );
 }
@@ -1580,15 +1580,15 @@ function ContributorBanner({contributor,dark}) {
     <div style={{
       display:"flex",alignItems:"center",justifyContent:"center",gap:"8px",
       background:dark?"linear-gradient(90deg,#1a1408,#2a2010,#1a1408)":"linear-gradient(90deg,#f5edda,#faf3e2,#f5edda)",
-      border:"1px solid #C8A96E",borderRadius:"8px",padding:"9px 12px",marginBottom:"12px",
+      border:"1px solid #B45309",borderRadius:"8px",padding:"9px 12px",marginBottom:"12px",
       animation:"fadeUp 0.5s ease"
     }}>
       <span style={{fontSize:"13px",lineHeight:1}}>⭐</span>
       <div style={{textAlign:"center"}}>
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"3px",color:"#C8A96E",lineHeight:1.2}}>
+        <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"10px",letterSpacing:"1px",color:"#B45309",lineHeight:1.2}}>
           {contributor.tag||"GUEST DRAFT"}
         </div>
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"2px",color:dark?"#e0d5c5":"#1a1a2e",lineHeight:1.2}}>
+        <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"15px",letterSpacing:"0.7px",color:dark?"#E5E7EB":"#111827",lineHeight:1.2}}>
           BUILT BY {contributor.name}
         </div>
       </div>
@@ -1600,7 +1600,7 @@ function ContributorBanner({contributor,dark}) {
 function Tile({name,selected,onClick,dark,shaking}) {
   return (
     <button onClick={onClick} style={{
-      fontFamily:"'Bebas Neue',cursive",
+      fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",
       fontSize:"clamp(12px,3.6vw,16px)",
       letterSpacing:"0.3px",
       padding:"4px 2px",
@@ -1608,13 +1608,13 @@ function Tile({name,selected,onClick,dark,shaking}) {
       width:"100%",
       display:"flex",alignItems:"center",justifyContent:"center",
       textAlign:"center",lineHeight:1.15,
-      background:selected?(dark?"#1e2d4a":"#0f1923"):(dark?"#1c1c1c":"#ffffff"),
-      color:selected?"#C8A96E":(dark?"#d4c9b8":"#1a1a2e"),
-      border:`2px solid ${selected?"#C8A96E":(dark?"#2a2a2a":"#ddd6c4")}`,
+      background:selected?(dark?"#1e2d4a":"#111827"):(dark?"#1B2433":"#ffffff"),
+      color:selected?"#B45309":(dark?"#E5E7EB":"#111827"),
+      border:`2px solid ${selected?"#B45309":(dark?"#2a2a2a":"#E5E7EB")}`,
       borderRadius:"8px",
       cursor:"pointer",
       transform:selected?"scale(1.02)":"scale(1)",
-      boxShadow:selected?"0 0 0 3px rgba(200,169,110,0.15)":"0 1px 3px rgba(0,0,0,0.06)",
+      boxShadow:selected?"0 0 0 3px rgba(180,83,9,0.15)":"0 1px 3px rgba(0,0,0,0.06)",
       transition:"all 0.15s ease",
       animation:shaking?"shake 0.5s ease":"none",
       WebkitTapHighlightColor:"transparent",
@@ -1629,9 +1629,9 @@ function Tile({name,selected,onClick,dark,shaking}) {
 function SolvedRow({group}) {
   return (
     <div style={{background:group.color,borderRadius:"8px",padding:"12px 14px",marginBottom:"6px",animation:"popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)"}}>
-      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"3px",color:"rgba(255,255,255,0.6)",marginBottom:"2px"}}>{DIFF_LABELS[group.difficulty]}</div>
-      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"clamp(13px,3.5vw,17px)",fontWeight:"700",fontStyle:"italic",color:"#fff",lineHeight:1.2}}>{group.label}</div>
-      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"1px",color:"rgba(255,255,255,0.8)",marginTop:"5px"}}>{group.players.join(" · ")}</div>
+      <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"9px",letterSpacing:"1px",color:"rgba(255,255,255,0.6)",marginBottom:"2px"}}>{DIFF_LABELS[group.difficulty]}</div>
+      <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"clamp(13px,3.5vw,17px)",fontWeight:"700",fontStyle:"normal",color:"#fff",lineHeight:1.2}}>{group.label}</div>
+      <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"12px",letterSpacing:"0.3px",color:"rgba(255,255,255,0.8)",marginTop:"5px"}}>{group.players.join(" · ")}</div>
     </div>
   );
 }
@@ -1649,7 +1649,7 @@ function Timer({running,onTick,dark}) {
   },[running]);
   const s=Math.floor(elapsed/1000),m=Math.floor(s/60);
   return (
-    <div style={{fontFamily:"'Courier New',monospace",fontSize:"20px",fontWeight:"700",color:elapsed>180000?"#c0392b":(dark?"#C8A96E":"#0f1923"),letterSpacing:"3px",textAlign:"center"}}>
+    <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontVariantNumeric:"tabular-nums",fontSize:"24px",fontWeight:"800",color:elapsed>180000?"#c0392b":(dark?"#F3F4F6":"#111827"),letterSpacing:"1px",textAlign:"center"}}>
       {`${m}:${String(s%60).padStart(2,"0")}`}
     </div>
   );
@@ -1662,10 +1662,10 @@ function ReminderSignup({dark,won}) {
   const [email,setEmail]=useState("");
   const [state,setState]=useState(()=>{try{return localStorage.getItem("draft_sub")?"done":"idle";}catch{return "idle";}});
   const [err,setErr]=useState("");
-  const fg=dark?"#e0d5c5":"#1a1a2e", border=dark?"#2a2a2a":"#ddd6c4";
+  const fg=dark?"#E5E7EB":"#111827", border=dark?"#2a2a2a":"#E5E7EB";
 
   if(state==="done") return (
-    <div style={{marginTop:"16px",textAlign:"center",fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:"#2E6B3E"}}>
+    <div style={{marginTop:"16px",textAlign:"center",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"11px",letterSpacing:"0.7px",color:"#2E6B3E"}}>
       ✅ DAILY REMINDER IS ON
     </div>
   );
@@ -1685,9 +1685,9 @@ function ReminderSignup({dark,won}) {
   };
 
   return (
-    <div style={{marginTop:"18px",paddingTop:"16px",borderTop:`1px solid ${dark?"#1e1e1e":"#ece4d4"}`}}>
-      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:fg,textAlign:"center"}}>{won?"🔥 DON'T LOSE THE STREAK":"🏈 GET THE NEXT ONE"}</div>
-      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:dark?"#777":"#888",textAlign:"center",margin:"4px 0 10px",lineHeight:1.4}}>
+    <div style={{marginTop:"18px",paddingTop:"16px",borderTop:`1px solid ${dark?"#1B2433":"#E5E7EB"}`}}>
+      <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"11px",letterSpacing:"0.7px",color:fg,textAlign:"center"}}>{won?"🔥 DON'T LOSE THE STREAK":"🏈 GET THE NEXT ONE"}</div>
+      <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"12px",fontStyle:"normal",color:dark?"#777":"#888",textAlign:"center",margin:"4px 0 10px",lineHeight:1.4}}>
         One email a day when the new puzzle drops. Nothing else, unsubscribe anytime.
       </div>
       <div style={{display:"flex",gap:"6px"}}>
@@ -1695,14 +1695,14 @@ function ReminderSignup({dark,won}) {
           type="email" inputMode="email" autoComplete="email" placeholder="you@email.com"
           value={email} onChange={e=>setEmail(e.target.value)}
           onKeyDown={e=>{if(e.key==="Enter")submit();}}
-          style={{flex:2,fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"15px",padding:"12px",borderRadius:"8px",border:`1px solid ${border}`,background:dark?"#0f0f0f":"#fff",color:fg,minWidth:0}}
+          style={{flex:2,fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"15px",padding:"12px",borderRadius:"8px",border:`1px solid ${border}`,background:dark?"#0f0f0f":"#fff",color:fg,minWidth:0}}
         />
-        <button onClick={submit} disabled={state==="sending"} style={{flex:1,fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",padding:"12px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"8px",cursor:"pointer"}}>
+        <button onClick={submit} disabled={state==="sending"} style={{flex:1,fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"13px",letterSpacing:"0.7px",padding:"12px",background:"#B45309",color:"#fff",border:"none",borderRadius:"8px",cursor:"pointer"}}>
           {state==="sending"?"...":"REMIND ME"}
         </button>
       </div>
-      {err&&<div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",color:"#B0475A",textAlign:"center",marginTop:"6px"}}>{err}</div>}
-      <button onClick={()=>setState("hidden")} style={{display:"block",margin:"8px auto 0",background:"none",border:"none",fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:dark?"#555":"#aaa",cursor:"pointer"}}>NO THANKS</button>
+      {err&&<div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"12px",color:"#B0475A",textAlign:"center",marginTop:"6px"}}>{err}</div>}
+      <button onClick={()=>setState("hidden")} style={{display:"block",margin:"8px auto 0",background:"none",border:"none",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"10px",letterSpacing:"0.7px",color:dark?"#555":"#aaa",cursor:"pointer"}}>NO THANKS</button>
     </div>
   );
 }
@@ -1712,7 +1712,7 @@ function ReminderSignup({dark,won}) {
 // ============================================================
 function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mode,onPlayFeatured}) {
   const [copied,setCopied]=useState(false);
-  const bg=dark?"#111":"#faf7f0",fg=dark?"#e0d5c5":"#1a1a2e";
+  const bg=dark?"#111":"#F3F4F6",fg=dark?"#E5E7EB":"#111827";
   const st=loadStats();
   const cleanGame=wrong===0;
   const streak=mode==="daily"?liveStreak(st):0;
@@ -1731,42 +1731,42 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
   const nativeShare=()=>{ if(navigator.share){navigator.share({title:"DRAFT",text:shareText,url:"https://playdraft.app"});}else{copy();} fireShareEvent(); };
 
   return (
-    <div style={{background:bg,borderRadius:"12px",padding:"24px 18px 28px",width:"100%",maxWidth:"460px",margin:"16px auto 0",border:`2px solid ${won?"#C8A96E":"#8B1A2A"}`,animation:"fadeUp 0.5s ease"}}>
+    <div style={{background:bg,borderRadius:"12px",padding:"24px 18px 28px",width:"100%",maxWidth:"460px",margin:"16px auto 0",border:`2px solid ${won?"#B45309":"#8B1A2A"}`,animation:"fadeUp 0.5s ease"}}>
 
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"38px",letterSpacing:"4px",color:won?"#C8A96E":"#8B1A2A",textAlign:"center",lineHeight:1,marginBottom:"4px"}}>
+        <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"38px",letterSpacing:"1.4px",color:won?"#B45309":"#8B1A2A",textAlign:"center",lineHeight:1,marginBottom:"4px"}}>
           {won?(cleanGame?"CLEAN GAME 🔒":"NICE WORK"):"GAME OVER"}
         </div>
 
         {(streak>=3||(cleanGame&&streak>=1))&&won&&(
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"16px",color:"#C8A96E",textAlign:"center",marginBottom:"6px",letterSpacing:"2px"}}>🔥 {streak}-DAY STREAK</div>
+          <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"16px",color:"#B45309",textAlign:"center",marginBottom:"6px",letterSpacing:"0.7px"}}>🔥 {streak}-DAY STREAK</div>
         )}
 
-        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:"#888",textAlign:"center",marginBottom:puzzle.contributor?"4px":(isFeatured?"4px":"20px"),fontStyle:"italic"}}>{puzzle.title}</div>
+        <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"13px",color:"#888",textAlign:"center",marginBottom:puzzle.contributor?"4px":(isFeatured?"4px":"20px"),fontStyle:"normal"}}>{puzzle.title}</div>
 
         {isFeatured&&(
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#666":"#999",textAlign:"center",marginBottom:"20px"}}>
+          <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"11px",letterSpacing:"0.7px",color:dark?"#666":"#999",textAlign:"center",marginBottom:"20px"}}>
             FEATURED PUZZLES DON'T AFFECT YOUR DAILY STREAK
           </div>
         )}
 
         {puzzle.contributor&&(
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:"#C8A96E",textAlign:"center",marginBottom:"20px"}}>
+          <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"12px",letterSpacing:"0.7px",color:"#B45309",textAlign:"center",marginBottom:"20px"}}>
             ⭐ {puzzle.contributor.tag||"GUEST DRAFT"} BY {puzzle.contributor.name}
           </div>
         )}
 
         {/* Time prominent */}
         <div style={{textAlign:"center",marginBottom:"20px"}}>
-          <div style={{fontFamily:"'Courier New',monospace",fontSize:"42px",fontWeight:"700",color:fg,letterSpacing:"2px",lineHeight:1}}>{fmt(ms)}</div>
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"3px",color:"#888",marginTop:"4px"}}>FINAL TIME</div>
+          <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontVariantNumeric:"tabular-nums",fontSize:"52px",fontWeight:"800",color:fg,letterSpacing:"0.7px",lineHeight:1}}>{fmt(ms)}</div>
+          <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"10px",letterSpacing:"1px",color:"#888",marginTop:"4px"}}>FINAL TIME</div>
         </div>
 
         {/* Stats row */}
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"20px"}}>
           {[["DOWNS LEFT",4-wrong],["RESULT",won?(cleanGame?"CLEAN":"WIN"):"LOSS"]].map(([l,v])=>(
-            <div key={l} style={{textAlign:"center",background:dark?"#181818":"#f0ebe0",padding:"12px 6px",borderRadius:"8px"}}>
-              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"22px",color:fg,lineHeight:1}}>{v}</div>
-              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"2px",color:"#888",marginTop:"2px"}}>{l}</div>
+            <div key={l} style={{textAlign:"center",background:dark?"#181818":"#F3F4F6",padding:"12px 6px",borderRadius:"8px"}}>
+              <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"22px",color:fg,lineHeight:1}}>{v}</div>
+              <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"9px",letterSpacing:"0.7px",color:"#888",marginTop:"2px"}}>{l}</div>
             </div>
           ))}
         </div>
@@ -1775,20 +1775,20 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
             emotional peak is the moment the result lands, so the prompt is
             specific ("can anyone beat 2:14") rather than a passive label. */}
         <div style={{marginBottom:"18px"}}>
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,textAlign:"center",marginBottom:"3px"}}>
+          <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"13px",letterSpacing:"0.7px",color:fg,textAlign:"center",marginBottom:"3px"}}>
             {won?(cleanGame?"YOU WENT A PERFECT 4-FOR-4":`CAN ANYONE BEAT ${fmt(ms)}?`):"THINK THEY'D DO ANY BETTER?"}
           </div>
-          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:dark?"#777":"#888",textAlign:"center",marginBottom:"10px"}}>
+          <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"12px",fontStyle:"normal",color:dark?"#777":"#888",textAlign:"center",marginBottom:"10px"}}>
             {won?"Send the card. No spoilers, just your grid and your time.":"Send the card and see how they do. It gives nothing away."}
           </div>
-          <button onClick={nativeShare} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"17px",letterSpacing:"3px",padding:"17px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"8px",cursor:"pointer",marginBottom:"8px",boxShadow:"0 2px 8px rgba(200,169,110,0.35)"}}>
+          <button onClick={nativeShare} style={{width:"100%",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"17px",letterSpacing:"1px",padding:"17px",background:"#B45309",color:"#fff",border:"none",borderRadius:"8px",cursor:"pointer",marginBottom:"8px",boxShadow:"0 2px 8px rgba(180,83,9,0.25)"}}>
             📲 SHARE YOUR RESULT
           </button>
           <div style={{display:"flex",gap:"8px"}}>
-            <button onClick={shareToX} style={{flex:1,fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",padding:"11px",background:"#000",color:"#fff",border:"none",borderRadius:"8px",cursor:"pointer"}}>
+            <button onClick={shareToX} style={{flex:1,fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"13px",letterSpacing:"0.7px",padding:"11px",background:"#000",color:"#fff",border:"none",borderRadius:"8px",cursor:"pointer"}}>
               𝕏 POST
             </button>
-            <button onClick={copy} style={{flex:1,fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",padding:"11px",background:copied?"#2E6B3E":(dark?"#222":"#f0ebe0"),color:copied?"#fff":(dark?"#888":"#999"),border:"none",borderRadius:"8px",cursor:"pointer",transition:"background 0.2s"}}>
+            <button onClick={copy} style={{flex:1,fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"13px",letterSpacing:"0.7px",padding:"11px",background:copied?"#2E6B3E":(dark?"#222":"#F3F4F6"),color:copied?"#fff":(dark?"#888":"#999"),border:"none",borderRadius:"8px",cursor:"pointer",transition:"background 0.2s"}}>
               {copied?"✓ COPIED":"COPY"}
             </button>
           </div>
@@ -1799,9 +1799,9 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
           {puzzle.groups.sort((a,b)=>a.difficulty-b.difficulty).map(g=>{
             const s=solved.find(x=>x.id===g.id);
             return (
-              <div key={g.id} style={{display:"flex",alignItems:"center",gap:"8px",padding:"7px 0",borderBottom:`1px solid ${dark?"#1e1e1e":"#ece4d4"}`}}>
+              <div key={g.id} style={{display:"flex",alignItems:"center",gap:"8px",padding:"7px 0",borderBottom:`1px solid ${dark?"#1B2433":"#E5E7EB"}`}}>
                 <div style={{width:"11px",height:"11px",borderRadius:"3px",background:s?g.color:"#444",flexShrink:0}}/>
-                <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:s?fg:"#666"}}>{g.label}</div>
+                <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"12px",fontStyle:"normal",color:s?fg:"#666"}}>{g.label}</div>
               </div>
             );
           })}
@@ -1819,20 +1819,20 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
           return (
             <button onClick={onPlayFeatured} style={{
               display:"block",width:"100%",textAlign:"left",cursor:"pointer",
-              border:"1px solid rgba(200,169,110,0.55)",
-              background:dark?"rgba(200,169,110,0.07)":"rgba(200,169,110,0.10)",
+              border:"1px solid rgba(180,83,9,0.55)",
+              background:dark?"rgba(180,83,9,0.07)":"rgba(180,83,9,0.10)",
               borderRadius:"8px",padding:"12px 14px",marginBottom:"18px",
               WebkitTapHighlightColor:"transparent",touchAction:"manipulation"
             }}>
               <div style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"4px"}}>
-                <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"8px",letterSpacing:"1.5px",background:"transparent",color:"#C8A96E",border:"1px solid #C8A96E",padding:"1px 4px",borderRadius:"2px"}}>FEATURED</span>
-      <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"8px",letterSpacing:"1.5px",background:"#8B1A2A",color:"#fff",padding:"1px 4px",borderRadius:"2px",marginLeft:"4px"}}>NEW</span>
-                <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:dark?"#7a7a7a":"#999"}}>{f.weekLabel}</span>
+                <span style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"8px",letterSpacing:"0.5px",background:"transparent",color:"#B45309",border:"1px solid #B45309",padding:"1px 4px",borderRadius:"2px"}}>FEATURED</span>
+      <span style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"8px",letterSpacing:"0.5px",background:"#8B1A2A",color:"#fff",padding:"1px 4px",borderRadius:"2px",marginLeft:"4px"}}>NEW</span>
+                <span style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"10px",letterSpacing:"0.7px",color:dark?"#7a7a7a":"#999"}}>{f.weekLabel}</span>
               </div>
-              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"1.5px",color:dark?"#d4c9b8":"#1a1a2e",lineHeight:1.2}}>{f.themeTitle}</div>
-              <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:dark?"#9a9a9a":"#777",marginTop:"3px",lineHeight:1.35}}>{f.themeBlurb}</div>
-              <div style={{marginTop:"10px",padding:"9px",textAlign:"center",border:"1.5px solid rgba(200,169,110,0.7)",borderRadius:"7px",background:dark?"rgba(200,169,110,0.10)":"rgba(200,169,110,0.14)"}}>
-                <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:"#C8A96E"}}>PLAY THIS WEEK'S FEATURED PUZZLE</span>
+              <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"15px",letterSpacing:"0.5px",color:dark?"#E5E7EB":"#111827",lineHeight:1.2}}>{f.themeTitle}</div>
+              <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"12px",fontStyle:"normal",color:dark?"#9a9a9a":"#777",marginTop:"3px",lineHeight:1.35}}>{f.themeBlurb}</div>
+              <div style={{marginTop:"10px",padding:"9px",textAlign:"center",border:"1.5px solid rgba(180,83,9,0.7)",borderRadius:"7px",background:dark?"rgba(180,83,9,0.10)":"rgba(180,83,9,0.14)"}}>
+                <span style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"12px",letterSpacing:"0.7px",color:"#B45309"}}>PLAY THIS WEEK'S FEATURED PUZZLE</span>
               </div>
             </button>
           );
@@ -1842,20 +1842,20 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
         {SUBMIT_PUZZLE_URL&&(
           <a href={SUBMIT_PUZZLE_URL} target="_blank" rel="noopener noreferrer" style={{
             display:"block",textDecoration:"none",textAlign:"center",
-            border:`1px solid ${puzzle.contributor?"#C8A96E":(dark?"#2a2a2a":"#ddd")}`,
-            background:puzzle.contributor?(dark?"rgba(200,169,110,0.08)":"rgba(200,169,110,0.12)"):"transparent",
+            border:`1px solid ${puzzle.contributor?"#B45309":(dark?"#2a2a2a":"#ddd")}`,
+            background:puzzle.contributor?(dark?"rgba(180,83,9,0.08)":"rgba(180,83,9,0.12)"):"transparent",
             borderRadius:"8px",padding:"12px 14px",marginBottom:"18px"
           }}>
-            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",color:"#C8A96E",lineHeight:1.3}}>
+            <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"14px",letterSpacing:"0.7px",color:"#B45309",lineHeight:1.3}}>
               {puzzle.contributor?`${puzzle.contributor.name} BUILT THIS ONE`:"BUILD YOUR OWN DRAFT"}
             </div>
-            <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:dark?"#9a9a9a":"#777",marginTop:"3px"}}>
+            <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"13px",color:dark?"#9a9a9a":"#777",marginTop:"3px"}}>
               {puzzle.contributor?"Submit yours — get your name on the board →":"Submit a puzzle, get credited on the board →"}
             </div>
           </a>
         )}
 
-        <button onClick={onPlayAgain} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",padding:"14px",background:"transparent",color:fg,border:`2px solid ${dark?"#333":"#c8bfae"}`,borderRadius:"8px",cursor:"pointer"}}>
+        <button onClick={onPlayAgain} style={{width:"100%",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"14px",letterSpacing:"0.7px",padding:"14px",background:"transparent",color:fg,border:`2px solid ${dark?"#333":"#D1D5DB"}`,borderRadius:"8px",cursor:"pointer"}}>
           PLAY AGAIN
         </button>
 
@@ -1863,7 +1863,7 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
 
         {/* Feedback link */}
         <div style={{marginTop:"16px",textAlign:"center"}}>
-          <a href={FEEDBACK_URL} target="_blank" rel="noopener noreferrer" style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:dark?"#555":"#999",textDecoration:"none",borderBottom:`1px dashed ${dark?"#333":"#c8bfae"}`,paddingBottom:"2px"}}>
+          <a href={FEEDBACK_URL} target="_blank" rel="noopener noreferrer" style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"10px",letterSpacing:"0.7px",color:dark?"#555":"#999",textDecoration:"none",borderBottom:`1px dashed ${dark?"#333":"#D1D5DB"}`,paddingBottom:"2px"}}>
             CONTACT US →
           </a>
         </div>
@@ -1877,48 +1877,47 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
 // ============================================================
 function ScoringPage({dark,game:initial="fourdowns",onClose}) {
   const [game,setGame]=useState(initial);
-  const bg=dark?"#0a0a0a":"#faf7f0", fg=dark?"#d4c9b8":"#1a1a2e", card=dark?"#141414":"#fff", border=dark?"#222":"#e8e0d0";
+  const bg=dark?"#0B0F19":"#F3F4F6", fg=dark?"#E5E7EB":"#111827", card=dark?"#131A26":"#fff", border=dark?"#222":"#E5E7EB";
   const box=(title,body,extra)=>(
     <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"20px",marginBottom:"12px"}}>
-      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,marginBottom:"8px"}}>{title}</div>
-      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>{body}</div>
+      <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"13px",letterSpacing:"0.7px",color:fg,marginBottom:"8px"}}>{title}</div>
+      <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>{body}</div>
       {extra}
     </div>
   );
-  const mono={marginTop:"12px",background:dark?"#0a0a0a":"#f5f0e8",borderRadius:"8px",padding:"12px",fontFamily:"'Courier New',monospace",fontSize:"13px",color:dark?"#C8A96E":"#0f1923",lineHeight:1.8};
+  const mono={marginTop:"12px",background:dark?"#0B0F19":"#F3F4F6",borderRadius:"8px",padding:"12px",fontFamily:"'Courier New',monospace",fontSize:"13px",color:dark?"#B45309":"#111827",lineHeight:1.8};
   return (
     <div style={{background:bg,minHeight:"calc(100vh - 52px)",padding:"20px 16px 40px",overflowY:"auto"}}>
       <div style={{maxWidth:"480px",margin:"0 auto"}}>
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(32px,8vw,48px)",letterSpacing:"4px",color:"#C8A96E",marginBottom:"12px"}}>HOW SCORING WORKS</div>
+        <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"clamp(32px,8vw,48px)",letterSpacing:"1.4px",color:"#B45309",marginBottom:"12px"}}>HOW SCORING WORKS</div>
         <GameTabs game={game} setGame={setGame} dark={dark}/>
         {game==="startsit" ? (<>
-        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"italic",marginBottom:"18px",lineHeight:1.6}}>Fantasy is never all skill. Start/Sit scores your calls, not just your luck.</div>
-        {box("🏆 WIN, LOSE OR PUSH","Add up the fantasy points of your nine starters (0.5 PPR). Beat the House's total and you win the day. Start every player he starts and you match him exactly: a push.")}
-        {box("✅ CALLS RIGHT","A call is right when the player you started outscored the one you sat. Nine calls, scored out of nine.")}
-        {box("🎯 UPSETS CALLED","Starting the player the House sat is a fade. A fade that hits is an upset called, the hardest thing to do and the best thing to brag about.")}
-        {box("📊 LINEUPS BEATEN","There are 512 lineups you could have set from the same nine calls. Your score is ranked against all of them, and once enough people have played, against everyone who played that day. Everyone gets the same players and the same results, so the luck cancels out.")}
-        {box("📲 YOUR SHARE CARD","No player names, so it spoils nothing.",(
+        <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"normal",marginBottom:"18px",lineHeight:1.6}}>Fantasy is never all skill. Start/Sit scores your calls, not just your luck.</div>
+        {box("🏆 WIN, LOSE OR PUSH","Add up the fantasy points of your six starters (0.5 PPR). Beat the House's total and you win the day. Keep his lineup and you match him exactly: a push.")}
+        {box("✅ YOUR CALLS","A call is any slot where you started someone the House didn't. It's won when your player outscored his.")}
+        {box("🎯 CALLS WON","Every call that beat the House's pick counts toward your career total in the Locker Room.")}
+        {box("📊 LINEUPS BEATEN","Every lineup you could have set from the same nine players is ranked. Your score is ranked against all of them, and once enough people have played, against everyone who played that day. Everyone gets the same players and the same results, so the luck cancels out.")}
+        {box("📲 YOUR SHARE CARD","One square per slot: green a call that won, red one that lost, white where you matched the House. No names, so it spoils nothing.",(
           <div style={mono}>
-            Start/Sit #28<br/>
-            QB 🎯<br/>RB 🟩🟥<br/>WR 🟩🟩🟩<br/>TE 🟩<br/>FX 🟥🎯<br/>
-            7/9 calls · +11.2 vs the House<br/>
-            Beat 91% of possible lineups
+            PlayDraft Start/Sit #28 · 2014<br/>
+            🟩⬜⬜⬜⬜🟥<br/>
+            W 102.3-94.4 vs the House
           </div>))}
         {box("📈 YOUR RECORD","Every daily lineup goes on your record against the House: wins, losses and pushes, plus your win streak. Archive lineups are practice and don't count.")}
         </>) : (<>
-        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"italic",marginBottom:"18px",lineHeight:1.6}}>Speed and accuracy are everything. Everyone can win; the best players win faster.</div>
+        <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"normal",marginBottom:"18px",lineHeight:1.6}}>Speed and accuracy are everything. Everyone can win; the best players win faster.</div>
 
         {/* Time is the score */}
         <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"20px",marginBottom:"12px"}}>
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,marginBottom:"8px"}}>⚡ TIME IS YOUR SCORE</div>
-          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>Your final time is what you share with friends. Solve all 4 groups as fast as possible. Wrong guesses add time penalties, so accuracy matters as much as speed.</div>
+          <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"13px",letterSpacing:"0.7px",color:fg,marginBottom:"8px"}}>⚡ TIME IS YOUR SCORE</div>
+          <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>Your final time is what you share with friends. Solve all 4 groups as fast as possible. Wrong guesses add time penalties, so accuracy matters as much as speed.</div>
         </div>
 
         {/* Clean game */}
         <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"20px",marginBottom:"12px"}}>
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,marginBottom:"8px"}}>🔒 CLEAN GAME BADGE</div>
-          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>Solve all 4 groups with zero wrong guesses and your share card shows the coveted CLEAN GAME badge. The ultimate flex.</div>
-          <div style={{marginTop:"12px",background:dark?"#0a0a0a":"#f5f0e8",borderRadius:"8px",padding:"12px",fontFamily:"'Courier New',monospace",fontSize:"13px",color:dark?"#C8A96E":"#0f1923",lineHeight:1.8}}>
+          <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"13px",letterSpacing:"0.7px",color:fg,marginBottom:"8px"}}>🔒 CLEAN GAME BADGE</div>
+          <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>Solve all 4 groups with zero wrong guesses and your share card shows the coveted CLEAN GAME badge. The ultimate flex.</div>
+          <div style={{marginTop:"12px",background:dark?"#0B0F19":"#F3F4F6",borderRadius:"8px",padding:"12px",fontFamily:"'Courier New',monospace",fontSize:"13px",color:dark?"#B45309":"#111827",lineHeight:1.8}}>
             DRAFT #7 🏈<br/>
             ⚡ 1:43 🔒 CLEAN GAME<br/>
             🟨🟨🟨🟨<br/>
@@ -1930,24 +1929,24 @@ function ScoringPage({dark,game:initial="fourdowns",onClose}) {
 
         {/* Wrong downs */}
         <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"20px",marginBottom:"12px"}}>
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,marginBottom:"8px"}}>🏴 4 DOWNS</div>
-          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>You get 4 wrong guesses before game over. Each wrong guess costs you a down. Lose all 4 and the puzzle is over: categories are revealed but no time is recorded.</div>
+          <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"13px",letterSpacing:"0.7px",color:fg,marginBottom:"8px"}}>🏴 4 DOWNS</div>
+          <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>You get 4 wrong guesses before game over. Each wrong guess costs you a down. Lose all 4 and the puzzle is over: categories are revealed but no time is recorded.</div>
         </div>
 
         {/* Streaks */}
         <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"20px",marginBottom:"12px"}}>
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,marginBottom:"8px"}}>🔥 STREAKS</div>
-          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>Solve the daily puzzle every day to build your streak. Miss a day and it resets. Your current streak appears on your share card when it hits 3+ days.</div>
+          <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"13px",letterSpacing:"0.7px",color:fg,marginBottom:"8px"}}>🔥 STREAKS</div>
+          <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>Solve the daily puzzle every day to build your streak. Miss a day and it resets. Your current streak appears on your share card when it hits 3+ days.</div>
         </div>
 
         {/* One away */}
         <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"20px",marginBottom:"20px"}}>
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,marginBottom:"8px"}}>👀 ONE AWAY</div>
-          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>If 3 of your 4 selected players belong to the same group, you'll get a hint. You're close, but not quite.</div>
+          <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"13px",letterSpacing:"0.7px",color:fg,marginBottom:"8px"}}>👀 ONE AWAY</div>
+          <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>If 3 of your 4 selected players belong to the same group, you'll get a hint. You're close, but not quite.</div>
         </div>
         </>)}
 
-        <button onClick={onClose} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"3px",padding:"16px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"8px",cursor:"pointer"}}>GOT IT</button>
+        <button onClick={onClose} style={{width:"100%",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"16px",letterSpacing:"1px",padding:"16px",background:"#B45309",color:"#fff",border:"none",borderRadius:"8px",cursor:"pointer"}}>GOT IT</button>
       </div>
     </div>
   );
@@ -1957,7 +1956,7 @@ function ScoringPage({dark,game:initial="fourdowns",onClose}) {
 // LOCKER ROOM — season stats
 // ============================================================
 function LockerRoom({dark,game:initial="fourdowns",onClose,onPlay,onPlayLineup}) {
-  const bg=dark?"#0a0a0a":"#faf7f0", fg=dark?"#d4c9b8":"#1a1a2e", card=dark?"#141414":"#fff", border=dark?"#222":"#e8e0d0";
+  const bg=dark?"#0B0F19":"#F3F4F6", fg=dark?"#E5E7EB":"#111827", card=dark?"#131A26":"#fff", border=dark?"#222":"#E5E7EB";
   const [copied,setCopied]=useState(false);
   const [game,setGame]=useState(initial);
   const st=loadStats(), d=deriveStats(st), streak=liveStreak(st), week=last7(st);
@@ -1971,88 +1970,88 @@ function LockerRoom({dark,game:initial="fourdowns",onClose,onPlay,onPlayLineup})
   // One brag card for both games; each line only appears once that game has been played.
   const brag=["🏈 PLAYDRAFT — MY LOCKER ROOM",
     !empty&&`FOUR DOWNS: 🔥 ${streak}-day streak · best ${st.bestStreak||0} · ⚡ fastest ${d.bestMs?fmt(d.bestMs):"—"} · 🔒 ${d.clean} clean`,
-    ls.played&&`START/SIT: 🏆 ${lineupRecord(ls)} vs the House${ls.upsets?` · 🎯 ${ls.upsets} upsets called`:""}${lsAvgCalls?` · ${lsAvgCalls}/9 calls`:""}`,
+    ls.played&&`START/SIT: 🏆 ${lineupRecord(ls)} vs the House${ls.upsets?` · 🎯 ${ls.upsets} calls won`:""}`,
     "","playdraft.app"].filter(x=>x!==false&&x!==0).join("\n");
   const shareBrag=()=>{ if(navigator.share){navigator.share({title:"DRAFT",text:brag,url:"https://playdraft.app"});} else {navigator.clipboard.writeText(brag).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2200);});} };
 
   const Stat=({label,value,hint})=>(
     <div style={{textAlign:"center",background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"14px 6px"}}>
-      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"26px",color:fg,lineHeight:1}}>{value}</div>
-      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"8px",letterSpacing:"2px",color:"#888",marginTop:"3px"}}>{label}</div>
-      {hint&&<div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"10px",fontStyle:"italic",color:dark?"#555":"#aaa",marginTop:"2px"}}>{hint}</div>}
+      <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"26px",color:fg,lineHeight:1}}>{value}</div>
+      <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"8px",letterSpacing:"0.7px",color:"#888",marginTop:"3px"}}>{label}</div>
+      {hint&&<div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"10px",fontStyle:"normal",color:dark?"#555":"#aaa",marginTop:"2px"}}>{hint}</div>}
     </div>
   );
 
   return (
     <div style={{background:bg,minHeight:"calc(100vh - 52px)",padding:"20px 16px 40px",overflowY:"auto"}}>
       <div style={{maxWidth:"480px",margin:"0 auto"}}>
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(32px,8vw,48px)",letterSpacing:"4px",color:"#C8A96E",marginBottom:"4px"}}>LOCKER ROOM</div>
-        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"italic",marginBottom:"14px",lineHeight:1.6}}>Your season so far, both games.</div>
+        <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"clamp(32px,8vw,48px)",letterSpacing:"1.4px",color:"#B45309",marginBottom:"4px"}}>LOCKER ROOM</div>
+        <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"normal",marginBottom:"14px",lineHeight:1.6}}>Your season so far, both games.</div>
         <GameTabs game={game} setGame={setGame} dark={dark}/>
 
         {game==="startsit" ? (
           <>
             {!ls.played ? (
               <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"32px 20px",textAlign:"center",marginBottom:"16px"}}>
-                <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"20px",letterSpacing:"2px",color:fg,marginBottom:"6px"}}>NO LINEUPS SET YET</div>
-                <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.5}}>Set today&apos;s lineup to start your record against the House.</div>
+                <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"20px",letterSpacing:"0.7px",color:fg,marginBottom:"6px"}}>NO LINEUPS SET YET</div>
+                <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.5}}>Set today&apos;s lineup to start your record against the House.</div>
               </div>
             ) : (
               <>
-                <div style={{background:"#3FA7D6",borderRadius:"12px",padding:"20px",marginBottom:"12px",textAlign:"center"}}>
-                  <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"3px",color:"rgba(255,255,255,0.75)"}}>RECORD VS THE HOUSE</div>
-                  <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"52px",lineHeight:1,color:"#fff"}}>{lineupRecord(ls)}</div>
-                  <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",fontStyle:"italic",color:"rgba(255,255,255,0.88)",marginTop:"4px"}}>
+                <div style={{background:"#1D4ED8",borderRadius:"12px",padding:"20px",marginBottom:"12px",textAlign:"center"}}>
+                  <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"9px",letterSpacing:"1px",color:"rgba(255,255,255,0.75)"}}>RECORD VS THE HOUSE</div>
+                  <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"52px",lineHeight:1,color:"#fff"}}>{lineupRecord(ls)}</div>
+                  <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"13px",fontStyle:"normal",color:"rgba(255,255,255,0.88)",marginTop:"4px"}}>
                     {lsDone?"Today's lineup is locked. Come back tomorrow.":"Today's lineup is waiting."}
                   </div>
-                  <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:"rgba(255,255,255,0.75)",marginTop:"8px"}}>
+                  <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"10px",letterSpacing:"0.7px",color:"rgba(255,255,255,0.75)",marginTop:"8px"}}>
                     WIN STREAK {ls.streak||0} · BEST {ls.best||0}{ls.pushes?` · ${ls.pushes} PUSH${ls.pushes===1?"":"ES"}`:""}</div>
                 </div>
-                <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"3px",color:"#888",margin:"18px 0 8px"}}>SEASON STATS</div>
+                <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"10px",letterSpacing:"1px",color:"#888",margin:"18px 0 8px"}}>SEASON STATS</div>
                 <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"8px",marginBottom:"8px"}}>
                   <Stat label="LINEUPS SET" value={ls.played}/>
                   <Stat label="WIN %" value={`${lsWinPct}%`} hint={`${ls.wins} of ${ls.played}`}/>
                 </div>
                 <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"8px",marginBottom:"8px"}}>
-                  <Stat label="AVG CALLS RIGHT" value={lsAvgCalls?`${lsAvgCalls}/9`:"—"}/>
+                  <Stat label="CALLS WON / DAY" value={lsAvgCalls||"—"}/>
                   <Stat label="BEST LINEUP" value={ls.bestPct!=null&&lsLog.length?`${ls.bestPct}%`:"—"} hint={ls.bestPct!=null&&lsLog.length?"of lineups beaten":null}/>
                 </div>
                 <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"16px",marginBottom:"8px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                   <div>
-                    <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:fg}}>🎯 UPSETS CALLED</div>
-                    <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:dark?"#777":"#888",marginTop:"2px"}}>Faded the House and got it right</div>
+                    <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"12px",letterSpacing:"0.7px",color:fg}}>🎯 CALLS WON</div>
+                    <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"12px",fontStyle:"normal",color:dark?"#777":"#888",marginTop:"2px"}}>Went against the House and beat his pick</div>
                   </div>
                   <div style={{textAlign:"right"}}>
-                    <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"28px",color:"#3FA7D6",lineHeight:1}}>{ls.upsets||0}</div>
-                    <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"1px",color:"#888"}}>{ls.fades?`${Math.round((ls.upsets||0)/ls.fades*100)}% OF FADES HIT`:"NO FADES YET"}</div>
+                    <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"28px",color:"#1D4ED8",lineHeight:1}}>{ls.upsets||0}</div>
+                    <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"9px",letterSpacing:"0.3px",color:"#888"}}>{ls.fades?`${Math.round((ls.upsets||0)/ls.fades*100)}% OF CALLS WON`:"NO CALLS YET"}</div>
                   </div>
                 </div>
-                <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"3px",color:"#888",margin:"18px 0 8px"}}>GAME LOG · LAST 7 DAYS</div>
+                <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"10px",letterSpacing:"1px",color:"#888",margin:"18px 0 8px"}}>GAME LOG · LAST 7 DAYS</div>
                 <div style={{display:"flex",gap:"6px",marginBottom:"6px"}}>
                   {lsWeek.map((w,i)=>(
                     <div key={i} style={{flex:1,textAlign:"center"}}>
-                      <div style={{height:"34px",borderRadius:"7px",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Bebas Neue',cursive",fontSize:"14px",
-                        background:w.state==="W"?"#2E6B3E":w.state==="L"?"#8B1A2A":w.state==="P"?"#9A7A3C":(dark?"#161616":"#eee7db"),
-                        color:w.state==="-"?(dark?"#3a3a3a":"#c3b9a6"):"#fff",
-                        border:`1px solid ${w.state==="-"?(dark?"#222":"#e0d8cc"):"transparent"}`}}>
+                      <div style={{height:"34px",borderRadius:"7px",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"14px",
+                        background:w.state==="W"?"#2E6B3E":w.state==="L"?"#8B1A2A":w.state==="P"?"#92400E":(dark?"#151B26":"#F3F4F6"),
+                        color:w.state==="-"?(dark?"#3a3a3a":"#9CA3AF"):"#fff",
+                        border:`1px solid ${w.state==="-"?(dark?"#222":"#E5E7EB"):"transparent"}`}}>
                         {w.state==="-"?"·":w.state}
                       </div>
-                      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"1px",color:"#888",marginTop:"3px"}}>{w.label}</div>
+                      <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"9px",letterSpacing:"0.3px",color:"#888",marginTop:"3px"}}>{w.label}</div>
                     </div>
                   ))}
                 </div>
                 {ls.played>lsLog.length&&(
-                  <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:dark?"#666":"#999",marginBottom:"8px",lineHeight:1.5}}>
-                    Call-by-call stats started with the nine-call version, so earlier lineups only count toward your record.
+                  <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"12px",fontStyle:"normal",color:dark?"#666":"#999",marginBottom:"8px",lineHeight:1.5}}>
+                    Call stats started with the nine-call version, so earlier lineups only count toward your record.
                   </div>
                 )}
-                <button onClick={shareBrag} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",padding:"15px",background:copied?"#2E6B3E":(dark?"#1c1c1c":"#fff"),color:copied?"#fff":fg,border:`2px solid ${copied?"#2E6B3E":(dark?"#333":"#c8bfae")}`,borderRadius:"8px",cursor:"pointer",marginTop:"10px",transition:"background 0.2s"}}>
+                <button onClick={shareBrag} style={{width:"100%",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"14px",letterSpacing:"0.7px",padding:"15px",background:copied?"#2E6B3E":(dark?"#1B2433":"#fff"),color:copied?"#fff":fg,border:`2px solid ${copied?"#2E6B3E":(dark?"#333":"#D1D5DB")}`,borderRadius:"8px",cursor:"pointer",marginTop:"10px",transition:"background 0.2s"}}>
                   {copied?"✓ COPIED":"📲 SHARE YOUR LOCKER ROOM"}
                 </button>
               </>
             )}
             {!lsDone&&onPlayLineup&&(
-              <button onClick={onPlayLineup} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"3px",padding:"16px",background:"#3FA7D6",color:"#fff",border:"none",borderRadius:"8px",cursor:"pointer",marginTop:"10px"}}>
+              <button onClick={onPlayLineup} style={{width:"100%",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"16px",letterSpacing:"1px",padding:"16px",background:"#1D4ED8",color:"#fff",border:"none",borderRadius:"8px",cursor:"pointer",marginTop:"10px"}}>
                 SET TODAY&apos;S LINEUP
               </button>
             )}
@@ -2060,25 +2059,25 @@ function LockerRoom({dark,game:initial="fourdowns",onClose,onPlay,onPlayLineup})
         ) : (<>
         {empty ? (
           <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"32px 20px",textAlign:"center",marginBottom:"16px"}}>
-            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"20px",letterSpacing:"2px",color:fg,marginBottom:"6px"}}>NO SNAPS TAKEN YET</div>
-            <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.5}}>Solve today&apos;s Four Downs to get on the board and start a streak.</div>
+            <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"20px",letterSpacing:"0.7px",color:fg,marginBottom:"6px"}}>NO SNAPS TAKEN YET</div>
+            <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.5}}>Solve today&apos;s Four Downs to get on the board and start a streak.</div>
           </div>
         ) : (
           <>
             {/* Streak hero */}
             <div style={{background:streak>0?"#B8860B":card,border:`1px solid ${streak>0?"#B8860B":border}`,borderRadius:"12px",padding:"20px",marginBottom:"12px",textAlign:"center"}}>
-              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"3px",color:streak>0?"rgba(255,255,255,0.7)":"#888"}}>CURRENT STREAK</div>
-              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"52px",lineHeight:1,color:streak>0?"#fff":fg}}>{streak>0?`🔥 ${streak}`:"0"}</div>
-              <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",fontStyle:"italic",color:streak>0?"rgba(255,255,255,0.85)":"#888",marginTop:"4px"}}>
+              <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"9px",letterSpacing:"1px",color:streak>0?"rgba(255,255,255,0.7)":"#888"}}>CURRENT STREAK</div>
+              <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"52px",lineHeight:1,color:streak>0?"#fff":fg}}>{streak>0?`🔥 ${streak}`:"0"}</div>
+              <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"13px",fontStyle:"normal",color:streak>0?"rgba(255,255,255,0.85)":"#888",marginTop:"4px"}}>
                 {streak>0
                   ? (doneToday?"Locked in for today. Come back tomorrow.":"Play today or the streak ends.")
                   : "Solve today\u2019s Four Downs to start one."}
               </div>
-              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:streak>0?"rgba(255,255,255,0.7)":"#888",marginTop:"8px"}}>SEASON HIGH · {st.bestStreak||0}</div>
+              <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"10px",letterSpacing:"0.7px",color:streak>0?"rgba(255,255,255,0.7)":"#888",marginTop:"8px"}}>SEASON HIGH · {st.bestStreak||0}</div>
             </div>
 
             {/* Season stats */}
-            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"3px",color:"#888",margin:"18px 0 8px"}}>SEASON STATS</div>
+            <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"10px",letterSpacing:"1px",color:"#888",margin:"18px 0 8px"}}>SEASON STATS</div>
             <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"8px",marginBottom:"8px"}}>
               <Stat label="GAMES PLAYED" value={d.played}/>
               <Stat label="WIN %" value={`${d.winPct}%`} hint={`${d.wins} of ${d.played}`}/>
@@ -2089,37 +2088,37 @@ function LockerRoom({dark,game:initial="fourdowns",onClose,onPlay,onPlayLineup})
             </div>
             <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"16px",marginBottom:"8px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div>
-                <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:fg}}>🔒 CLEAN GAMES</div>
-                <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:dark?"#777":"#888",marginTop:"2px"}}>Solved with zero wrong downs</div>
+                <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"12px",letterSpacing:"0.7px",color:fg}}>🔒 CLEAN GAMES</div>
+                <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"12px",fontStyle:"normal",color:dark?"#777":"#888",marginTop:"2px"}}>Solved with zero wrong downs</div>
               </div>
               <div style={{textAlign:"right"}}>
-                <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"28px",color:"#C8A96E",lineHeight:1}}>{d.clean}</div>
-                <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"1px",color:"#888"}}>{d.cleanPct}% OF WINS</div>
+                <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"28px",color:"#B45309",lineHeight:1}}>{d.clean}</div>
+                <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"9px",letterSpacing:"0.3px",color:"#888"}}>{d.cleanPct}% OF WINS</div>
               </div>
             </div>
 
             {/* Game log */}
-            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"3px",color:"#888",margin:"18px 0 8px"}}>GAME LOG · LAST 7 DAYS</div>
+            <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"10px",letterSpacing:"1px",color:"#888",margin:"18px 0 8px"}}>GAME LOG · LAST 7 DAYS</div>
             <div style={{display:"flex",gap:"6px",marginBottom:"6px"}}>
               {week.map((w,i)=>(
                 <div key={i} style={{flex:1,textAlign:"center"}}>
-                  <div style={{height:"34px",borderRadius:"7px",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Bebas Neue',cursive",fontSize:"14px",
-                    background:w.state==="W"?"#2E6B3E":w.state==="L"?"#8B1A2A":(dark?"#161616":"#eee7db"),
-                    color:w.state==="-"?(dark?"#3a3a3a":"#c3b9a6"):"#fff",
-                    border:`1px solid ${w.state==="-"?(dark?"#222":"#e0d8cc"):"transparent"}`}}>
+                  <div style={{height:"34px",borderRadius:"7px",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"14px",
+                    background:w.state==="W"?"#2E6B3E":w.state==="L"?"#8B1A2A":(dark?"#151B26":"#F3F4F6"),
+                    color:w.state==="-"?(dark?"#3a3a3a":"#9CA3AF"):"#fff",
+                    border:`1px solid ${w.state==="-"?(dark?"#222":"#E5E7EB"):"transparent"}`}}>
                     {w.state==="-"?"·":w.state}
                   </div>
-                  <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"1px",color:"#888",marginTop:"3px"}}>{w.label}</div>
+                  <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"9px",letterSpacing:"0.3px",color:"#888",marginTop:"3px"}}>{w.label}</div>
                 </div>
               ))}
             </div>
             {!d.hasHistory&&(
-              <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:dark?"#666":"#999",marginBottom:"8px",lineHeight:1.5}}>
+              <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"12px",fontStyle:"normal",color:dark?"#666":"#999",marginBottom:"8px",lineHeight:1.5}}>
                 Day-by-day logging started recently, so earlier games won&apos;t appear here yet.
               </div>
             )}
 
-            <button onClick={shareBrag} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",padding:"15px",background:copied?"#2E6B3E":(dark?"#1c1c1c":"#fff"),color:copied?"#fff":fg,border:`2px solid ${copied?"#2E6B3E":(dark?"#333":"#c8bfae")}`,borderRadius:"8px",cursor:"pointer",marginTop:"10px",transition:"background 0.2s"}}>
+            <button onClick={shareBrag} style={{width:"100%",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"14px",letterSpacing:"0.7px",padding:"15px",background:copied?"#2E6B3E":(dark?"#1B2433":"#fff"),color:copied?"#fff":fg,border:`2px solid ${copied?"#2E6B3E":(dark?"#333":"#D1D5DB")}`,borderRadius:"8px",cursor:"pointer",marginTop:"10px",transition:"background 0.2s"}}>
               {copied?"✓ COPIED":"📲 SHARE YOUR LOCKER ROOM"}
             </button>
           </>
@@ -2133,15 +2132,15 @@ function LockerRoom({dark,game:initial="fourdowns",onClose,onPlay,onPlayLineup})
           if(!hist.length) return null;
           return (
             <div style={{marginTop:"22px"}}>
-              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"3px",color:"#C8A96E",marginBottom:"8px"}}>FEATURED PUZZLES</div>
+              <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"13px",letterSpacing:"1px",color:"#B45309",marginBottom:"8px"}}>FEATURED PUZZLES</div>
               <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",overflow:"hidden"}}>
                 {hist.map((f,i)=>(
                   <div key={f.id} style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"10px",padding:"11px 13px",borderTop:i===0?"none":`1px solid ${border}`}}>
                     <div style={{minWidth:0}}>
-                      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"1px",color:fg,lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{f.theme||"FEATURED PUZZLE"}</div>
-                      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"2px",color:dark?"#666":"#999",marginTop:"2px"}}>{f.week||""}</div>
+                      <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"14px",letterSpacing:"0.3px",color:fg,lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{f.theme||"FEATURED PUZZLE"}</div>
+                      <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"9px",letterSpacing:"0.7px",color:dark?"#666":"#999",marginTop:"2px"}}>{f.week||""}</div>
                     </div>
-                    <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"1px",color:f.won?"#2E6B3E":"#8B1A2A",flexShrink:0,textAlign:"right"}}>
+                    <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"12px",letterSpacing:"0.3px",color:f.won?"#2E6B3E":"#8B1A2A",flexShrink:0,textAlign:"right"}}>
                       {f.won?`${f.wrong===0?"🔒 CLEAN":`${4-(f.wrong||0)} LEFT`}`:"🏴 LOSS"}
                     </div>
                   </div>
@@ -2152,12 +2151,12 @@ function LockerRoom({dark,game:initial="fourdowns",onClose,onPlay,onPlayLineup})
         })()}
 
         {!doneToday&&(
-          <button onClick={onPlay} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"3px",padding:"16px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"8px",cursor:"pointer",marginTop:"10px"}}>
+          <button onClick={onPlay} style={{width:"100%",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"16px",letterSpacing:"1px",padding:"16px",background:"#B45309",color:"#fff",border:"none",borderRadius:"8px",cursor:"pointer",marginTop:"10px"}}>
             {streak>0?"KEEP THE STREAK ALIVE":"PLAY TODAY'S FOUR DOWNS"}
           </button>
         )}
         </>)}
-        <button onClick={onClose} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"3px",padding:"14px",background:"transparent",color:dark?"#888":"#888",border:`1px solid ${dark?"#2a2a2a":"#ccc"}`,borderRadius:"8px",cursor:"pointer",marginTop:"8px"}}>BACK</button>
+        <button onClick={onClose} style={{width:"100%",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"14px",letterSpacing:"1px",padding:"14px",background:"transparent",color:dark?"#888":"#888",border:`1px solid ${dark?"#2a2a2a":"#ccc"}`,borderRadius:"8px",cursor:"pointer",marginTop:"8px"}}>BACK</button>
       </div>
     </div>
   );
@@ -2167,62 +2166,62 @@ function LockerRoom({dark,game:initial="fourdowns",onClose,onPlay,onPlayLineup})
 // LANDING — mobile first
 // ============================================================
 function Landing({onPlay,onPlayLineup,onPlayFeatured,onPractice,dark,mode}) {
-  const bg=dark?"#0a0a0a":"#faf7f0", card=dark?"#141414":"#fff", border=dark?"#222":"#e8e0d0";
+  const bg=dark?"#0B0F19":"#F3F4F6", card=dark?"#131A26":"#fff", border=dark?"#222":"#E5E7EB";
   const muted=dark?"#888":"#666";
   const isPractice=mode==="practice";
   const fd=loadStats(), streak=liveStreak(fd), fdDone=fd.lastPlayed===new Date().toDateString();
   const ls=loadLineupStats(), lsDone=playedLineupToday();
-  const bigBtn=(color,text)=>({fontFamily:"'Bebas Neue',cursive",fontSize:"20px",letterSpacing:"4px",padding:"17px 0",width:"100%",background:color,color:text,border:"none",borderRadius:"10px",cursor:"pointer",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"});
+  const bigBtn=(color,text)=>({fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"20px",letterSpacing:"1.4px",padding:"17px 0",width:"100%",background:color,color:text,border:"none",borderRadius:"10px",cursor:"pointer",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"});
   const status=(color,txt)=>(
-    <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"1.5px",color,margin:"0 0 10px"}}>{txt}</div>
+    <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"13px",letterSpacing:"0.5px",color,margin:"0 0 10px"}}>{txt}</div>
   );
   const gameCard=(accent,children)=>(
     <div style={{width:"100%",maxWidth:"360px",textAlign:"left",background:card,border:`1px solid ${border}`,borderTop:`4px solid ${accent}`,borderRadius:"12px",padding:"16px 16px 14px",marginBottom:"14px"}}>{children}</div>
   );
   const title=(name,accent,tag)=>(
     <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",gap:"8px",marginBottom:"4px"}}>
-      <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"28px",letterSpacing:"3px",color:accent,lineHeight:1}}>{name}</span>
-      <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:dark?"#666":"#999"}}>{tag}</span>
+      <span style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"28px",letterSpacing:"1px",color:accent,lineHeight:1}}>{name}</span>
+      <span style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"10px",letterSpacing:"0.7px",color:dark?"#666":"#999"}}>{tag}</span>
     </div>
   );
-  const blurb=t=><div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14.5px",color:muted,lineHeight:1.45,marginBottom:"8px"}}>{t}</div>;
+  const blurb=t=><div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"14.5px",color:muted,lineHeight:1.45,marginBottom:"8px"}}>{t}</div>;
   const textLink=(label,onClick)=>(
-    <button onClick={onClick} style={{background:"none",border:"none",padding:"8px 0 0",cursor:"pointer",fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:dark?"#777":"#999"}}>{label}</button>
+    <button onClick={onClick} style={{background:"none",border:"none",padding:"8px 0 0",cursor:"pointer",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"12px",letterSpacing:"0.7px",color:dark?"#777":"#999"}}>{label}</button>
   );
 
   return (
     <div style={{background:bg,display:"flex",flexDirection:"column",alignItems:"center",padding:"24px 18px 40px",textAlign:"center"}}>
-      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"17px",color:muted,fontStyle:"italic",marginBottom:"18px"}}>
+      <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"17px",color:muted,fontStyle:"normal",marginBottom:"18px"}}>
         {isPractice?"Practice mode. No streak on the line.":"Two daily NFL games. New ones every morning."}
       </div>
 
       {/* Start/Sit leads: the fantasy game is the one with no real competitor. */}
-      {!isPractice&&gameCard("#3FA7D6",<>
-        {title("START/SIT","#3FA7D6","DAILY FANTASY")}
-        {blurb("Nine start/sit calls on real NFL weeks. The House starts the higher average. Find where he's wrong.")}
-        {ls.played>0&&status(lsDone?"#2E6B3E":"#3FA7D6",
+      {!isPractice&&gameCard("#1D4ED8",<>
+        {title("START/SIT","#1D4ED8","DAILY FANTASY")}
+        {blurb("Set a lineup from one real NFL week, head to head against the House. He starts the best averages. Find where he's wrong.")}
+        {ls.played>0&&status(lsDone?"#2E6B3E":"#1D4ED8",
           lsDone?`✅ TODAY'S LINEUP IS LOCKED · ${lineupRecord(ls)} VS THE HOUSE`:`🏆 ${lineupRecord(ls)} VS THE HOUSE`)}
-        <button onClick={onPlayLineup} style={bigBtn("#3FA7D6","#fff")}>
+        <button onClick={onPlayLineup} style={bigBtn("#1D4ED8","#fff")}>
           {lsDone?"PLAY FROM THE ARCHIVE":"SET TODAY'S LINEUP"}</button>
       </>)}
 
-      {gameCard("#C8A96E",<>
-        {title("FOUR DOWNS","#C8A96E","DAILY PUZZLE")}
+      {gameCard("#B45309",<>
+        {title("FOUR DOWNS","#B45309","DAILY PUZZLE")}
         {blurb("Sixteen players, four hidden groups, four downs to sort them.")}
-        {!isPractice&&(streak>0||fdDone)&&status(fdDone?"#2E6B3E":"#C8A96E",
+        {!isPractice&&(streak>0||fdDone)&&status(fdDone?"#2E6B3E":"#B45309",
           fdDone?`✅ SOLVED TODAY${streak>0?` · 🔥 ${streak}-DAY STREAK`:""}`:`🔥 ${streak}-DAY STREAK ON THE LINE`)}
-        <button onClick={onPlay} style={bigBtn("#C8A96E","#0f1923")}>
+        <button onClick={onPlay} style={bigBtn("#B45309","#fff")}>
           {isPractice?"PLAY A PRACTICE PUZZLE":"PLAY TODAY'S PUZZLE"}</button>
         {!isPractice&&<FeaturedBanner dark={dark} onPlay={onPlayFeatured}/>}
         {!isPractice&&onPractice&&hasPracticeArchive()&&textLink("PRACTICE FROM THE ARCHIVE →",onPractice)}
       </>)}
 
       <div style={{marginTop:"18px",display:"flex",gap:"14px",alignItems:"center",flexWrap:"wrap",justifyContent:"center"}}>
-        <a href={FEEDBACK_URL} target="_blank" rel="noopener noreferrer" style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#555":"#999",textDecoration:"none",borderBottom:`1px dashed ${dark?"#333":"#c8bfae"}`,paddingBottom:"2px"}}>
+        <a href={FEEDBACK_URL} target="_blank" rel="noopener noreferrer" style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"11px",letterSpacing:"0.7px",color:dark?"#555":"#999",textDecoration:"none",borderBottom:`1px dashed ${dark?"#333":"#D1D5DB"}`,paddingBottom:"2px"}}>
           CONTACT US →
         </a>
         {SUBMIT_PUZZLE_URL&&(
-          <a href={SUBMIT_PUZZLE_URL} target="_blank" rel="noopener noreferrer" style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#555":"#999",textDecoration:"none",borderBottom:`1px dashed ${dark?"#333":"#c8bfae"}`,paddingBottom:"2px"}}>
+          <a href={SUBMIT_PUZZLE_URL} target="_blank" rel="noopener noreferrer" style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"11px",letterSpacing:"0.7px",color:dark?"#555":"#999",textDecoration:"none",borderBottom:`1px dashed ${dark?"#333":"#D1D5DB"}`,paddingBottom:"2px"}}>
             BUILD YOUR OWN PUZZLE →
           </a>
         )}
@@ -2248,7 +2247,7 @@ function Game({puzzle,dark,onFinish,mode,onPlayFeatured}) {
   const [revealedGroups,setRevealedGroups]=useState([]);  // Auto-reveal on loss
   const [triedCombos,setTriedCombos]=useState([]);  // Track previously tried combinations
   const toastRef=useRef(null);
-  const bg=dark?"#0a0a0a":"#faf7f0";
+  const bg=dark?"#0B0F19":"#F3F4F6";
 
   useEffect(()=>{ if(mode==="daily") trackEvent('start'); else if(mode==="featured") trackEvent('featured_start',{featured:puzzle.id}); },[]);
 
@@ -2315,21 +2314,21 @@ function Game({puzzle,dark,onFinish,mode,onPlayFeatured}) {
 
         {/* Top bar */}
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"12px"}}>
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"3px",color:dark?"#666":"#999"}}>{puzzle.title}</div>
+          <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"13px",letterSpacing:"1px",color:dark?"#666":"#999"}}>{puzzle.title}</div>
           <Timer running={timerOn} onTick={setTimeMs} dark={dark}/>
           <div style={{textAlign:"right"}}>
-            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"8px",letterSpacing:"2px",color:dark?"#444":"#aaa"}}>DOWNS</div>
+            <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"8px",letterSpacing:"0.7px",color:dark?"#444":"#aaa"}}>DOWNS</div>
             <div style={{display:"flex",gap:"4px",justifyContent:"flex-end",marginTop:"2px"}}>
               {[...Array(4)].map((_,i)=>(
-                <div key={i} style={{width:"10px",height:"10px",borderRadius:"50%",background:i<(4-wrong)?"#C8A96E":(dark?"#222":"#e0d8cc"),transition:"background 0.3s"}}/>
+                <div key={i} style={{width:"10px",height:"10px",borderRadius:"50%",background:i<(4-wrong)?"#B45309":(dark?"#222":"#E5E7EB"),transition:"background 0.3s"}}/>
               ))}
             </div>
           </div>
         </div>
 
         {/* Objective + progress */}
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"11px",letterSpacing:"2px",color:dark?"#666":"#999",textAlign:"center",marginBottom:"10px"}}>
-          FIND 4 GROUPS OF 4 CONNECTED PLAYERS · <span style={{color:"#C8A96E"}}>{solved.length}/4 FOUND</span>
+        <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"11px",letterSpacing:"0.7px",color:dark?"#666":"#999",textAlign:"center",marginBottom:"10px"}}>
+          FIND 4 GROUPS OF 4 CONNECTED PLAYERS · <span style={{color:"#B45309"}}>{solved.length}/4 FOUND</span>
         </div>
 
         {/* Solved + auto-revealed (on loss) rows — all in difficulty order */}
@@ -2350,18 +2349,18 @@ function Game({puzzle,dark,onFinish,mode,onPlayFeatured}) {
         {!over&&(
           <div style={{display:"flex",flexDirection:"column",gap:"8px"}}>
             <div style={{display:"flex",gap:"8px"}}>
-              <button onClick={()=>setTiles(shuffle(unsolved))} style={{flex:1,fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",padding:"16px",background:"transparent",color:dark?"#888":"#888",border:`1px solid ${dark?"#2a2a2a":"#ccc"}`,borderRadius:"8px",cursor:"pointer",WebkitTapHighlightColor:"transparent"}}>SHUFFLE</button>
-              <button onClick={()=>setSelected([])} disabled={!selected.length} style={{flex:1,fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",padding:"16px",background:"transparent",color:selected.length?(dark?"#d4c9b8":"#1a1a2e"):"#888",border:`1px solid ${selected.length?(dark?"#444":"#999"):(dark?"#222":"#ddd")}`,borderRadius:"8px",cursor:selected.length?"pointer":"default",WebkitTapHighlightColor:"transparent"}}>CLEAR</button>
-              <button onClick={handleSubmit} disabled={selected.length!==4} style={{flex:2,fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"2px",padding:"16px",background:selected.length===4?"#C8A96E":(dark?"#1e1e1e":"#ece4d4"),color:selected.length===4?"#0f1923":(dark?"#333":"#bbb"),border:"none",borderRadius:"8px",cursor:selected.length===4?"pointer":"default",transition:"background 0.15s",WebkitTapHighlightColor:"transparent"}}>SUBMIT</button>
+              <button onClick={()=>setTiles(shuffle(unsolved))} style={{flex:1,fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"14px",letterSpacing:"0.7px",padding:"16px",background:"transparent",color:dark?"#888":"#888",border:`1px solid ${dark?"#2a2a2a":"#ccc"}`,borderRadius:"8px",cursor:"pointer",WebkitTapHighlightColor:"transparent"}}>SHUFFLE</button>
+              <button onClick={()=>setSelected([])} disabled={!selected.length} style={{flex:1,fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"14px",letterSpacing:"0.7px",padding:"16px",background:"transparent",color:selected.length?(dark?"#E5E7EB":"#111827"):"#888",border:`1px solid ${selected.length?(dark?"#444":"#999"):(dark?"#222":"#ddd")}`,borderRadius:"8px",cursor:selected.length?"pointer":"default",WebkitTapHighlightColor:"transparent"}}>CLEAR</button>
+              <button onClick={handleSubmit} disabled={selected.length!==4} style={{flex:2,fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"16px",letterSpacing:"0.7px",padding:"16px",background:selected.length===4?"#B45309":(dark?"#1B2433":"#E5E7EB"),color:selected.length===4?"#fff":(dark?"#333":"#bbb"),border:"none",borderRadius:"8px",cursor:selected.length===4?"pointer":"default",transition:"background 0.15s",WebkitTapHighlightColor:"transparent"}}>SUBMIT</button>
             </div>
           </div>
         )}
 
         {/* Toast */}
         {toast&&(
-          <div style={{position:"fixed",top:"64px",left:"50%",transform:"translateX(-50%)",background:dark?"#1a1a1a":"#0f1923",padding:"10px 22px",borderRadius:"8px",boxShadow:"0 4px 20px rgba(0,0,0,0.5)",zIndex:200,textAlign:"center",whiteSpace:"nowrap",animation:"toastIn 0.2s ease",border:`1px solid ${toast.tone==="bad"?"rgba(139,26,42,0.9)":"rgba(200,169,110,0.4)"}`}}>
-            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"3px",color:toast.tone==="bad"?"#D9788A":"#C8A96E"}}>{toast.title}</div>
-            {toast.sub&&<div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:"#8a8a8a",marginTop:"3px"}}>{toast.sub}</div>}
+          <div style={{position:"fixed",top:"64px",left:"50%",transform:"translateX(-50%)",background:dark?"#1a1a1a":"#111827",padding:"10px 22px",borderRadius:"8px",boxShadow:"0 4px 20px rgba(0,0,0,0.5)",zIndex:200,textAlign:"center",whiteSpace:"nowrap",animation:"toastIn 0.2s ease",border:`1px solid ${toast.tone==="bad"?"rgba(139,26,42,0.9)":"rgba(180,83,9,0.4)"}`}}>
+            <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"16px",letterSpacing:"1px",color:toast.tone==="bad"?"#D9788A":"#B45309"}}>{toast.title}</div>
+            {toast.sub&&<div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"10px",letterSpacing:"0.7px",color:"#8a8a8a",marginTop:"3px"}}>{toast.sub}</div>}
           </div>
         )}
 
@@ -2487,14 +2486,14 @@ export default function App() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+                body{font-family:'Barlow',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;}
         *{box-sizing:border-box;margin:0;padding:0;}
-        html,body{background:${dark?"#0a0a0a":"#faf7f0"};margin:0;padding:0;min-height:100vh;}
+        html,body{background:${dark?"#0B0F19":"#F3F4F6"};margin:0;padding:0;min-height:100vh;}
         @keyframes popIn{from{opacity:0;transform:translateY(-10px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
         @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
         @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-6px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
         @keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-5px);}40%{transform:translateX(5px);}60%{transform:translateX(-3px);}80%{transform:translateX(3px);}}
-        button:focus-visible{outline:2px solid #C8A96E;outline-offset:2px;}
+        button:focus-visible{outline:2px solid #B45309;outline-offset:2px;}
         button{-webkit-tap-highlight-color:transparent;}
       `}</style>
       <Header dark={dark} onDark={()=>setDark(d=>!d)} onStats={()=>openHelp("locker")} onHome={()=>setScreen("home")} onHow={()=>openHelp("howto")} onScoring={()=>openHelp("scoring")} mode={mode} onMode={handleModeChange} showModes={screen==="game"&&mode!=="featured"}/>
