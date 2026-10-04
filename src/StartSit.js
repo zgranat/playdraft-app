@@ -1,33 +1,33 @@
-import { useState, useEffect, useRef } from "react";
-import { LINEUP_BANK, LINEUP_LAUNCH } from "./lineupBank";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { LINEUP_BANK } from "./lineupBank";
+import { getLineupNumber, loadLineupStats, saveLineupStats, lineupRecord } from "./lineupMeta";
 
 /* ------------------------------------------------------------------ *
- * Start/Sit — the daily fantasy call.
+ * Start/Sit — nine fantasy calls a day.
  *
- * Ten real players from real weeks. Start five, beat The House.
- * Scoring is 0.5 PPR; every stat line came from nflverse and was checked
- * against the raw box score by scripts/mine_lineups.py.
+ * Every call is two real player-weeks. The House always starts whoever has
+ * the higher season average; you beat him by spotting where he's wrong.
+ * Cards show only what a manager knew at kickoff (see scripts/mine_lineups.py).
  *
- * Kept deliberately separate from Four Downs: its own storage key, its own
- * event names, its own streak. Sharing them would make it impossible to tell
- * which game is actually retaining anyone.
+ * Luck is real in fantasy, so the score that matters is relative: how your
+ * lineup ranks against all 512 lineups you could have set, and against
+ * everyone who played today. Same players, same outcomes, so luck cancels.
+ *
+ * Own storage key, own events (lineup_*), separate from Four Downs.
  * ------------------------------------------------------------------ */
 
-const STORE = "pd_lineup_v1";
-const ORDER = ["QB", "RB", "WR", "FLEX"];
-const SHORT = { QB: "QB", RB: "RB", WR: "WR", FLEX: "FX" };
+const IMG = "https://static.www.nfl.com/image/";
+const GROUPS = [["QB", [0]], ["RB", [1, 2]], ["WR", [3, 4, 5]], ["TE", [6]], ["FLEX", [7, 8]]];
+const SHORT = { QB: "QB", RB: "RB", WR: "WR", TE: "TE", FLEX: "FX" };
 
-/* Start/Sit lives inside PlayDraft, so it uses the site's palette rather than
-   importing a second one. Gold stays the brand colour; blue marks this game and
-   nothing else. */
 const theme = dark => dark ? {
   bg: "#0a0a0a", panel: "#141414", panelHi: "#1c1c1c", line: "#2a2a2a",
-  fg: "#d4c9b8", muted: "#8a8a8a", dim: "#555",
-  blue: "#3FA7D6", onBlue: "#0f1923", grass: "#4A7C59", brick: "#8B1A2A",
+  fg: "#d4c9b8", muted: "#8a8a8a", dim: "#5f5f5f",
+  blue: "#3FA7D6", onBlue: "#0f1923", grass: "#4A9C69", brick: "#C0394B", gold: "#C8A96E",
 } : {
   bg: "#faf7f0", panel: "#fff", panelHi: "#f4efe4", line: "#ddd6c4",
-  fg: "#1a1a2e", muted: "#666", dim: "#999",
-  blue: "#2B7FA8", onBlue: "#fff", grass: "#2E6B3E", brick: "#8B1A2A",
+  fg: "#1a1a2e", muted: "#666", dim: "#949494",
+  blue: "#2B7FA8", onBlue: "#fff", grass: "#2E6B3E", brick: "#8B1A2A", gold: "#9A7A3C",
 };
 const DISPLAY = "'Bebas Neue',cursive";
 const BODY = "'Crimson Pro',Georgia,serif";
@@ -41,21 +41,11 @@ const CLUB = {
   SEA:"#69BE28",SF:"#AA0000",STL:"#866D4B",TB:"#D50A0A",TEN:"#4B92DB",WAS:"#FFB612",
 };
 
-/* ---------- dates: one lineup a day, counted from launch ---------- */
-export const getLineupNumber = () => {
-  const t = new Date(); t.setHours(0, 0, 0, 0);
-  const l = new Date(LINEUP_LAUNCH); l.setHours(0, 0, 0, 0);
-  return Math.max(0, Math.floor((t - l) / 86400000)) + 1;
-};
-export const getTodaysLineupIndex = () =>
-  (getLineupNumber() - 1) % LINEUP_BANK.length;
+/* ---------- which lineup ---------- */
+export const getTodaysLineupIndex = () => (getLineupNumber() - 1) % LINEUP_BANK.length;
 export const getTodaysLineup = () => LINEUP_BANK[getTodaysLineupIndex()];
-
-/* Practice reaches backwards only. Everything released before today is fair
-   game; today's lineup and anything after it is not. */
 export const getPracticeLineup = (recent = []) => {
-  const today = getTodaysLineupIndex();
-  const released = LINEUP_BANK.slice(0, today);
+  const released = LINEUP_BANK.slice(0, getTodaysLineupIndex());
   if (!released.length) return null;
   const fresh = released.filter(p => !recent.includes(p.id));
   const pool = fresh.length ? fresh : released;
@@ -63,38 +53,25 @@ export const getPracticeLineup = (recent = []) => {
 };
 export const hasLineupArchive = () => getTodaysLineupIndex() > 0;
 
-/* ---------- stored record ---------- */
-const blankStats = () => ({ played: 0, wins: 0, streak: 0, best: 0, lastNumber: 0, recent: [] });
-export const loadLineupStats = () => {
-  try { const s = localStorage.getItem(STORE); return s ? { ...blankStats(), ...JSON.parse(s) } : blankStats(); }
-  catch { return blankStats(); }
-};
-const saveLineupStats = s => { try { localStorage.setItem(STORE, JSON.stringify(s)); } catch {} };
-export const playedLineupToday = () => loadLineupStats().lastNumber === getLineupNumber();
-
-/* ---------- events: namespaced so the funnels never mix ---------- */
-// Vercel custom events only reach a paid plan's dashboard, so every
-// non-practice event is also sent to /api/event (Redis) under a lineup_*
-// type. That server copy is what the daily stats email reports.
+/* ---------- events ---------- */
+// Vercel custom events need a paid plan, so everything that matters also goes
+// to /api/event (Redis), which is what the daily stats email reads.
 const SERVER_EVENTS = { opened: "lineup_open", locked: "lineup_start",
-  won: "lineup_win", lost: "lineup_loss", shared: "lineup_share" };
+  won: "lineup_win", lost: "lineup_loss", push: "lineup_push", shared: "lineup_share" };
+const isMe = () => { try { return localStorage.getItem("pd_me") === "1"; } catch { return false; } };
+const ident = () => {
+  try {
+    return { id: localStorage.getItem("pd_anon_id") || "unknown",
+             src: localStorage.getItem("pd_src") || "unknown" };
+  } catch { return { id: "unknown", src: "unknown" }; }
+};
 function ev(name, props = {}) {
+  try { if (typeof window !== "undefined" && window.va) window.va("event", { name: `lineup_${name}`, ...props }); } catch {}
+  const type = SERVER_EVENTS[name];
+  if (!type || isMe()) return;
   try {
-    if (typeof window !== "undefined" && window.va)
-      window.va("event", { name: `lineup_${name}`, ...props });
-  } catch {}
-  try {
-    const type = SERVER_EVENTS[name];
-    if (!type || localStorage.getItem("pd_me") === "1") return;
-    fetch("/api/event", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        type,
-        id: localStorage.getItem("pd_anon_id") || "unknown",
-        src: localStorage.getItem("pd_src") || "unknown",
-      }),
-    }).catch(() => {});
+    fetch("/api/event", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type, ...ident() }) }).catch(() => {});
   } catch {}
 }
 
@@ -108,29 +85,36 @@ const initials = n => {
   const p = String(n).trim().split(/\s+/);
   return ((p[0] || "")[0] || "") + ((p[p.length - 1] || "")[0] || "");
 };
-const bestOf = pod => [...pod.tiles].sort((a, b) => b.pts - a.pts)
-  .slice(0, pod.start).map(t => t.id);
+const slotLabel = (puzzle, i) => {
+  const slot = puzzle.pairs[i].slot;
+  const same = puzzle.pairs.map((p, k) => [p.slot, k]).filter(([s]) => s === slot);
+  return same.length > 1 ? `${slot} ${same.findIndex(([, k]) => k === i) + 1}` : slot;
+};
+const houseTile = p => p.tiles.find(t => t.id === p.house);
+const winner = p => (p.tiles[0].pts >= p.tiles[1].pts ? p.tiles[0] : p.tiles[1]);
 
-function verdictOf(t) {
-  const soft = t.oppRank <= 10, tough = t.oppRank >= 23;
-  const boom = t.weekRank <= 6, bust = t.weekRank >= 25 || t.pts <= t.ppg * 0.5;
-  if (t.weekRank === 1) return { tone: "top", word: `TOP ${t.pos} OF THE WEEK` };
-  if (boom && tough) return { tone: "boom", word: "SURPRISE" };
-  if (boom) return { tone: "boom", word: "BOOM" };
-  if (bust && soft) return { tone: "bust", word: "TRAP" };
-  if (bust) return { tone: "bust", word: "BUST" };
-  if (t.pts >= t.ppg) return { tone: "", word: "SOLID" };
-  return { tone: "", word: "QUIET" };
+/* Every lineup you could have set (2^9 = 512), so a score can be read as
+   "better than X% of possible lineups". Same outcomes for everyone. */
+function lineupPercentile(puzzle, score) {
+  let sums = [0];
+  puzzle.pairs.forEach(p => {
+    const next = [];
+    sums.forEach(s => p.tiles.forEach(t => next.push(s + t.pts)));
+    sums = next;
+  });
+  const r = x => Math.round(x * 10);
+  const below = sums.filter(s => r(s) < r(score)).length;
+  const ties = sums.filter(s => r(s) === r(score)).length;
+  return Math.round(((below + (ties - 1) / 2) / (sums.length - 1)) * 100);
 }
 
-/* The box score fills in as the number climbs, so it reads as a game being
-   played rather than a total being revealed. */
+/* The box score fills in as the number climbs. */
 function tickLine(s, e) {
   const out = [], yd = v => Math.round(v * e);
   const sc = (n, at) => Math.floor(Math.min(n, n * ((e - at) / (1 - at)) + 1e-9));
   if (s.pass) {
     const [c, a, y, td, i] = s.pass;
-    out.push(`${Math.round(c * e)}/${Math.round(a * e)}, ${yd(y)} pass yd`);
+    out.push(`${Math.round(c * e)}/${Math.round(a * e)}, ${yd(y)} yd`);
     const t = td ? sc(td, 0.25) : 0; if (t) out.push(`${t} TD`);
     const n = i ? sc(i, 0.4) : 0; if (n) out.push(`${n} INT`);
   }
@@ -140,34 +124,28 @@ function tickLine(s, e) {
     const t = td ? sc(td, 0.3) : 0; if (t) out.push(`${t} TD`);
   }
   if (s.rec) {
-    const [r, tg, y, td] = s.rec;
+    const [r, , y, td] = s.rec;
     out.push(`${Math.round(r * e)} rec, ${yd(y)} yd`);
     const t = td ? sc(td, 0.35) : 0; if (t) out.push(`${t} TD`);
   }
-  if (s.fum && e > 0.6) out.push(`${s.fum} fumble lost`);
-  return out.join("   ");
+  if (s.fum && e > 0.6) out.push(`${s.fum} fum`);
+  return out.join(" · ");
 }
 
-/* Photos are cached locally by scripts/fetch_headshots.py, with the remote
-   URL as a fallback and initials behind both. A missing face must look
-   deliberate, never broken. */
-/* NFL.com serves the originals at 1400-3400px wide. Ask its image CDN for a
-   face-cropped 120px square instead: ~5KB rather than several hundred. */
-const thumb = url => url
-  ? url.replace(/\/image\/(upload|private)\//, "/image/$1/c_fill,g_face,w_120,h_120,")
-  : url;
-function Face({ t, size = 50, C }) {
+/* NFL's CDN serves originals at 1400-3400px; ask for a 120px face crop.
+   Initials sit underneath so a missing photo looks deliberate. */
+function Face({ t, size = 46 }) {
   const [step, setStep] = useState(0);
-  const src = step === 0 ? thumb(t.shot) : t.shot;
+  const src = !t.shot ? null
+    : step === 0 ? `${IMG}${t.shot.replace(/^(upload|private)\//, "$1/c_fill,g_face,w_120,h_120,")}`
+    : `${IMG}${t.shot}`;
   return (
-    <span style={{
-      width: size, height: size, borderRadius: 2, flex: "none", position: "relative",
-      overflow: "hidden", background: CLUB[t.team] || C.muted,
-      display: "flex", alignItems: "center", justifyContent: "center",
-    }}>
-      <span style={{ fontFamily: DISPLAY, fontWeight: 700,
-        fontSize: size * 0.36, color: "#fff", opacity: .85 }}>{initials(t.name)}</span>
-      {step < 2 && (
+    <span style={{ width: size, height: size, borderRadius: 3, flex: "none", position: "relative",
+      overflow: "hidden", background: CLUB[t.team] || "#777",
+      display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <span style={{ fontFamily: DISPLAY, fontWeight: 700, fontSize: size * 0.38,
+        color: "#fff", opacity: .85 }}>{initials(t.name)}</span>
+      {src && step < 2 && (
         <img alt="" decoding="async" referrerPolicy="no-referrer" src={src}
           onError={() => setStep(step + 1)}
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%",
@@ -178,71 +156,66 @@ function Face({ t, size = 50, C }) {
 }
 
 /* ================================================================== */
-export default function StartSit({ onExit, onCrossPromo, dark = false,
-                                  mode: initialMode = "daily" }) {
+export default function StartSit({ onExit, onCrossPromo, dark = false, mode: initialMode = "daily" }) {
   const C = theme(dark);
   const [mode, setMode] = useState(initialMode);
   const [puzzle, setPuzzle] = useState(() =>
     initialMode === "practice" ? (getPracticeLineup() || getTodaysLineup()) : getTodaysLineup());
-  const [picks, setPicks] = useState({});
-  const [phase, setPhase] = useState("set");   // set | run | done
-  const [live, setLive] = useState({});        // tile id -> progress 0..1
-  const [openPods, setOpenPods] = useState([]);
+  const [picks, setPicks] = useState({});        // pair index -> tile id
+  const [phase, setPhase] = useState("set");     // set | run | done
+  const [live, setLive] = useState({});          // tile id -> reveal progress 0..1
+  const [openGroups, setOpenGroups] = useState([]);
   const [me, setMe] = useState(0);
   const [hs, setHs] = useState(0);
   const [clock, setClock] = useState("");
-  const [nudge, setNudge] = useState("");
   const [copied, setCopied] = useState(false);
   const [showHow, setShowHow] = useState(false);
+  const [field, setField] = useState(null);      // { players, pct } from today's players
   const [stats, setStats] = useState(loadLineupStats);
   const raf = useRef(null);
   const timers = useRef([]);
+  const pairRefs = useRef([]);
   const practice = mode === "practice";
 
   useEffect(() => () => {
     if (raf.current) cancelAnimationFrame(raf.current);
     timers.current.forEach(clearTimeout);
   }, []);
+  useEffect(() => { ev(practice ? "practice_opened" : "opened", { n: getLineupNumber() }); }, [practice]);
 
-  useEffect(() => { ev(practice ? "practice_opened" : "opened", { n: getLineupNumber() }); },
-    [practice]);
+  const filled = Object.keys(picks).length;
+  const ready = filled === puzzle.pairs.length;
+  const fades = puzzle.pairs.filter((p, i) => picks[i] && picks[i] !== p.house).length;
 
-  const chosen = pod => picks[pod.slot] || [];
-  const ready = puzzle.pods.every(p => chosen(p).length === p.start);
-  const filled = puzzle.pods.reduce((a, p) => a + chosen(p).length, 0);
-
-  function toggle(pod, id) {
-    const sel = picks[pod.slot] || [];
-    if (sel.includes(id)) setPicks({ ...picks, [pod.slot]: sel.filter(x => x !== id) });
-    else if (sel.length < pod.start) setPicks({ ...picks, [pod.slot]: [...sel, id] });
-    else {
-      setNudge(pod.start > 1
-        ? `${pod.slot} is full. Tap a starter to bench him.`
-        : `Tap your ${pod.slot} to change him.`);
-      const t = setTimeout(() => setNudge(""), 2000);
-      timers.current.push(t);
-      return;
+  function pick(i, id) {
+    const wasEmpty = !picks[i];
+    setPicks({ ...picks, [i]: id });
+    if (!wasEmpty) return;
+    // move on to the next open call
+    const next = puzzle.pairs.findIndex((_, k) => k > i && !picks[k]);
+    const el = next >= 0 && pairRefs.current[next];
+    if (el && el.scrollIntoView) {
+      timers.current.push(setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "center" }), 220));
     }
-    setNudge("");
   }
 
-  const result = () => {
-    let score = 0; const marks = [], byPod = {};
-    puzzle.pods.forEach(pod => {
-      const b = bestOf(pod); let hit = 0;
-      chosen(pod).forEach(id => {
-        const t = pod.tiles.find(x => x.id === id);
-        score += t.pts;
-        const ok = b.includes(id); marks.push(ok); if (ok) hit++;
-      });
-      byPod[pod.slot] = { hit, of: pod.start,
-        pts: chosen(pod).reduce((s, id) => s + pod.tiles.find(x => x.id === id).pts, 0) };
+  const result = useMemo(() => {
+    if (!ready) return null;
+    let score = 0, hits = 0, fadesTried = 0, fadesHit = 0;
+    const calls = puzzle.pairs.map((p, i) => {
+      const t = p.tiles.find(x => x.id === picks[i]);
+      const right = t.id === winner(p).id;
+      const fade = t.id !== p.house;
+      score += t.pts; if (right) hits++;
+      if (fade) { fadesTried++; if (right) fadesHit++; }
+      return { t, right, fade, other: p.tiles.find(x => x.id !== t.id) };
     });
     score = Math.round(score * 10) / 10;
-    const hits = marks.filter(Boolean).length;
-    return { score, marks, hits, byPod, won: score > puzzle.house,
-      perfect: hits === marks.length, pct: Math.round(score / puzzle.perfect * 100) };
-  };
+    const diff = Math.round((score - puzzle.house) * 10) / 10;
+    return { score, hits, fadesTried, fadesHit, calls, diff,
+      outcome: diff > 0 ? "won" : diff < 0 ? "lost" : "push",
+      pct: lineupPercentile(puzzle, score) };
+  }, [ready, picks, puzzle]);
 
   function lock() {
     if (!ready) return;
@@ -253,49 +226,59 @@ export default function StartSit({ onExit, onCrossPromo, dark = false,
       && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return finish();
 
-    let bm = 0, bh = 0, i = 0;
+    let bm = 0, bh = 0, g = 0;
     const step = () => {
-      if (i >= puzzle.pods.length) { setClock("Final"); return finish(); }
-      const pod = puzzle.pods[i];
-      setOpenPods(o => [...o, pod.slot]);
-      setClock(pod.slot === "FLEX" ? "Flex is on the field" : `${pod.slot}s are playing`);
-      const mine = chosen(pod).reduce((s, id) => s + pod.tiles.find(t => t.id === id).pts, 0);
-      const his = puzzle.housePicks.reduce((s, id) => {
-        const t = pod.tiles.find(x => x.id === id); return s + (t ? t.pts : 0); }, 0);
-      const t0 = performance.now(), dur = 2300;
+      if (g >= GROUPS.length) { setClock("Final"); return finish(); }
+      const [label, idx] = GROUPS[g];
+      setOpenGroups(o => [...o, label]);
+      setClock(label === "FLEX" ? "Flex is on the field" : `${label}s are playing`);
+      const tiles = idx.flatMap(i => puzzle.pairs[i].tiles);
+      const mine = idx.reduce((s, i) => s + puzzle.pairs[i].tiles.find(t => t.id === picks[i]).pts, 0);
+      const his = idx.reduce((s, i) => s + houseTile(puzzle.pairs[i]).pts, 0);
+      const t0 = performance.now(), dur = 1500;
       const frame = now => {
         const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 2.1);
-        setLive(l => { const n = { ...l }; pod.tiles.forEach(t => { n[t.id] = e; }); return n; });
+        setLive(l => { const n = { ...l }; tiles.forEach(t => { n[t.id] = e; }); return n; });
         setMe(bm + mine * e); setHs(bh + his * e);
         if (k < 1) raf.current = requestAnimationFrame(frame);
-        else { bm += mine; bh += his; i++; timers.current.push(setTimeout(step, 430)); }
+        else { bm += mine; bh += his; g++; timers.current.push(setTimeout(step, 380)); }
       };
       raf.current = requestAnimationFrame(frame);
     };
-    timers.current.push(setTimeout(step, 300));
+    timers.current.push(setTimeout(step, 450));
   }
 
   function finish() {
-    const r = result();
-    const done = {}; puzzle.pods.forEach(p => p.tiles.forEach(t => { done[t.id] = 1; }));
+    const r = result;
+    const done = {}; puzzle.pairs.forEach(p => p.tiles.forEach(t => { done[t.id] = 1; }));
     setLive(done);
-    setOpenPods(puzzle.pods.map(p => p.slot));
+    setOpenGroups(GROUPS.map(g => g[0]));
     setMe(r.score); setHs(puzzle.house); setClock("Final");
     setPhase("done");
 
     if (!practice) {
       const next = { ...stats };
       next.played++;
-      if (r.won) { next.wins++; next.streak++; next.best = Math.max(next.best, next.streak); }
+      if (r.outcome === "won") { next.wins++; next.streak++; next.best = Math.max(next.best, next.streak); }
+      else if (r.outcome === "push") next.pushes = (next.pushes || 0) + 1;
       else next.streak = 0;
       next.lastNumber = getLineupNumber();
       setStats(next); saveLineupStats(next);
+      ev(r.outcome === "won" ? "won" : r.outcome === "push" ? "push" : "lost",
+         { calls: r.hits, pct: r.pct });
+      // Rank against everyone who played this lineup. The owner's plays are
+      // read-only (dry) so they never move the field.
+      try {
+        fetch("/api/lineup-score", { method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ n: getLineupNumber(), score: r.score, calls: r.hits,
+            fades: r.fadesTried, fadeHits: r.fadesHit, dry: isMe(), ...ident() }) })
+          .then(x => x.json()).then(j => { if (j && j.ok) setField(j); }).catch(() => {});
+      } catch {}
     } else {
       const next = { ...stats, recent: [puzzle.id, ...stats.recent].slice(0, 12) };
       setStats(next); saveLineupStats(next);
+      ev(r.outcome === "won" ? "practice_won" : "practice_lost", { calls: r.hits });
     }
-    ev(practice ? (r.won ? "practice_won" : "practice_lost") : (r.won ? "won" : "lost"),
-       { calls: r.hits, pct: r.pct });
   }
 
   function nextPractice() {
@@ -304,59 +287,42 @@ export default function StartSit({ onExit, onCrossPromo, dark = false,
     if (!practice) ev("practice_started", { after: getLineupNumber() });
     if (raf.current) cancelAnimationFrame(raf.current);
     timers.current.forEach(clearTimeout); timers.current = [];
-    setMode("practice"); setPuzzle(p); setPicks({}); setPhase("set");
-    setLive({}); setOpenPods([]); setMe(0); setHs(0); setClock(""); setCopied(false);
+    setMode("practice"); setPuzzle(p); setPicks({}); setPhase("set"); setField(null);
+    setLive({}); setOpenGroups([]); setMe(0); setHs(0); setClock(""); setCopied(false);
     window.scrollTo(0, 0);
   }
 
-  /* the one call that decided it against The House */
-  const swing = () => {
-    let out = null;
-    puzzle.pods.forEach(pod => {
-      const mine = pod.tiles.filter(t => chosen(pod).includes(t.id) && !puzzle.housePicks.includes(t.id));
-      const his = pod.tiles.filter(t => puzzle.housePicks.includes(t.id) && !chosen(pod).includes(t.id));
-      if (!mine.length || !his.length) return;
-      const d = mine.reduce((s, t) => s + t.pts, 0) - his.reduce((s, t) => s + t.pts, 0);
-      if (!out || Math.abs(d) > Math.abs(out.d)) out = { d, slot: pod.slot, you: mine[0], house: his[0] };
-    });
-    return out;
-  };
-
-  const loudest = () => {
-    let s = null;
-    puzzle.pods.forEach(pod => pod.tiles.forEach(t => {
-      const d = Math.abs(t.pts - t.ppg); if (!s || d > s.d) s = { d, t }; }));
-    return s.t;
+  /* the single call that mattered most */
+  const bigCall = r => {
+    const fadesHit = r.calls.filter(c => c.fade && c.right);
+    if (fadesHit.length) {
+      const c = [...fadesHit].sort((a, b) => (b.t.pts - b.other.pts) - (a.t.pts - a.other.pts))[0];
+      return { good: true, c };
+    }
+    const misses = r.calls.filter(c => !c.right);
+    if (!misses.length) return null;
+    return { good: false, c: [...misses].sort((a, b) => (b.other.pts - b.t.pts) - (a.other.pts - a.t.pts))[0] };
   };
 
   const headline = r => {
-    let benchedTop = null, startedBust = null;
-    puzzle.pods.forEach(pod => pod.tiles.forEach(t => {
-      const on = chosen(pod).includes(t.id);
-      if (!on && t.weekRank === 1) benchedTop = t;
-      if (on && (t.weekRank >= 25 || t.pts <= t.ppg * 0.5) && !startedBust) startedBust = t;
-    }));
-    if (r.perfect) return "Never had a doubt.";
-    if (benchedTop) return `Benched the top ${benchedTop.pos} of the week.`;
-    if (startedBust) return `Started the ${ord(startedBust.weekRank)} best ${startedBust.pos}. Ouch.`;
-    if (r.won && r.hits >= 4) return "Right on almost every call.";
-    if (r.won) return "Ugly, but a win is a win.";
+    if (r.hits === 9) return "Nine for nine.";
+    if (r.outcome === "push") return "Matched the House call for call.";
+    if (r.fadesHit >= 3) return "Saw the upsets coming.";
+    if (r.outcome === "won") return r.fadesHit ? "Faded the House and got paid." : "Ugly, but a win is a win.";
+    if (r.fadesTried && !r.fadesHit) return "Every fade went the House's way.";
     return "The House had the better week.";
   };
 
   const shareText = r => {
-    const rows = ORDER.map(slot => {
-      const pod = puzzle.pods.find(p => p.slot === slot), b = bestOf(pod);
-      const sq = chosen(pod).map(id => {
-        const t = pod.tiles.find(x => x.id === id);
-        if (!b.includes(id)) return "\u{1F7E5}";
-        return t.weekRank === 1 ? "\u{1F525}" : "\u{1F7E9}";
-      }).join("");
-      return `${SHORT[slot]} ${sq}`;
-    }).join("\n");
-    return `Start/Sit #${getLineupNumber()}\n${rows}\n${headline(r)}\n`
-      + `${f1(r.score)} to ${f1(puzzle.house)}, ${r.hits} of 5 calls`
-      + `\nplaydraft.app/#/start-sit`;
+    const rows = GROUPS.map(([label, idx]) => `${SHORT[label]} ${idx.map(i => {
+      const c = r.calls[i];
+      return !c.right ? "\u{1F7E5}" : c.fade ? "\u{1F3AF}" : "\u{1F7E9}";
+    }).join("")}`).join("\n");
+    const vs = r.outcome === "push" ? "push with the House"
+      : `${r.diff > 0 ? "+" : ""}${f1(r.diff)} vs the House`;
+    const fieldLine = field && field.players >= 5 ? `\nBetter than ${field.pct}% of players today` : "";
+    return `Start/Sit #${getLineupNumber()}\n${rows}\n${r.hits}/9 calls · ${vs}`
+      + `\nBeat ${r.pct}% of possible lineups${fieldLine}\nplaydraft.app/#/start-sit`;
   };
 
   const share = r => {
@@ -371,125 +337,94 @@ export default function StartSit({ onExit, onCrossPromo, dark = false,
   /* ---------------- styles ---------------- */
   const s = {
     wrap: { maxWidth: 520, margin: "0 auto", background: C.bg, color: C.fg,
-      fontFamily: BODY, paddingBottom: 92, minHeight: "100vh" },
-    top: { display: "flex", alignItems: "center", gap: 12, padding: "13px 18px",
+      fontFamily: BODY, paddingBottom: 96, minHeight: "100vh" },
+    top: { display: "flex", alignItems: "center", gap: 12, padding: "13px 16px",
       borderBottom: `1px solid ${C.line}` },
     mark: { fontFamily: DISPLAY, fontSize: 20, fontWeight: 700, flex: 1 },
     ghostBtn: { border: `1px solid ${C.line}`, borderRadius: 3, padding: "10px 18px",
-      fontFamily: DISPLAY, fontSize: 16, fontWeight: 600,
-      color: C.muted, background: "none", cursor: "pointer" },
-    solidBtn: { border: 0, borderRadius: 3, padding: "11px 22px",
-      fontFamily: DISPLAY, fontSize: 18, fontWeight: 700,
-      background: C.blue, color: C.onBlue, cursor: "pointer" },
-    pod: { borderBottom: `1px solid ${C.line}`, padding: "14px 18px" },
-    slot: { fontFamily: DISPLAY, fontSize: 20, fontWeight: 700 },
+      fontFamily: DISPLAY, fontSize: 16, color: C.muted, background: "none", cursor: "pointer" },
+    solidBtn: { border: 0, borderRadius: 3, padding: "11px 20px",
+      fontFamily: DISPLAY, fontSize: 18, background: C.blue, color: C.onBlue, cursor: "pointer" },
     bar: { position: "fixed", left: 0, right: 0, bottom: 0, maxWidth: 520, margin: "0 auto",
       background: C.panelHi, borderTop: `1px solid ${C.line}`,
-      padding: "11px 18px calc(11px + env(safe-area-inset-bottom))",
+      padding: "11px 16px calc(11px + env(safe-area-inset-bottom))",
       display: "flex", gap: 12, alignItems: "center", zIndex: 10 },
     num: { fontVariantNumeric: "tabular-nums" },
+    tag: { fontSize: 9.5, fontWeight: 700, letterSpacing: ".04em", padding: "1px 5px",
+      borderRadius: 2, fontFamily: BODY, flex: "none" },
   };
-
-  const r = phase === "done" ? result() : null;
+  const topBar = right => (
+    <div style={s.top}>
+      <button onClick={onExit} style={{ background: "none", border: 0, color: C.muted,
+        fontSize: 13, fontWeight: 600, cursor: "pointer" }}>← Games</button>
+      <span style={s.mark}>START<span style={{ color: C.blue }}>/</span>SIT</span>
+      {right}
+    </div>
+  );
 
   /* ---------------- set ---------------- */
   if (phase === "set") return (
     <div style={s.wrap}>
-      <div style={s.top}>
-        <button onClick={onExit} style={{ background: "none", border: 0, color: C.muted,
-          fontSize: 13, fontWeight: 600, cursor: "pointer" }}>← Games</button>
-        <span style={s.mark}>START<span style={{ color: C.blue }}>/</span>SIT</span>
-        <span style={{ fontSize: 12, color: C.dim, fontWeight: 600 }}>
-          {practice ? "Archive" : stats.played ? `${stats.wins}-${stats.played - stats.wins}` : ""}</span>
-      </div>
+      {topBar(<span style={{ fontSize: 12, color: C.dim, fontWeight: 600 }}>
+        {practice ? "Archive" : stats.played ? lineupRecord(stats) : ""}</span>)}
 
-      <header style={{ padding: "18px 18px 15px", borderBottom: `1px solid ${C.line}` }}>
+      <header style={{ padding: "18px 16px 14px", borderBottom: `1px solid ${C.line}` }}>
         {practice && <div style={{ display: "inline-block", fontSize: 11, fontWeight: 700,
-          letterSpacing: ".04em", background: C.line, color: C.muted,
-          padding: "3px 7px", borderRadius: 2, marginBottom: 9 }}>FROM THE ARCHIVE</div>}
-        <h1 style={{ fontFamily: DISPLAY, fontSize: 32, fontWeight: 700,
-          lineHeight: 1, marginBottom: 11 }}>Start or sit</h1>
-        <div style={{ display: "flex", gap: 11, alignItems: "center", background: C.panelHi,
-          border: `1px solid ${C.line}`, borderRadius: 3, padding: "11px 13px" }}>
-          <b style={{ ...s.num, fontFamily: DISPLAY, fontSize: 31,
-            fontWeight: 700, color: C.blue, lineHeight: 1 }}>{f1(puzzle.house)}</b>
-          <span style={{ fontSize: 13, color: C.muted, lineHeight: 1.35 }}>
-            The House has already set his lineup. Beat that number and you take the week.</span>
+          background: C.line, color: C.muted, padding: "3px 7px", borderRadius: 2, marginBottom: 9 }}>
+          FROM THE ARCHIVE</div>}
+        <h1 style={{ fontFamily: DISPLAY, fontSize: 32, fontWeight: 700, lineHeight: 1, marginBottom: 10 }}>
+          Nine calls. Beat the House.</h1>
+        <div style={{ background: C.panelHi, border: `1px solid ${C.line}`, borderLeft: `3px solid ${C.gold}`,
+          borderRadius: 3, padding: "10px 12px", fontSize: 14, lineHeight: 1.45 }}>
+          The House always starts the player with the higher season average.
+          Follow him and you push. <b>Beat him by finding the calls where he's wrong.</b>
         </div>
         <button onClick={() => setShowHow(h => !h)}
-          style={{ background: "none", border: 0, cursor: "pointer", padding: "8px 0 0",
+          style={{ background: "none", border: 0, cursor: "pointer", padding: "9px 0 0",
             fontFamily: DISPLAY, fontSize: 12, letterSpacing: "2px", color: C.dim }}>
-          HOW START/SIT WORKS {showHow ? "▲" : "▼"}
+          READING THE CARDS {showHow ? "▲" : "▼"}
         </button>
         {showHow && (
           <div style={{ fontSize: 13, color: C.muted, marginTop: 6, lineHeight: 1.55 }}>
-            Ten real players, each from a real week of a real season. Start five and sit five.
-            You get where he finished that year, his average, how kind that defense was to his
-            position, and what he did the week before. What he did on the day is hidden until
-            you lock. Beat the House's score and you take the week.
+            Every player is a real week from a real season, and the card shows only what you'd
+            have known at kickoff.<br />
+            <b>AVG</b> points per game this season, the only thing the House looks at.{" "}
+            <b>L3</b> points per game over his last three.{" "}
+            <b>TCH / TGT / ATT</b> touches, targets or dropbacks per game, last three.{" "}
+            <b>OPP</b> how generous the defense has been to his position, 1st is the softest.{" "}
+            <b>VEGAS</b> points his team was expected to score.<br />
+            0.5 PPR. Each call goes to whoever actually scored more that week.
           </div>
         )}
       </header>
 
-      {puzzle.pods.map(pod => (
-        <section key={pod.slot} style={s.pod}>
-          <div style={{ display: "flex", justifyContent: "space-between",
-            alignItems: "baseline", marginBottom: 8 }}>
-            <span style={s.slot}>{pod.slot}</span>
-            <span style={{ fontSize: 12, color: C.dim, fontWeight: 600 }}>
-              {chosen(pod).length}/{pod.start} started</span>
+      {puzzle.pairs.map((p, i) => (
+        <section key={i} ref={el => { pairRefs.current[i] = el; }}
+          style={{ borderBottom: `1px solid ${C.line}`, padding: "12px 16px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline",
+            marginBottom: 7 }}>
+            <span style={{ fontFamily: DISPLAY, fontSize: 19, letterSpacing: "1px" }}>{slotLabel(puzzle, i)}</span>
+            <span style={{ fontSize: 11.5, fontWeight: 700,
+              color: picks[i] && picks[i] !== p.house ? C.gold : C.dim }}>
+              {!picks[i] ? "START ONE" : picks[i] === p.house ? "WITH THE HOUSE" : "FADING THE HOUSE"}</span>
           </div>
-          <div style={{ display: "grid", gap: 7 }}>
-            {pod.tiles.map(t => {
-              const on = chosen(pod).includes(t.id);
-              const full = !on && chosen(pod).length >= pod.start;
-              const dcol = t.oppRank <= 12 ? C.grass : t.oppRank >= 21 ? C.brick : C.fg;
-              return (
-                <button key={t.id} onClick={() => toggle(pod, t.id)} aria-pressed={on}
-                  style={{ display: "flex", gap: 10, textAlign: "left", width: "100%",
-                    background: on ? C.panelHi : C.panel, border: 0,
-                    borderLeft: `3px solid ${on ? C.blue : C.line}`, borderRadius: 2,
-                    padding: "9px 10px 9px 8px", cursor: "pointer", opacity: full ? 0.5 : 1,
-                    color: C.fg }}>
-                  <Face t={t} C={C} />
-                  <span style={{ flex: 1, minWidth: 0 }}>
-                    <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                      <span style={{ fontFamily: DISPLAY, fontSize: 21,
-                        fontWeight: 600, lineHeight: 1.05, color: on ? C.blue : C.fg,
-                        whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                        {t.name}</span>
-                      <span style={{ fontSize: 10.5, fontWeight: 700, padding: "2px 5px",
-                        borderRadius: 2, color: "#0e1416",
-                        background: CLUB[t.team] || C.muted }}>{t.team}</span>
-                    </span>
-                    <span style={{ display: "block", fontSize: 12, color: C.muted, marginTop: 2 }}>
-                      {t.season} Week {t.week}, against {t.opp}</span>
-                    <span style={{ display: "grid", gridTemplateColumns: "1fr 1fr",
-                      gap: "3px 12px", marginTop: 7 }}>
-                      <Stat C={C} label={t.season} value={`${t.pos}${t.finish}`} />
-                      <Stat C={C} label="PER GAME" value={f1(t.ppg)} />
-                      <Stat C={C} label="OPP" value={`${t.oppRank}/32`} color={dcol} />
-                      <Stat C={C} label="LAST WK" value={t.prev == null ? "—" : f1(t.prev)} />
-                    </span>
-                  </span>
-                  <span style={{ alignSelf: "center", flex: "none", fontFamily: DISPLAY,
-                    fontSize: 12, letterSpacing: "1.5px", padding: "6px 10px", borderRadius: 3,
-                    border: `1px solid ${on ? C.blue : C.line}`,
-                    background: on ? C.blue : "transparent",
-                    color: on ? C.onBlue : full ? C.dim : C.muted, whiteSpace: "nowrap" }}>
-                    {on ? "STARTING" : full ? "BENCH" : "START"}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+          {p.tiles.map((t, k) => (
+            <div key={t.id}>
+              {k === 1 && <div style={{ textAlign: "center", fontSize: 11, color: C.dim,
+                fontStyle: "italic", margin: "-1px 0 2px" }}>or</div>}
+              <Card t={t} C={C} s={s} house={t.id === p.house}
+                on={picks[i] === t.id} off={!!picks[i] && picks[i] !== t.id}
+                onClick={() => pick(i, t.id)} />
+            </div>
+          ))}
         </section>
       ))}
 
       <div style={s.bar}>
-        <span style={{ fontSize: 13, flex: 1, lineHeight: 1.3,
-          color: nudge ? C.blue : C.muted }}>
-          {nudge || (filled === 5 ? "Lineup set. No changes after this." : `${filled} of 5 spots filled`)}
+        <span style={{ fontSize: 13, flex: 1, lineHeight: 1.3, color: C.muted }}>
+          <b style={{ color: C.fg }}>{filled}/9</b> calls
+          {fades ? <> · <b style={{ color: C.gold }}>{fades}</b> against the House</> : ""}
+          {ready && <><br />No changes after this.</>}
         </span>
         <button onClick={lock} disabled={!ready}
           style={{ ...s.solidBtn, background: ready ? C.blue : C.panel,
@@ -500,157 +435,128 @@ export default function StartSit({ onExit, onCrossPromo, dark = false,
   );
 
   /* ---------------- run and result ---------------- */
-  const sw = phase === "done" ? swing() : null;
-  const loud = phase === "done" ? loudest() : null;
+  const r = phase === "done" ? result : null;
+  const big = r ? bigCall(r) : null;
 
   return (
     <div style={s.wrap}>
-      <div style={s.top}>
-        <button onClick={onExit} style={{ background: "none", border: 0, color: C.muted,
-          fontSize: 13, fontWeight: 600, cursor: "pointer" }}>← Games</button>
-        <span style={s.mark}>START<span style={{ color: C.blue }}>/</span>SIT</span>
-      </div>
+      {topBar(null)}
 
       <div style={{ position: "sticky", top: 0, zIndex: 5, background: C.panelHi,
-        borderBottom: `1px solid ${C.line}`, padding: "11px 18px", display: "grid",
+        borderBottom: `1px solid ${C.line}`, padding: "10px 16px", display: "grid",
         gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: 10 }}>
         <Score C={C} label="YOU" value={me} color={C.blue} />
         <span style={{ fontSize: 12, color: C.dim, fontWeight: 600 }}>vs</span>
         <Score C={C} label="THE HOUSE" value={hs} />
         <div style={{ gridColumn: "1/-1", textAlign: "center", fontSize: 12, color: C.muted,
-          borderTop: `1px solid ${C.line}`, paddingTop: 7, minHeight: 16 }}>{clock}</div>
+          borderTop: `1px solid ${C.line}`, paddingTop: 6, minHeight: 16 }}>{clock}</div>
       </div>
 
-      {puzzle.pods.map(pod => {
-        const open = openPods.includes(pod.slot);
-        const b = bestOf(pod), sel = chosen(pod);
-        const hit = sel.filter(id => b.includes(id)).length;
-        const settled = pod.tiles.every(t => (live[t.id] || 0) >= 1);
-        const rows = [...pod.tiles.filter(t => sel.includes(t.id)),
-                      ...pod.tiles.filter(t => !sel.includes(t.id))];
+      {r && (
+        <div style={{ padding: "18px 16px 6px" }}>
+          <div style={{ fontFamily: DISPLAY, fontSize: 32, lineHeight: 1.05,
+            color: r.outcome === "won" ? C.grass : r.outcome === "push" ? C.gold : C.brick }}>
+            {r.outcome === "won" ? "You beat the House" : r.outcome === "push" ? "Push" : "The House got you"}</div>
+          <div style={{ fontSize: 15, marginTop: 3 }}>{headline(r)}{" "}
+            <span style={{ color: C.muted }}>
+              {r.outcome === "push" ? "Same score." : `${r.outcome === "won" ? "By" : "Short by"} ${f1(Math.abs(r.diff))}.`}
+            </span></div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 7, margin: "13px 0 6px" }}>
+            <Big C={C} label="CALLS RIGHT" value={`${r.hits}/9`} />
+            <Big C={C} label="UPSETS CALLED" value={`${r.fadesHit}/${r.fadesTried}`}
+              color={r.fadesHit ? C.gold : undefined} />
+            <Big C={C} label="LINEUPS BEATEN" value={`${r.pct}%`} color={C.blue} />
+          </div>
+          <div style={{ fontSize: 13, color: C.muted, lineHeight: 1.45 }}>
+            Your nine calls beat {r.pct}% of the 512 lineups you could have set.
+            {field && field.players >= 5 ? ` Better than ${field.pct}% of the ${field.players} players today.` : ""}
+            {!practice && ` You're ${lineupRecord(stats)} against the House.`}
+          </div>
+
+          {big && (
+            <Note C={C} accent={big.good ? C.gold : C.brick}>
+              {big.good
+                ? <>Best call: <b>{big.c.t.name}</b> over {big.c.other.name}. The House sat him,
+                    and he won the call by {f1(big.c.t.pts - big.c.other.pts)}.</>
+                : <>Costliest call: <b>{big.c.t.name}</b> over {big.c.other.name}, a{" "}
+                    {f1(big.c.other.pts - big.c.t.pts)}-point swing.</>}
+            </Note>
+          )}
+
+          {!practice && (
+            <button onClick={() => share(r)}
+              style={{ width: "100%", marginTop: 14, fontFamily: DISPLAY, fontSize: 19,
+                letterSpacing: "3px", padding: "17px 0", background: C.blue, color: C.onBlue,
+                border: 0, borderRadius: 10, cursor: "pointer", boxShadow: "0 4px 20px rgba(63,167,214,0.35)" }}>
+              {copied ? "COPIED. GO PASTE IT" : "SEND IT TO THE GROUP CHAT"}
+            </button>
+          )}
+          <div style={{ display: "flex", gap: 9, marginTop: 12, flexWrap: "wrap" }}>
+            {hasLineupArchive() && <button onClick={nextPractice} style={practice ? s.solidBtn : s.ghostBtn}>
+              {practice ? "Another lineup" : "Play one from the archive"}</button>}
+            {practice && <button style={s.ghostBtn} onClick={onExit}>Back to games</button>}
+          </div>
+          {onCrossPromo && <div style={{ marginTop: 13 }}>{onCrossPromo()}</div>}
+          <div style={{ fontFamily: DISPLAY, fontSize: 12, letterSpacing: "2px", color: C.dim,
+            margin: "20px 0 0" }}>THE BOX SCORE</div>
+        </div>
+      )}
+
+      {GROUPS.map(([label, idx]) => {
+        const open = openGroups.includes(label);
         return (
-          <section key={pod.slot} style={{ borderBottom: `1px solid ${C.line}`,
-            padding: "12px 18px", opacity: open ? 1 : 0.32, transition: "opacity .4s ease" }}>
-            <div style={{ display: "flex", justifyContent: "space-between",
-              alignItems: "center", marginBottom: 6 }}>
-              <span style={s.slot}>{pod.slot}</span>
-              <span style={{ fontSize: 11, fontWeight: 700, padding: "2px 6px", borderRadius: 2,
-                background: settled && hit === pod.start ? C.blue : C.line,
-                color: settled && hit === pod.start ? C.onBlue : C.muted }}>
-                {settled ? (hit === pod.start ? (pod.start > 1 ? "BOTH RIGHT" : "RIGHT CALL")
-                                              : `${hit} of ${pod.start}`) : "\u00a0"}</span>
-            </div>
-            {rows.map(t => {
-              const on = sel.includes(t.id), e = live[t.id] || 0, doneT = e >= 1;
-              const right = b.includes(t.id);
-              const v = doneT ? verdictOf(t) : null;
+          <section key={label} style={{ borderBottom: `1px solid ${C.line}`, padding: "10px 16px",
+            opacity: open ? 1 : 0.3, transition: "opacity .4s ease" }}>
+            {idx.map(i => {
+              const p = puzzle.pairs[i];
+              const mine = p.tiles.find(t => t.id === picks[i]);
+              const rows = [mine, p.tiles.find(t => t.id !== picks[i])];
+              const settled = p.tiles.every(t => (live[t.id] || 0) >= 1);
+              const right = mine.id === winner(p).id, fade = mine.id !== p.house;
+              const badge = !settled ? null
+                : right && fade ? ["UPSET CALLED", C.gold]
+                : right ? ["RIGHT CALL", C.grass]
+                : fade ? ["HOUSE WAS RIGHT", C.brick]
+                : ["UPSET MISSED", C.brick];
               return (
-                <div key={t.id} style={{ display: "flex", alignItems: "center", gap: 9,
-                  padding: "5px 0", opacity: on ? 1 : 0.45 }}>
-                  <span style={{ width: 10, height: 10, borderRadius: 2, flex: "none",
-                    background: !on ? "transparent"
-                      : doneT ? (right ? C.grass : C.brick) : C.line }} />
-                  <Face t={t} size={32} C={C} />
-                  <span style={{ flex: 1, minWidth: 0 }}>
-                    <span style={{ fontFamily: DISPLAY, fontSize: 18,
-                      fontWeight: on ? 600 : 500, lineHeight: 1.15, display: "flex",
-                      alignItems: "center", gap: 6, whiteSpace: "nowrap",
-                      overflow: "hidden", textOverflow: "ellipsis" }}>
-                      {t.name}
-                      {puzzle.housePicks.includes(t.id) && (
-                        <span style={{ fontSize: 9.5, fontWeight: 700, padding: "1px 4px",
-                          borderRadius: 2, background: C.line, color: C.muted }}>HOUSE</span>)}
-                    </span>
-                    <span style={{ display: "block", fontSize: 12, color: C.muted,
-                      lineHeight: 1.3, minHeight: 15 }}>{tickLine(t.stats, e)}</span>
-                    {v && (
-                      <span style={{ display: "flex", alignItems: "center", gap: 7, marginTop: 3 }}>
-                        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".03em",
-                          padding: "2px 6px", borderRadius: 2,
-                          background: v.tone === "boom" ? C.grass : v.tone === "bust" ? C.brick
-                            : v.tone === "top" ? C.blue : C.line,
-                          color: v.tone ? (v.tone === "top" ? C.onBlue : "#fff") : C.muted }}>
-                          {v.word}</span>
-                        <span style={{ fontSize: 12, color: C.dim, fontWeight: 600 }}>
-                          {t.pos}{t.weekRank} of {t.weekField} that week</span>
-                      </span>
-                    )}
-                  </span>
-                  <span style={{ ...s.num, fontSize: 19, fontWeight: 700, minWidth: 54,
-                    textAlign: "right" }}>{f1(t.pts * e)}</span>
+                <div key={i} style={{ padding: "4px 0 8px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center",
+                    marginBottom: 3 }}>
+                    <span style={{ fontFamily: DISPLAY, fontSize: 16, letterSpacing: "1px", color: C.muted }}>
+                      {slotLabel(puzzle, i)}</span>
+                    {badge && <span style={{ ...s.tag, background: badge[1], color: "#fff" }}>{badge[0]}</span>}
+                  </div>
+                  {rows.map(t => {
+                    const on = t.id === mine.id, e = live[t.id] || 0;
+                    return (
+                      <div key={t.id} style={{ display: "flex", alignItems: "center", gap: 9,
+                        padding: "3px 0", opacity: on ? 1 : 0.5 }}>
+                        <span style={{ width: 9, height: 9, borderRadius: 2, flex: "none",
+                          background: !on ? "transparent" : settled ? (right ? C.grass : C.brick) : C.line }} />
+                        <Face t={t} size={32} />
+                        <span style={{ flex: 1, minWidth: 0 }}>
+                          <span style={{ fontFamily: DISPLAY, fontSize: 17, lineHeight: 1.15, display: "flex",
+                            alignItems: "center", gap: 6, whiteSpace: "nowrap", overflow: "hidden" }}>
+                            <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{t.name}</span>
+                            {t.id === p.house && <span style={{ ...s.tag, background: C.line, color: C.muted }}>HOUSE</span>}
+                          </span>
+                          <span style={{ display: "block", fontSize: 12, color: C.muted, lineHeight: 1.3,
+                            minHeight: 15 }}>
+                            {e >= 1 ? `${tickLine(t.stats, 1)} · ${t.pos}${t.weekRank} that week`
+                                    : tickLine(t.stats, e)}</span>
+                        </span>
+                        <span style={{ ...s.num, fontSize: 18, fontWeight: 700, minWidth: 48,
+                          textAlign: "right" }}>{f1(t.pts * e)}</span>
+                      </div>
+                    );
+                  })}
                 </div>
               );
             })}
           </section>
         );
       })}
-
-      {phase === "done" && (
-        <div style={{ padding: "20px 18px" }}>
-          <div style={{ fontFamily: DISPLAY, fontSize: 32, fontWeight: 700,
-            lineHeight: 1.05, color: r.perfect ? C.blue : r.won ? C.grass : C.brick }}>
-            {r.perfect ? "Perfect lineup" : r.won ? "You beat the House" : "The House got you"}</div>
-          <div style={{ fontSize: 14, color: C.muted, marginTop: 7, lineHeight: 1.5 }}>
-            {r.won ? "By" : "Short by"} {f1(Math.abs(r.score - puzzle.house))} points.
-            A perfect lineup was worth {f1(puzzle.perfect)}.</div>
-
-          {sw && (
-            <Note C={C}>The House started <b>{sw.house.name}</b> at {sw.slot} where you had{" "}
-              <b>{sw.you.name}</b>. Worth {f1(Math.abs(sw.d))} points {sw.d > 0 ? "to you" : "to him"}.</Note>
-          )}
-          {loud && (
-            <Note C={C}><b>{loud.name}</b>, {loud.season} week {loud.week} against {loud.opp}.{" "}
-              {loud.pts >= loud.ppg ? "Put up" : "Managed"} {f1(loud.pts)} and finished{" "}
-              {ord(loud.weekRank)} among {loud.pos}s that week.
-              {loud.priorFinish ? ` He had been ${loud.pos}${loud.priorFinish} the year before.` : ""}</Note>
-          )}
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 7,
-            margin: "13px 0 6px" }}>
-            {ORDER.map(slot => {
-              const p = r.byPod[slot], clean = p.hit === p.of;
-              return (
-                <div key={slot} style={{ background: C.panelHi, borderRadius: 3, padding: "8px 6px",
-                  textAlign: "center", border: `1px solid ${clean ? C.blue : C.line}` }}>
-                  <span style={{ display: "block", fontSize: 11, color: C.dim, fontWeight: 700 }}>{slot}</span>
-                  <b style={{ ...s.num, display: "block", fontSize: 21, fontWeight: 700,
-                    fontFamily: DISPLAY,
-                    color: clean ? C.blue : C.fg }}>{f1(p.pts)}</b>
-                </div>
-              );
-            })}
-          </div>
-
-          <div style={{ fontSize: 14, color: C.muted, marginTop: 7, lineHeight: 1.5 }}>
-            {r.hits} of 5 calls right, {r.pct}% of perfect.
-            {!practice && ` You are ${stats.wins}-${stats.played - stats.wins} against the House.`}</div>
-
-          {!practice && (
-            <button onClick={() => share(r)}
-              style={{ width: "100%", marginTop: 16, fontFamily: DISPLAY, fontSize: 19,
-                letterSpacing: "3px", padding: "18px 0", background: C.blue, color: C.onBlue,
-                border: 0, borderRadius: 10, cursor: "pointer",
-                boxShadow: "0 4px 20px rgba(63,167,214,0.35)" }}>
-              {copied ? "COPIED — GO PASTE IT" : "CHALLENGE YOUR FRIENDS"}
-            </button>
-          )}
-          {!practice && (
-            <div style={{ fontSize: 12.5, color: C.dim, marginTop: 7, textAlign: "center",
-              lineHeight: 1.4 }}>
-              Sends your five calls and the final score. No player names, so it spoils nothing.
-            </div>
-          )}
-          <div style={{ display: "flex", gap: 9, marginTop: 14, flexWrap: "wrap" }}>
-            {hasLineupArchive() && <button onClick={nextPractice}
-              style={practice ? s.solidBtn : s.ghostBtn}>
-              {practice ? "Another lineup" : "Play more from the archive"}</button>}
-            {practice && copied === false && <button style={s.ghostBtn} onClick={onExit}>
-              Back to games</button>}
-          </div>
-
-          {onCrossPromo && <div style={{ marginTop: 13 }}>{onCrossPromo()}</div>}
-        </div>
-      )}
 
       {phase === "run" && (
         <div style={s.bar}>
@@ -666,12 +572,43 @@ export default function StartSit({ onExit, onCrossPromo, dark = false,
   );
 }
 
+function Card({ t, C, s, house, on, off, onClick }) {
+  const oppCol = t.oppRank <= 10 ? C.grass : t.oppRank >= 23 ? C.brick : C.fg;
+  return (
+    <button onClick={onClick} aria-pressed={on}
+      style={{ display: "flex", gap: 10, textAlign: "left", width: "100%", color: C.fg,
+        background: on ? C.panelHi : C.panel, border: `1px solid ${on ? C.blue : C.line}`,
+        borderLeft: `4px solid ${on ? C.blue : C.line}`, borderRadius: 3,
+        padding: "9px 10px 9px 9px", cursor: "pointer", opacity: off ? 0.55 : 1,
+        transition: "opacity .15s ease", marginBottom: 3, fontFamily: BODY }}>
+      <Face t={t} />
+      <span style={{ flex: 1, minWidth: 0 }}>
+        <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <span style={{ fontFamily: DISPLAY, fontSize: 20, lineHeight: 1.05, color: on ? C.blue : C.fg,
+            whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{t.name}</span>
+          {house && <span style={{ ...s.tag, background: C.gold, color: "#fff" }}>HOUSE</span>}
+          {on && <span style={{ ...s.tag, background: C.blue, color: C.onBlue, marginLeft: "auto" }}>START</span>}
+        </span>
+        <span style={{ display: "block", fontSize: 12, color: C.muted, marginTop: 1 }}>
+          {t.season} · Week {t.week} · {t.team} {t.home ? "vs" : "@"} {t.opp}</span>
+        <span style={{ display: "grid", gridTemplateColumns: "repeat(5,auto)", justifyContent: "space-between",
+          gap: 6, marginTop: 6 }}>
+          <Stat C={C} label="AVG" value={t.avg.toFixed(1)} />
+          <Stat C={C} label="L3" value={t.l3.toFixed(1)} />
+          <Stat C={C} label={`${t.useLabel}/G`} value={t.use.toFixed(1)} />
+          <Stat C={C} label="OPP" value={ord(t.oppRank)} color={oppCol} />
+          <Stat C={C} label="VEGAS" value={t.imp.toFixed(1)} />
+        </span>
+      </span>
+    </button>
+  );
+}
+
 function Stat({ label, value, color, C }) {
   return (
-    <span>
-      <i style={{ fontStyle: "normal", fontSize: 10, color: C.dim, fontWeight: 600 }}>{label}</i>
-      <b style={{ fontSize: 14, fontWeight: 600, marginLeft: 5, fontVariantNumeric: "tabular-nums",
-        color: color || C.fg }}>{value}</b>
+    <span style={{ display: "flex", flexDirection: "column", lineHeight: 1.1 }}>
+      <i style={{ fontStyle: "normal", fontSize: 9.5, color: C.dim, fontWeight: 700, letterSpacing: ".03em" }}>{label}</i>
+      <b style={{ fontSize: 14.5, fontWeight: 700, fontVariantNumeric: "tabular-nums", color: color || C.fg }}>{value}</b>
     </span>
   );
 }
@@ -679,19 +616,28 @@ function Stat({ label, value, color, C }) {
 function Score({ label, value, color, C }) {
   return (
     <div style={{ textAlign: "center" }}>
-      <i style={{ fontStyle: "normal", display: "block", fontSize: 11, color: C.dim,
-        fontWeight: 600 }}>{label}</i>
-      <b style={{ fontFamily: DISPLAY, fontSize: 35, fontWeight: 700,
-        lineHeight: 1, display: "block", fontVariantNumeric: "tabular-nums",
-        color: color || C.fg }}>{f1(value)}</b>
+      <i style={{ fontStyle: "normal", display: "block", fontSize: 11, color: C.dim, fontWeight: 600 }}>{label}</i>
+      <b style={{ fontFamily: DISPLAY, fontSize: 34, lineHeight: 1, display: "block",
+        fontVariantNumeric: "tabular-nums", color: color || C.fg }}>{f1(value)}</b>
     </div>
   );
 }
 
-function Note({ children, C }) {
+function Big({ label, value, color, C }) {
   return (
-    <div style={{ background: C.panelHi, border: `1px solid ${C.line}`, borderLeft: `3px solid ${C.blue}`,
-      borderRadius: 2, padding: "11px 13px", marginTop: 13, fontSize: 13.5, lineHeight: 1.5 }}>
+    <div style={{ background: C.panelHi, border: `1px solid ${C.line}`, borderRadius: 3,
+      padding: "8px 6px", textAlign: "center" }}>
+      <b style={{ fontFamily: DISPLAY, fontSize: 25, lineHeight: 1, display: "block",
+        fontVariantNumeric: "tabular-nums", color: color || C.fg }}>{value}</b>
+      <i style={{ fontStyle: "normal", fontSize: 10, color: C.dim, fontWeight: 700 }}>{label}</i>
+    </div>
+  );
+}
+
+function Note({ children, C, accent }) {
+  return (
+    <div style={{ background: C.panelHi, border: `1px solid ${C.line}`, borderLeft: `3px solid ${accent || C.blue}`,
+      borderRadius: 2, padding: "10px 12px", marginTop: 12, fontSize: 13.5, lineHeight: 1.5 }}>
       {children}
     </div>
   );

@@ -55,6 +55,36 @@ export default async function handler(req, res) {
 
     await fetch(`${base}/sadd/visitors:all/${encodeURIComponent(anonId)}`, { headers });
 
+    // 3-day return, the number an ad is judged on. A first-time visitor gets a
+    // first-seen date; when they come back 1-3 days later they are counted once
+    // in that day's cohort, credited to their first-touch source. Visitors from
+    // before this existed have no first-seen date and are simply left out.
+    const firstKey = 'visitors:first';
+    const src3 = String((body && body.src) || 'unknown').toLowerCase()
+      .replace(/[^a-z0-9._/-]/g, '').slice(0, 60) || 'unknown';
+    if (!alreadySeen) {
+      await fetch(`${base}/hsetnx/${firstKey}/${encodeURIComponent(anonId)}/${today}`, { headers });
+    } else {
+      let first = null;
+      try {
+        first = JSON.parse(await (await fetch(`${base}/hget/${firstKey}/${encodeURIComponent(anonId)}`, { headers })).text()).result;
+      } catch {}
+      const gap = first ? Math.round((Date.parse(today) - Date.parse(first)) / 86400000) : 0;
+      if (gap >= 1 && gap <= 3) {
+        const cohort = `ret3:${first}`;
+        let added = 0;
+        try {
+          added = JSON.parse(await (await fetch(`${base}/sadd/${encodeURIComponent(cohort)}/${encodeURIComponent(anonId)}`, { headers })).text()).result;
+        } catch {}
+        await fetch(`${base}/expire/${encodeURIComponent(cohort)}/3888000`, { headers });
+        if (added === 1) {
+          const k = `src:ret3:${first}`;
+          await fetch(`${base}/hincrby/${encodeURIComponent(k)}/${encodeURIComponent(src3)}/1`, { headers });
+          await fetch(`${base}/expire/${encodeURIComponent(k)}/3888000`, { headers });
+        }
+      }
+    }
+
     const bucketKey = alreadySeen ? `visitors:returning:${today}` : `visitors:new:${today}`;
     await fetch(`${base}/sadd/${encodeURIComponent(bucketKey)}/${encodeURIComponent(anonId)}`, { headers });
     await fetch(`${base}/expire/${encodeURIComponent(bucketKey)}/3888000`, { headers });

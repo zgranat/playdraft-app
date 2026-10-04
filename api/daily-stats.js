@@ -139,13 +139,46 @@ export default async function handler(req, res) {
     }
     const sumWeek = async (type) =>
       (await Promise.all(week.map(d => scard(`evt:${type}:${d}`)))).reduce((a, b) => a + b, 0);
-    const [fdOpen, fdStart, fdWin, fdLoss, fdShare, ssOpen, ssStart, ssWin, ssLoss, ssShare] =
+    const [fdOpen, fdStart, fdWin, fdLoss, fdShare, ssOpen, ssStart, ssWin, ssLoss, ssPush, ssShare] =
       await Promise.all(['fd_open', 'start', 'win', 'loss', 'share',
-        'lineup_open', 'lineup_start', 'lineup_win', 'lineup_loss', 'lineup_share'].map(sumWeek));
+        'lineup_open', 'lineup_start', 'lineup_win', 'lineup_loss', 'lineup_push', 'lineup_share'].map(sumWeek));
     const games = {
       fourdowns: { opened: fdOpen, played: fdStart, finished: fdWin + fdLoss, won: fdWin, shared: fdShare },
-      startsit: { opened: ssOpen, played: ssStart, finished: ssWin + ssLoss, won: ssWin, shared: ssShare },
+      startsit: { opened: ssOpen, played: ssStart, finished: ssWin + ssLoss + ssPush, won: ssWin, shared: ssShare },
     };
+
+    // Start/Sit play quality, last 7 days (from /api/lineup-score). If fades
+    // per player sits near zero, people are following the House and never
+    // reading the cards; if fade hit rate sits near 50%, they are guessing.
+    const lsDays = await Promise.all(week.map(d => hgetall(`ls:day:${d}`)));
+    const ls = lsDays.reduce((a, x) => ({ players: a.players + (x.players || 0), calls: a.calls + (x.calls || 0),
+      fades: a.fades + (x.fades || 0), fadeHits: a.fadeHits + (x.fadeHits || 0) }),
+      { players: 0, calls: 0, fades: 0, fadeHits: 0 });
+    const ssQuality = {
+      players: ls.players,
+      avgCalls: avg(ls.calls, ls.players),
+      fadesPerPlayer: avg(ls.fades, ls.players),
+      fadeHitRate: pct(ls.fadeHits, ls.fades),
+    };
+
+    // 3-day return by first-touch source. A day's new visitors form a cohort;
+    // it is counted as returned if they came back 1-3 days later. Cohorts
+    // 4-10 days old have had their full window, so only those feed the rate.
+    const cohortDays = [];
+    for (let i = 1; i <= 10; i++) {
+      cohortDays.push({ d: new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' })
+        .format(new Date(Date.now() - i * 86400000)), mature: i >= 4 });
+    }
+    const ret = {};   // source -> { newAll, backAll, newMature, backMature }
+    const cohortData = await Promise.all(cohortDays.map(c =>
+      Promise.all([hgetall(`src:new:${c.d}`), hgetall(`src:ret3:${c.d}`)])));
+    cohortData.forEach(([nw, bk], k) => {
+      const mature = cohortDays[k].mature;
+      const touch = src => (ret[src] = ret[src] || { newAll: 0, backAll: 0, newMature: 0, backMature: 0 });
+      Object.entries(nw).forEach(([src, v]) => { const r = touch(src); r.newAll += v; if (mature) r.newMature += v; });
+      Object.entries(bk).forEach(([src, v]) => { const r = touch(src); r.backAll += v; if (mature) r.backMature += v; });
+    });
+    const retRows = Object.entries(ret).sort((a, b) => b[1].newAll - a[1].newAll).slice(0, 12);
 
     const sources = {};   // source -> { new, returning, fourdowns, startsit }
     const bump = (src, field, n) => {
@@ -182,7 +215,14 @@ export default async function handler(req, res) {
           ${vsRow('Finished', games.fourdowns.finished, games.startsit.finished)}
           ${vsRow('Won', `${games.fourdowns.won} <span style="color:#999;font-weight:normal;">solved</span>`, `${games.startsit.won} <span style="color:#999;font-weight:normal;">beat House</span>`)}
           ${vsRow('Shared', games.fourdowns.shared, games.startsit.shared)}
-        </table>`;
+        </table>
+        <p style="color:#555;font-size:13px;margin:8px 0 0;line-height:1.5;">
+          Start/Sit play quality: ${ssQuality.players} ranked lineups,
+          ${show(ssQuality.avgCalls)}/9 calls right on average,
+          ${show(ssQuality.fadesPerPlayer)} House fades per player,
+          ${show(ssQuality.fadeHitRate, '%')} of fades hit.
+          <span style="color:#999;">Random tapping hits about 50% of fades.</span>
+        </p>`;
     const sourcesHtml = `
         <h3 style="font-family:Georgia,serif;margin:18px 0 2px;">Where players came from</h3>
         <p style="color:#888;margin-top:0;font-size:13px;">Last 7 days, by first-touch source (utm_source/utm_content, referrer, or direct)</p>
@@ -192,6 +232,16 @@ export default async function handler(req, res) {
           ${sourceRows.map(([s, v]) => `
           <tr><td style="${cell}">${s}</td><td style="${cell}text-align:right;">${v.new}</td><td style="${cell}text-align:right;">${v.returning}</td><td style="${cell}text-align:right;">${v.fourdowns}</td><td style="${cell}text-align:right;">${v.startsit}</td></tr>`).join('')}
         </table>` : '<p style="color:#888;font-size:13px;">No source data yet (tracking started 2026-09-29).</p>'}`;
+
+    const retHtml = `
+        <h3 style="font-family:Georgia,serif;margin:18px 0 2px;">Came back within 3 days</h3>
+        <p style="color:#888;margin-top:0;font-size:13px;">By first-touch source. New = first visits in the last 10 days. Rate uses only cohorts 4+ days old, which have had their full 3 days.</p>
+        ${retRows.length ? `
+        <table style="width:100%;border-collapse:collapse;border:1px solid #eee;font-size:13px;">
+          <tr><td style="${cell}color:#888;">Source</td><td style="${cell}text-align:right;color:#888;">New</td><td style="${cell}text-align:right;color:#888;">Back ≤3d</td><td style="${cell}text-align:right;color:#888;">Rate</td></tr>
+          ${retRows.map(([src, v]) => `
+          <tr><td style="${cell}">${src}</td><td style="${cell}text-align:right;">${v.newAll}</td><td style="${cell}text-align:right;">${v.backAll}</td><td style="${cell}text-align:right;">${v.newMature ? `${pct(v.backMature, v.newMature)}% <span style="color:#999;">of ${v.newMature}</span>` : '<span style="color:#999;">pending</span>'}</td></tr>`).join('')}
+        </table>` : '<p style="color:#888;font-size:13px;">No return data yet (tracking started 2026-10-04).</p>'}`;
 
     const row = (label, value, sub) => `
       <tr>
@@ -232,6 +282,7 @@ export default async function handler(req, res) {
         </table>` : ''}
         ${gamesHtml}
         ${sourcesHtml}
+        ${retHtml}
       </div>`;
 
     // No finishers means no solve rate to report. Say what actually happened
@@ -262,7 +313,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true, date: yesterday, visitors, newVisitors, returningVisitors, started, finished, won, lost,
       abandoned, shared, solveRate, completionRate, abandonRate, shareRate, newRate, avgWrong, cleanRate,
-      featuredIdSource, featured, games, sources,
+      featuredIdSource, featured, games, sources, ssQuality, returns: ret,
     });
   } catch (err) {
     return res.status(500).json({ error: String(err).slice(0, 300) });

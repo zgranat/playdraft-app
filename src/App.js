@@ -1,6 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { Analytics } from "@vercel/analytics/react";
-import StartSit, { playedLineupToday, loadLineupStats } from "./StartSit";
+import { playedLineupToday, loadLineupStats, lineupRecord } from "./lineupMeta";
+// The lineup bank is big, so Start/Sit loads only when someone opens it.
+const StartSit = lazy(() => import("./StartSit"));
 
 // ============================================================
 // PUZZLE DATA
@@ -2099,7 +2101,7 @@ function Landing({onPlay,onPlayLineup,onPlayFeatured,dark,mode}) {
       {(()=>{
         const st=loadLineupStats(), done=playedLineupToday();
         if(!st.played) return null;
-        const rec=`${st.wins}-${st.played-st.wins}`;
+        const rec=lineupRecord(st);
         if(done) return (
           <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"2px",color:"#2E6B3E",marginBottom:"14px"}}>✅ TODAY'S LINEUP IS LOCKED · 🏆 {rec} AGAINST THE HOUSE</div>
         );
@@ -2126,9 +2128,9 @@ function Landing({onPlay,onPlayLineup,onPlayFeatured,dark,mode}) {
           {playedLineupToday()?"SET ANOTHER LINEUP":"SET TODAY'S LINEUP"}
         </button>
         <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:dark?"#888":"#666",marginTop:"7px",lineHeight:1.45}}>
-          Ten real players from real weeks. Start five, beat the House.
+          Nine real start/sit calls. The House starts the higher average; find where he's wrong.
           {(()=>{const st=loadLineupStats();
-            return st.played?` You are ${st.wins}-${st.played-st.wins} against him.`:"";})()}
+            return st.played?` You are ${lineupRecord(st)} against him.`:"";})()}
         </div>
       </div>
 
@@ -2425,8 +2427,11 @@ export default function App() {
       {screen==="howto"&&<HowTo dark={dark} onClose={()=>setScreen("home")}/>}
       {screen==="scoring"&&<ScoringPage dark={dark} onClose={()=>setScreen("home")}/>}
       {screen==="locker"&&<LockerRoom dark={dark} onClose={()=>setScreen("home")} onPlay={()=>{setMode("daily");setScreen("game");}}/>}
-      {screen==="startsit"&&<StartSit dark={dark} onExit={()=>setScreen("home")}/>}
-      {showOnboarding&&<OnboardingModal dark={dark} onClose={()=>setShowOnboarding(false)}/>}
+      {screen==="startsit"&&<Suspense fallback={<div style={{minHeight:"100vh"}}/>}><StartSit dark={dark} onExit={()=>setScreen("home")}/></Suspense>}
+      {/* The tutorial explains Four Downs, so it waits until someone opens
+          Four Downs. Showing it to a Start/Sit deep link (every ad click)
+          described the wrong game. */}
+      {showOnboarding&&screen==="game"&&<OnboardingModal dark={dark} onClose={()=>setShowOnboarding(false)}/>}
       <Analytics />
     </>
   );
