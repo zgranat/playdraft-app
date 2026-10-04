@@ -189,7 +189,7 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
 
   function pick(i, id) {
     const wasEmpty = !picks[i];
-    setPicks({ ...picks, [i]: id });
+    setPicks(prev => ({ ...prev, [i]: id }));   // functional: quick taps must not overwrite each other
     if (!wasEmpty) return;
     // move on to the next open call
     const next = puzzle.pairs.findIndex((_, k) => k > i && !picks[k]);
