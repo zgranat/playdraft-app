@@ -5,19 +5,22 @@ import { getLineupNumber, loadLineupStats, saveLineupStats, lineupRecord } from 
 /* ------------------------------------------------------------------ *
  * Start/Sit — set a lineup from one real NFL week, head to head vs the House.
  *
- * Nine-man roster (2 QB, 3 RB, 4 WR) from a single season-week. Six starters:
- * QB, RB, RB, WR, WR, FLEX. The House sets the same roster by season average,
+ * Twelve-man roster (2 QB, 4 RB, 4 WR, 2 TE) from a single season-week. Seven
+ * starters: QB, RB, RB, WR, WR, TE, FLEX. The House sets the same roster by season average,
  * so the only slots that decide the matchup are the ones where you differ.
  * Cards show only what a manager knew at kickoff (scripts/mine_rosters.py).
- * The season is on screen from the start; the week is revealed at kickoff.
+ * The season and week are on screen from the start.
  *
  * Own storage key, own events (lineup_*), separate from Four Downs.
  * ------------------------------------------------------------------ */
 
 const IMG = "https://static.www.nfl.com/image/";
-const SLOTS = ["QB", "RB", "RB", "WR", "WR", "FLEX"];
-const SLOT_SHORT = ["QB", "RB", "RB", "WR", "WR", "FLX"];
-const fits = (slot, pos) => (slot === "FLEX" ? pos === "RB" || pos === "WR" : slot === pos);
+const SLOTS = ["QB", "RB", "RB", "WR", "WR", "TE", "FLEX"];
+const SLOT_SHORT = ["QB", "RB", "RB", "WR", "WR", "TE", "FLX"];
+const FLEX_AT = SLOTS.indexOf("FLEX");
+const fits = (slot, pos) => (slot === "FLEX" ? pos === "RB" || pos === "WR" || pos === "TE" : slot === pos);
+/* oppRank 1 = the defense that has allowed the most points to that position */
+const matchup = r => (r <= 10 ? "Easy" : r >= 23 ? "Tough" : "Fair");
 
 export const DISPLAY = "'Barlow Condensed','Arial Narrow',sans-serif";
 export const BODY = "'Barlow',system-ui,-apple-system,sans-serif";
@@ -99,7 +102,7 @@ const sum = (ids, byId, k) => ids.reduce((s, id) => s + byId[id][k], 0);
    both started sits on the same row and only your real calls differ. */
 function alignToHouse(lineup, houseIds, byId) {
   const mine = new Set(lineup);
-  const out = Array(6).fill(null);
+  const out = Array(SLOTS.length).fill(null);
   houseIds.forEach((id, k) => { if (mine.has(id)) { out[k] = id; mine.delete(id); } });
   const rest = [...mine];
   SLOTS.forEach((slot, k) => {
@@ -107,7 +110,7 @@ function alignToHouse(lineup, houseIds, byId) {
     const i = rest.findIndex(id => byId[id].pos === slot);
     if (i >= 0) out[k] = rest.splice(i, 1)[0];
   });
-  if (!out[5]) out[5] = rest.shift();
+  if (!out[FLEX_AT]) out[FLEX_AT] = rest.shift();
   SLOTS.forEach((_, k) => { if (!out[k]) out[k] = rest.shift(); });
   return out;
 }
@@ -115,15 +118,15 @@ function alignToHouse(lineup, houseIds, byId) {
 /* Every legal lineup, so a score reads as "better than X% of lineups". */
 function allLineups(tiles) {
   const q = tiles.filter(t => t.pos === "QB"), r = tiles.filter(t => t.pos === "RB"),
-    w = tiles.filter(t => t.pos === "WR");
+    w = tiles.filter(t => t.pos === "WR"), te = tiles.filter(t => t.pos === "TE");
   const pairs = a => a.flatMap((x, i) => a.slice(i + 1).map(y => [x, y]));
   const seen = new Map();   // a starting six can be slotted more than one way; count it once
-  q.forEach(qb => pairs(r).forEach(rs => pairs(w).forEach(ws => {
-    r.concat(w).filter(x => !rs.includes(x) && !ws.includes(x)).forEach(fx => {
-      const six = [qb, ...rs, ...ws, fx];
-      seen.set(six.map(t => t.id).sort().join("|"), six.reduce((s, t) => s + t.pts, 0));
+  q.forEach(qb => pairs(r).forEach(rs => pairs(w).forEach(ws => te.forEach(tt => {
+    r.concat(w, te).filter(x => !rs.includes(x) && !ws.includes(x) && x !== tt).forEach(fx => {
+      const seven = [qb, ...rs, ...ws, tt, fx];
+      seen.set(seven.map(t => t.id).sort().join("|"), seven.reduce((s, t) => s + t.pts, 0));
     });
-  })));
+  }))));
   return [...seen.values()];
 }
 function lineupPercentile(tiles, score) {
@@ -437,12 +440,13 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
               <span style={{ fontSize: 16.5, fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                 {t.name} <span style={{ fontSize: 12, fontWeight: 600, color: C.dim }}>{t.pos} · {t.team}</span></span>
               <span style={{ fontSize: 13, color: C.muted }}>
-                {t.home ? "vs" : "@"} {t.opp} <span style={{ color: oppColor(t.oppRank), fontWeight: 600 }}>
-                  {ord(t.oppRank)} vs {t.pos}</span> · {t.use.toFixed(0)} {t.useLabel}/G</span>
+                {t.home ? "vs" : "@"} {t.opp} · <span style={{ color: oppColor(t.oppRank), fontWeight: 600 }}>
+                  {matchup(t.oppRank)} matchup ({ord(t.oppRank)})</span></span>
               <span style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12, color: C.muted }}>
                 Last 3
                 {last3.map((v, i) => <span key={i} style={{ ...chip(v, t.avg), ...s.num, minWidth: 28, textAlign: "center",
                   borderRadius: 4, padding: "1px 4px", fontWeight: 700 }}>{v.toFixed(0)}</span>)}
+                <span style={{ marginLeft: 4, whiteSpace: "nowrap" }}>{t.use.toFixed(0)} {t.useLabel}/G</span>
               </span>
               {starter && isCall && <span style={{ fontSize: 12, fontWeight: 700, color: C.call }}>
                 YOUR CALL · House starts {shortName(byId[house[aligned.indexOf(t.id)]].name)}</span>}
@@ -465,8 +469,9 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
               <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".08em", color: C.muted }}>THE SEASON</div>
               <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 64, lineHeight: .9, letterSpacing: "-.01em" }}>{puzzle.season}</div>
             </div>
-            <div style={{ textAlign: "right", fontSize: 13, color: C.muted, lineHeight: 1.35, paddingBottom: 4 }}>
-              Week <b style={{ color: C.fg }}>?</b><br />revealed at kickoff
+            <div style={{ textAlign: "right", paddingBottom: 4 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".08em", color: C.muted }}>WEEK</div>
+              <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 40, lineHeight: .95 }}>{puzzle.week}</div>
             </div>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: 8, marginTop: 14 }}>
@@ -486,8 +491,9 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
           {showHow && (
             <div style={{ marginTop: 12, fontSize: 13.5, lineHeight: 1.5, color: C.muted, background: C.panelHi,
               borderRadius: 10, padding: "10px 12px" }}>
-              Every player is from the same real week of the {puzzle.season} season, and every card shows only
+              Every player is from Week {puzzle.week} of the {puzzle.season} season, and every card shows only
               what you'd have known at kickoff. The House starts the best season average at every slot.
+              Matchup: easy means that defense has given up a lot to his position, tough means it hasn't.
               You start with his lineup: tap a slot to swap players, tap a name for his season so far.
               <br /><b style={{ color: C.fg }}>Only the slots where you differ decide the game.</b> 0.5 PPR.
             </div>
@@ -572,8 +578,8 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
               </div>
               <div style={{ background: C.panelHi, borderRadius: 10, padding: 12, fontSize: 15, lineHeight: 1.45 }}>
                 <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".06em", color: C.muted, marginBottom: 4 }}>THIS WEEK</div>
-                {ct.home ? "vs" : "@"} {ct.opp}: they allow the <b style={{ color: ct.oppRank <= 10 ? C.win : ct.oppRank >= 23 ? C.loss : C.fg }}>
-                  {ord(ct.oppRank)} most</b> points to {ct.pos}s
+                {ct.home ? "vs" : "@"} {ct.opp}: <b style={{ color: ct.oppRank <= 10 ? C.win : ct.oppRank >= 23 ? C.loss : C.fg }}>
+                  {matchup(ct.oppRank).toLowerCase()} matchup</b>. They've allowed the {ord(ct.oppRank)} most points to {ct.pos}s
                 {ct.priorFinish ? <><br />Finished {ct.pos}{ct.priorFinish} in {ct.season - 1}</> : null}
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>

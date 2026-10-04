@@ -1440,8 +1440,8 @@ function HowTo({dark,game:initial="fourdowns",onClose,onPlay}) {
         {ss ? (
           <>
             <HelpSteps dark={dark} accent={accent} steps={[
-              {n:"01",icon:"🏈",title:"ONE REAL WEEK",desc:"Nine players from the same week of a real NFL season: two QBs, three RBs, four WRs. The season is on the screen; the week is revealed at kickoff."},
-              {n:"02",icon:"🏠",title:"THE HOUSE",desc:"The House sets the same roster by season average: QB, two RBs, two WRs and a FLEX. You start with his lineup. Keep it and you push."},
+              {n:"01",icon:"🏈",title:"ONE REAL WEEK",desc:"A twelve-man roster from one week of a real NFL season: two QBs, four RBs, four WRs, two TEs."},
+              {n:"02",icon:"🏠",title:"THE HOUSE",desc:"The House sets the same roster by season average: QB, two RBs, two WRs, a TE and a FLEX. You start with his lineup. Keep it and you push."},
               {n:"03",icon:"🔎",title:"MAKE YOUR CALLS",desc:"Tap a slot to swap players. Tap a name for his season so far: last three games, usage, the matchup. Nothing after kickoff is shown."},
               {n:"04",icon:"📺",title:"KICKOFF",desc:"Lock it and the week plays out in seconds. Slots where you match the House cancel out; your calls score last. 0.5 PPR."},
               {n:"05",icon:"🏆",title:"BEAT THE HOUSE",desc:"Outscore the House's lineup to win the day. Your record against him lives in the Locker Room."},
@@ -1893,14 +1893,14 @@ function ScoringPage({dark,game:initial="fourdowns",onClose}) {
         <GameTabs game={game} setGame={setGame} dark={dark}/>
         {game==="startsit" ? (<>
         <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"normal",marginBottom:"18px",lineHeight:1.6}}>Fantasy is never all skill. Start/Sit scores your calls, not just your luck.</div>
-        {box("🏆 WIN, LOSE OR PUSH","Add up the fantasy points of your six starters (0.5 PPR). Beat the House's total and you win the day. Keep his lineup and you match him exactly: a push.")}
+        {box("🏆 WIN, LOSE OR PUSH","Add up the fantasy points of your seven starters (0.5 PPR). Beat the House's total and you win the day. Keep his lineup and you match him exactly: a push.")}
         {box("✅ YOUR CALLS","A call is any slot where you started someone the House didn't. It's won when your player outscored his.")}
         {box("🎯 CALLS WON","Every call that beat the House's pick counts toward your career total in the Locker Room.")}
-        {box("📊 LINEUPS BEATEN","Every lineup you could have set from the same nine players is ranked. Your score is ranked against all of them, and once enough people have played, against everyone who played that day. Everyone gets the same players and the same results, so the luck cancels out.")}
+        {box("📊 LINEUPS BEATEN","Every lineup you could have set from the same twelve players is ranked. Your score is ranked against all of them, and once enough people have played, against everyone who played that day. Everyone gets the same players and the same results, so the luck cancels out.")}
         {box("📲 YOUR SHARE CARD","One square per slot: green a call that won, red one that lost, white where you matched the House. No names, so it spoils nothing.",(
           <div style={mono}>
             PlayDraft Start/Sit #28 · 2014<br/>
-            🟩⬜⬜⬜⬜🟥<br/>
+            🟩⬜⬜⬜⬜⬜🟥<br/>
             W 102.3-94.4 vs the House
           </div>))}
         {box("📈 YOUR RECORD","Every daily lineup goes on your record against the House: wins, losses and pushes, plus your win streak. Archive lineups are practice and don't count.")}
@@ -2165,66 +2165,94 @@ function LockerRoom({dark,game:initial="fourdowns",onClose,onPlay,onPlayLineup})
 // ============================================================
 // LANDING — mobile first
 // ============================================================
+function LineupIcon(){
+  // a lineup card: three slots, two switched on
+  return (
+    <svg width="76" height="76" viewBox="0 0 76 76" fill="none" aria-hidden="true">
+      <rect x="12" y="8" width="52" height="62" rx="7" fill="#fff" stroke="#111827" strokeWidth="4"/>
+      <rect x="27" y="3" width="22" height="10" rx="3" fill="#111827"/>
+      {[24,39,54].map((y,i)=>(
+        <g key={y}>
+          <rect x="20" y={y} width="22" height="6" rx="3" fill="#111827"/>
+          <rect x="46" y={y-3} width="12" height="12" rx="6" fill={i<2?"#1D4ED8":"#fff"} stroke="#111827" strokeWidth="3"/>
+        </g>
+      ))}
+    </svg>
+  );
+}
+function GridIcon(){
+  // four groups of four: one found
+  return (
+    <svg width="76" height="76" viewBox="0 0 76 76" fill="none" aria-hidden="true">
+      {[[6,6],[40,6],[6,40],[40,40]].map(([x,y],i)=>(
+        <rect key={i} x={x} y={y} width="30" height="30" rx="6" fill={i===0?"#B45309":"#fff"} stroke="#111827" strokeWidth="4"/>
+      ))}
+      <path d="M14 21h14M21 14v14" stroke="#fff" strokeWidth="4" strokeLinecap="round"/>
+    </svg>
+  );
+}
+
 function Landing({onPlay,onPlayLineup,onPlayFeatured,onPractice,dark,mode}) {
-  const bg=dark?"#0B0F19":"#F3F4F6", card=dark?"#131A26":"#fff", border=dark?"#222":"#E5E7EB";
-  const muted=dark?"#888":"#666";
+  const bg=dark?"#0B0F19":"#F3F4F6";
   const isPractice=mode==="practice";
   const fd=loadStats(), streak=liveStreak(fd), fdDone=fd.lastPlayed===new Date().toDateString();
   const ls=loadLineupStats(), lsDone=playedLineupToday();
-  const bigBtn=(color,text)=>({fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"20px",letterSpacing:"1.4px",padding:"17px 0",width:"100%",background:color,color:text,border:"none",borderRadius:"10px",cursor:"pointer",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"});
-  const status=(color,txt)=>(
-    <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"13px",letterSpacing:"0.5px",color,margin:"0 0 10px"}}>{txt}</div>
+  const today=new Date().toLocaleDateString(undefined,{weekday:"long",month:"short",day:"numeric"});
+  const DISPLAYF="'Barlow Condensed','Arial Narrow',sans-serif";
+  const card=(color,onClick,label,children)=>(
+    <button onClick={onClick} aria-label={label} style={{width:"100%",maxWidth:"440px",textAlign:"left",background:color,color:"#111827",
+      border:"none",borderRadius:"20px",padding:"18px 18px 16px",marginBottom:"14px",cursor:"pointer",display:"flex",flexDirection:"column",
+      gap:"10px",minHeight:"176px",WebkitTapHighlightColor:"transparent",touchAction:"manipulation",boxShadow:"0 1px 2px rgba(17,24,39,.08)"}}>
+      {children}
+    </button>
   );
-  const gameCard=(accent,children)=>(
-    <div style={{width:"100%",maxWidth:"360px",textAlign:"left",background:card,border:`1px solid ${border}`,borderTop:`4px solid ${accent}`,borderRadius:"12px",padding:"16px 16px 14px",marginBottom:"14px"}}>{children}</div>
-  );
-  const title=(name,accent,tag)=>(
-    <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",gap:"8px",marginBottom:"4px"}}>
-      <span style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"28px",letterSpacing:"1px",color:accent,lineHeight:1}}>{name}</span>
-      <span style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"10px",letterSpacing:"0.7px",color:dark?"#666":"#999"}}>{tag}</span>
+  const head=(title,blurb,icon)=>(
+    <div style={{display:"flex",gap:"12px",alignItems:"flex-start"}}>
+      <div style={{flex:1,minWidth:0}}>
+        <div style={{fontFamily:DISPLAYF,fontWeight:800,fontSize:"36px",lineHeight:1,letterSpacing:"0.2px"}}>{title}</div>
+        <div style={{fontSize:"16px",lineHeight:1.35,marginTop:"6px",color:"#1F2937"}}>{blurb}</div>
+      </div>
+      {icon}
     </div>
   );
-  const blurb=t=><div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"14.5px",color:muted,lineHeight:1.45,marginBottom:"8px"}}>{t}</div>;
-  const textLink=(label,onClick)=>(
-    <button onClick={onClick} style={{background:"none",border:"none",padding:"8px 0 0",cursor:"pointer",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"12px",letterSpacing:"0.7px",color:dark?"#777":"#999"}}>{label}</button>
+  const foot=(left,right)=>(
+    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"10px",marginTop:"auto"}}>
+      <span style={{fontWeight:700,fontSize:"16px"}}>{left}</span>
+      <span style={{fontFamily:DISPLAYF,fontWeight:800,fontSize:"16px",letterSpacing:"0.5px",background:"#111827",color:"#fff",
+        borderRadius:"999px",padding:"8px 16px",whiteSpace:"nowrap"}}>{right}</span>
+    </div>
   );
+  const status=t=><div style={{fontSize:"14px",fontWeight:600,color:"#1F2937"}}>{t}</div>;
+  const link=(label,onClick,href)=>{
+    const st={background:"none",border:"none",padding:"8px 4px",cursor:"pointer",fontFamily:DISPLAYF,fontWeight:700,fontSize:"14px",
+      letterSpacing:"0.4px",color:dark?"#A3ACBA":"#4B5563",textDecoration:"none"};
+    return href?<a href={href} target="_blank" rel="noopener noreferrer" style={st}>{label}</a>:<button onClick={onClick} style={st}>{label}</button>;
+  };
 
   return (
-    <div style={{background:bg,display:"flex",flexDirection:"column",alignItems:"center",padding:"24px 18px 40px",textAlign:"center"}}>
-      <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"17px",color:muted,fontStyle:"normal",marginBottom:"18px"}}>
+    <div style={{background:bg,display:"flex",flexDirection:"column",alignItems:"center",padding:"18px 16px 24px"}}>
+      <div style={{width:"100%",maxWidth:"440px",fontSize:"15px",color:dark?"#A3ACBA":"#4B5563",margin:"0 0 14px 4px"}}>
         {isPractice?"Practice mode. No streak on the line.":"Two daily NFL games. New ones every morning."}
       </div>
 
-      {/* Start/Sit leads: the fantasy game is the one with no real competitor. */}
-      {!isPractice&&gameCard("#1D4ED8",<>
-        {title("START/SIT","#1D4ED8","DAILY FANTASY")}
-        {blurb("Set a lineup from one real NFL week, head to head against the House. He starts the best averages. Find where he's wrong.")}
-        {ls.played>0&&status(lsDone?"#2E6B3E":"#1D4ED8",
-          lsDone?`✅ TODAY'S LINEUP IS LOCKED · ${lineupRecord(ls)} VS THE HOUSE`:`🏆 ${lineupRecord(ls)} VS THE HOUSE`)}
-        <button onClick={onPlayLineup} style={bigBtn("#1D4ED8","#fff")}>
-          {lsDone?"PLAY FROM THE ARCHIVE":"SET TODAY'S LINEUP"}</button>
+      {!isPractice&&card("#A7C7FF",onPlayLineup,"Play Start/Sit",<>
+        {head("Start/Sit","Set a lineup from a real NFL week. Beat the House.",<LineupIcon/>)}
+        {ls.played>0&&status(lsDone?`Locked in · ${lineupRecord(ls)} vs the House`:`${lineupRecord(ls)} vs the House`)}
+        {foot(today,lsDone?"ARCHIVE":"PLAY")}
       </>)}
 
-      {gameCard("#B45309",<>
-        {title("FOUR DOWNS","#B45309","DAILY PUZZLE")}
-        {blurb("Sixteen players, four hidden groups, four downs to sort them.")}
-        {!isPractice&&(streak>0||fdDone)&&status(fdDone?"#2E6B3E":"#B45309",
-          fdDone?`✅ SOLVED TODAY${streak>0?` · 🔥 ${streak}-DAY STREAK`:""}`:`🔥 ${streak}-DAY STREAK ON THE LINE`)}
-        <button onClick={onPlay} style={bigBtn("#B45309","#fff")}>
-          {isPractice?"PLAY A PRACTICE PUZZLE":"PLAY TODAY'S PUZZLE"}</button>
-        {!isPractice&&<FeaturedBanner dark={dark} onPlay={onPlayFeatured}/>}
-        {!isPractice&&onPractice&&hasPracticeArchive()&&textLink("PRACTICE FROM THE ARCHIVE →",onPractice)}
+      {card("#F9C784",isPractice?onPlay:onPlay,"Play Four Downs",<>
+        {head("Four Downs","Sixteen players. Four hidden groups. Four downs.",<GridIcon/>)}
+        {!isPractice&&(streak>0||fdDone)&&status(fdDone?`Solved today${streak>0?` · ${streak}-day streak`:""}`:`${streak}-day streak on the line`)}
+        {foot(isPractice?"Practice":today,fdDone&&!isPractice?"SOLVED":"PLAY")}
       </>)}
 
-      <div style={{marginTop:"18px",display:"flex",gap:"14px",alignItems:"center",flexWrap:"wrap",justifyContent:"center"}}>
-        <a href={FEEDBACK_URL} target="_blank" rel="noopener noreferrer" style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"11px",letterSpacing:"0.7px",color:dark?"#555":"#999",textDecoration:"none",borderBottom:`1px dashed ${dark?"#333":"#D1D5DB"}`,paddingBottom:"2px"}}>
-          CONTACT US →
-        </a>
-        {SUBMIT_PUZZLE_URL&&(
-          <a href={SUBMIT_PUZZLE_URL} target="_blank" rel="noopener noreferrer" style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"11px",letterSpacing:"0.7px",color:dark?"#555":"#999",textDecoration:"none",borderBottom:`1px dashed ${dark?"#333":"#D1D5DB"}`,paddingBottom:"2px"}}>
-            BUILD YOUR OWN PUZZLE →
-          </a>
-        )}
+      {!isPractice&&<div style={{width:"100%",maxWidth:"440px"}}><FeaturedBanner dark={dark} onPlay={onPlayFeatured}/></div>}
+
+      <div style={{marginTop:"10px",display:"flex",gap:"8px",alignItems:"center",flexWrap:"wrap",justifyContent:"center"}}>
+        {!isPractice&&onPractice&&hasPracticeArchive()&&link("FOUR DOWNS ARCHIVE →",onPractice)}
+        {link("CONTACT US →",null,FEEDBACK_URL)}
+        {SUBMIT_PUZZLE_URL&&link("BUILD A PUZZLE →",null,SUBMIT_PUZZLE_URL)}
       </div>
     </div>
   );
@@ -2487,6 +2515,7 @@ export default function App() {
     <>
       <style>{`
                 body{font-family:'Barlow',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;}
+        button,input,select,textarea{font-family:inherit;}
         *{box-sizing:border-box;margin:0;padding:0;}
         html,body{background:${dark?"#0B0F19":"#F3F4F6"};margin:0;padding:0;min-height:100vh;}
         @keyframes popIn{from{opacity:0;transform:translateY(-10px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}

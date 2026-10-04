@@ -5,18 +5,20 @@ Regenerate src/lineupBank.js for Start/Sit (lineup version).
     python3 scripts/mine_rosters.py --days 120
 
 THE GAME
-One real NFL week from one season. A nine-man roster: 2 QB, 3 RB, 4 WR.
-Set six starters: QB, RB, RB, WR, WR, FLEX (RB or WR). The House sets the
-same roster by season average, top to bottom. You beat him where he's wrong.
+One real NFL week from one season. A twelve-man roster: 2 QB, 4 RB, 4 WR, 2 TE.
+Set seven starters: QB, RB, RB, WR, WR, TE, FLEX (RB/WR/TE), like ESPN minus
+K and D/ST. The House sets the same roster by season average, top to bottom.
+You beat him where he's wrong.
 
 HOW A DAY IS BUILT
 Everything on a card is what a manager knew at kickoff (see mine_lineups.py,
 whose loaders and features this reuses). One raw week is mostly noise, so each
-roster is built around three real decisions, all from the same week:
+roster is built around four real decisions, all from the same week:
 
   QB    two quarterbacks; the House starts the higher average
-  RB    an anchor RB plus a pair; the House starts the higher average
+  RB    an anchor RB, a pair, and a deep-bench RB; the House starts the pair's higher average
   WR    two anchor WRs plus a pair; the House flexes the better WR of the pair
+  TE    two tight ends; the House starts the higher average
 
 Each decision is one of mine_lineups.py's kinds (chalk / upset / beat / shock)
 and is settled by at least MARGIN points. Every day has at least one upset, so
@@ -37,10 +39,10 @@ import mine_lineups as ml  # noqa: E402
 
 PLAYERS = "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv"
 OUT = Path("src/lineupBank.js")
-SLOTS = ["QB", "RB", "RB", "WR", "WR", "FLEX"]
-ANCHOR_GAP = 1.0
-OPEN_GAP = (0.5, 6.0)   # an unclassified call still needs the House to have a reason    # anchors out-average the contested starter by at least this much
-SEASON_GAP = 5      # a season doesn't repeat within this many days
+SLOTS = ["QB", "RB", "RB", "WR", "WR", "TE", "FLEX"]
+ANCHOR_GAP = 1.0        # anchors out-average the contested starter by at least this much
+OPEN_GAP = (0.5, 6.0)   # an unclassified call still needs the House to have a reason
+SEASON_GAP = 4      # a season doesn't repeat within this many days
 
 KIND_WEIGHTS = {"upset": 0.42, "chalk": 0.33, "beat": 0.15, "shock": 0.10}
 
@@ -88,13 +90,15 @@ def game_logs(raw):
 def contests(d):
     """Every classified pair inside each season-week, by position."""
     out = {}
-    for (season, week, pos), grp in d[d.position.isin(["QB", "RB", "WR"])].groupby(["season", "week", "position"]):
+    for (season, week, pos), grp in d[d.position.isin(["QB", "RB", "WR", "TE"])].groupby(["season", "week", "position"]):
         rows = list(grp.itertuples())
-        found = {k: [] for k in list(KIND_WEIGHTS) + ["open"]}
+        found = {k: [] for k in list(KIND_WEIGHTS) + ["open", "any"]}
         for a, b in combinations(rows, 2):
             if a.player_id == b.player_id:
                 continue
             fav, dog = (a, b) if a.avg > b.avg else (b, a)
+            if fav.avg > dog.avg:
+                found["any"].append((fav, dog))     # last resort: any two at the position
             kind = ml.classify(fav, dog, pos)
             if kind:
                 found[kind].append((fav, dog))
@@ -105,11 +109,9 @@ def contests(d):
 
 
 def build_day(cs, season, week, kinds, banned, rng, used_ids=frozenset()):
-    """Try to build a roster for one season-week with the given kinds per contest."""
-    qb = cs.get((season, week, "QB"))
-    rb = cs.get((season, week, "RB"))
-    wr = cs.get((season, week, "WR"))
-    if not (qb and rb and wr):
+    """Try to build a roster for one season-week with the given kinds per decision."""
+    qb, rb, wr, te = (cs.get((season, week, p)) for p in ("QB", "RB", "WR", "TE"))
+    if not (qb and rb and wr and te):
         return None
     ok = lambda r: r.player_display_name not in banned and (r.player_id, r.season, r.week) not in used_ids
 
@@ -120,32 +122,33 @@ def build_day(cs, season, week, kinds, banned, rng, used_ids=frozenset()):
             rng.shuffle(lst)
             out += lst
         return out
-    qbs, rbs, wrs = pool(qb[0], kinds[0]), pool(rb[0], kinds[1]), pool(wr[0], kinds[2])
-    if not (qbs and rbs and wrs):
+    qbs, rbs, wrs, tes = (pool(x[0], k) for x, k in zip((qb, rb, wr, te), kinds))
+    if not (qbs and rbs and wrs and tes):
         return None
 
-    for qf, qd, qk in qbs[:6]:
-        # the QB pair must be the only two QBs: nothing else to decide there
-        for rf, rd, rk in rbs[:12]:
-            ra = [r for r in rb[1] if ok(r) and r.player_id not in (rf.player_id, rd.player_id)
-                  and r.avg >= rf.avg + ANCHOR_GAP]
-            if not ra:
-                continue
-            r_anchor = rng.choice(ra)
-            for wf, wd, wk in wrs[:12]:
-                # House flexes the WR fav: it must out-average the benched RB
-                if wf.avg <= rd.avg:
+    for qf, qd, qk in qbs[:5]:
+        for tf, td, tk in tes[:5]:
+            for rf, rd, rk in rbs[:10]:
+                ra = [r for r in rb[1] if ok(r) and r.player_id not in (rf.player_id, rd.player_id)
+                      and r.avg >= rf.avg + ANCHOR_GAP]
+                deep = [r for r in rb[1] if ok(r) and r.player_id not in (rf.player_id, rd.player_id)
+                        and r.avg < rd.avg]
+                if not ra or not deep:
                     continue
-                wa = [w for w in wr[1] if ok(w) and w.player_id not in (wf.player_id, wd.player_id)
-                      and w.avg >= wf.avg + ANCHOR_GAP]
-                if len(wa) < 2:
-                    continue
-                w1, w2 = rng.sample(wa, 2)
-                names = [x.player_display_name for x in (qf, qd, r_anchor, rf, rd, w1, w2, wf, wd)]
-                if len(set(names)) < 9:
-                    continue
-                return {"qb": (qf, qd), "rb": (r_anchor, rf, rd), "wr": (w1, w2, wf, wd),
-                        "kinds": [qk, rk, wk]}
+                r_anchor, r_deep = rng.choice(ra), rng.choice(deep)
+                for wf, wd, wk in wrs[:10]:
+                    # the House flexes the WR fav: it must out-average every other bench option
+                    if wf.avg <= max(rd.avg, td.avg):
+                        continue
+                    wa = [w for w in wr[1] if ok(w) and w.player_id not in (wf.player_id, wd.player_id)
+                          and w.avg >= wf.avg + ANCHOR_GAP]
+                    if len(wa) < 2:
+                        continue
+                    w1, w2 = rng.sample(wa, 2)
+                    group = (qf, qd, r_anchor, rf, rd, r_deep, w1, w2, wf, wd, tf, td)
+                    if len({x.player_display_name for x in group}) < 12:
+                        continue
+                    return {"rows": group, "kinds": [qk, rk, wk, tk], "season": qf.season}
     return None
 
 
@@ -174,26 +177,28 @@ def tile(r, logs, ptab, recs):
 
 
 def house_lineup(tiles):
-    """By season average: top QB, top 2 RB, top 2 WR, best remaining RB/WR at FLEX."""
+    """By season average: QB, 2 RB, 2 WR, TE, then the best remaining RB/WR/TE at FLEX."""
     by = lambda pos: sorted([t for t in tiles if t["pos"] == pos], key=lambda t: -t["avg"])
-    q, r, w = by("QB"), by("RB"), by("WR")
-    flex = max(r[2:] + w[2:], key=lambda t: t["avg"])
-    return [q[0]["id"], r[0]["id"], r[1]["id"], w[0]["id"], w[1]["id"], flex["id"]]
+    q, r, w, e = by("QB"), by("RB"), by("WR"), by("TE")
+    flex = max(r[2:] + w[2:] + e[1:], key=lambda t: t["avg"])
+    return [q[0]["id"], r[0]["id"], r[1]["id"], w[0]["id"], w[1]["id"], e[0]["id"], flex["id"]]
 
 
 def all_lineups(tiles):
-    """Every legal lineup as a list of 6 starter ids."""
+    """Every legal starting seven, once each, as a list of starter ids."""
     q = [t for t in tiles if t["pos"] == "QB"]
     r = [t for t in tiles if t["pos"] == "RB"]
     w = [t for t in tiles if t["pos"] == "WR"]
-    out = []
+    e = [t for t in tiles if t["pos"] == "TE"]
+    seen = {}
     for qb in q:
         for rs in combinations(r, 2):
             for ws in combinations(w, 2):
-                rest = [x for x in r + w if x not in rs and x not in ws]
-                for fx in rest:
-                    out.append([qb["id"]] + [x["id"] for x in rs] + [x["id"] for x in ws] + [fx["id"]])
-    return out
+                for te in e:
+                    for fx in [x for x in r + w + e if x not in rs and x not in ws and x is not te]:
+                        ids = [qb["id"]] + [x["id"] for x in rs] + [x["id"] for x in ws] + [te["id"], fx["id"]]
+                        seen[tuple(sorted(ids))] = ids
+    return list(seen.values())
 
 
 def assemble(cs, logs, ptab, recs, days, seed):
@@ -206,12 +211,14 @@ def assemble(cs, logs, ptab, recs, days, seed):
     weights = list(KIND_WEIGHTS.values())
     for day in range(days):
         made = None
-        for attempt in range(4000):
-            first = rng.choices(kinds_list, weights, k=3)
-            must = rng.randrange(3)                # this decision is an upset
-            kinds = [["upset"] if i == must else [first[i], "chalk", "open"] for i in range(3)]
+        for attempt in range(24000):
+            first = rng.choices(kinds_list, weights, k=4)
+            must = rng.randrange(4)
+            # one decision is an upset; late in the search, settle for a real open call there
+            lead = ["upset"] if attempt < 12000 else ["upset", "beat", "open"]
+            kinds = [lead if i == must else [first[i], "chalk", "open", "any"] for i in range(4)]
             season, week = rng.choice(weeks)
-            if season in recent_seasons or used.get((season, week), 0) >= 2:
+            if season in recent_seasons or used.get((season, week), 0) >= 3:
                 continue
             made = build_day(cs, season, week, kinds, prev_names, rng, used_ids)
             if made:
@@ -219,14 +226,14 @@ def assemble(cs, logs, ptab, recs, days, seed):
                 break
         if not made:
             sys.exit(f"day {day + 1}: could not build a roster; lower --days")
-        rows = list(made["qb"]) + list(made["rb"]) + list(made["wr"])
+        rows = list(made["rows"])
         used_ids.update((r.player_id, r.season, r.week) for r in rows)
         tiles = [tile(r, logs, ptab, recs) for r in rows]
         house = house_lineup(tiles)
         pts = {t["id"]: t["pts"] for t in tiles}
         lineups = all_lineups(tiles)
         best = max(lineups, key=lambda L: sum(pts[i] for i in L))
-        order = {"QB": 0, "RB": 1, "WR": 2}
+        order = {"QB": 0, "RB": 1, "WR": 2, "TE": 3}
         tiles.sort(key=lambda t: (order[t["pos"]], -t["avg"]))
         out.append({
             "id": f"ss2-{day + 1:03d}", "season": int(tiles[0]["season"]), "week": int(tiles[0]["week"]),
@@ -235,7 +242,7 @@ def assemble(cs, logs, ptab, recs, days, seed):
             "kinds": made["kinds"], "tiles": tiles,
         })
         prev_names = {t["name"] for t in tiles}
-        recent_seasons = (recent_seasons + [made["qb"][0].season])[-SEASON_GAP:]
+        recent_seasons = (recent_seasons + [made["season"]])[-SEASON_GAP:]
     return out
 
 
@@ -246,11 +253,11 @@ def verify(bank, raw):
     bad = 0
     for day in bank:
         ts = day["tiles"]
-        if len({t["name"] for t in ts}) != 9:
+        if len({t["name"] for t in ts}) != 12:
             print(f"  {day['id']}: repeat player"); bad += 1
         if len({(t["season"], t["week"]) for t in ts}) != 1:
             print(f"  {day['id']}: mixed weeks"); bad += 1
-        if [sum(t["pos"] == p for t in ts) for p in ("QB", "RB", "WR")] != [2, 3, 4]:
+        if [sum(t["pos"] == p for t in ts) for p in ("QB", "RB", "WR", "TE")] != [2, 4, 4, 2]:
             print(f"  {day['id']}: wrong roster shape"); bad += 1
         for t in ts:
             pid = t["id"].rsplit("-", 2)[0]
@@ -270,36 +277,29 @@ def verify(bank, raw):
 
 
 def simulate(bank, seed=1):
+    """Random lineups vs a card reader who swaps a bench player in when 2+ card
+    signals favour him over the weakest House starter at his position."""
     rng = random.Random(seed)
+    sig = lambda a, c: ((a["l3"] - c["l3"] >= ml.EDGE["l3"][a["pos"]])
+                        + (a["use"] - c["use"] >= ml.EDGE["use"][a["pos"]])
+                        + (c["oppRank"] - a["oppRank"] >= ml.EDGE["opp"]))
 
     def card_lineup(day):
-        """Start the dog in a contest when 3+ card signals favour him."""
         ts = {t["id"]: t for t in day["tiles"]}
         L = list(day["houseIds"])
-        bench = [t for t in day["tiles"] if t["id"] not in L]
-        for b in bench:
-            # compare with the weakest House starter he could replace at his position
-            cands = [i for k, i in enumerate(L) if k > 0 and (ts[i]["pos"] == b["pos"] or k == 5)]
-            same = [i for i in cands if ts[i]["pos"] == b["pos"]] or cands
+        for b in sorted([t for t in day["tiles"] if t["id"] not in L], key=lambda t: -t["avg"]):
+            same = [i for i in L if ts[i]["pos"] == b["pos"]]
+            if not same:
+                continue
             s = min(same, key=lambda i: ts[i]["avg"])
-            e = lambda a, c: ((a["l3"] - c["l3"] >= ml.EDGE["l3"][a["pos"]])
-                              + (a["use"] - c["use"] >= ml.EDGE["use"][a["pos"]])
-                              + (c["oppRank"] - a["oppRank"] >= ml.EDGE["opp"]))
-            if b["pos"] == ts[s]["pos"] and e(b, ts[s]) >= 2 and e(ts[s], b) == 0:
+            if sig(b, ts[s]) >= 2 and sig(ts[s], b) == 0:
                 L[L.index(s)] = b["id"]
-        qb = [t for t in day["tiles"] if t["pos"] == "QB"]
-        f, d = (qb[0], qb[1]) if qb[0]["id"] == L[0] else (qb[1], qb[0])
-        e = lambda a, c: ((a["l3"] - c["l3"] >= ml.EDGE["l3"]["QB"])
-                          + (a["use"] - c["use"] >= ml.EDGE["use"]["QB"])
-                          + (c["oppRank"] - a["oppRank"] >= ml.EDGE["opp"]))
-        if e(d, f) >= 2 and e(f, d) == 0:
-            L[0] = d["id"]
         return L
 
     res = {}
     for name in ("random", "reads the card"):
         w = push = n = 0
-        for _ in range(200 if name == "random" else 1):
+        for _ in range(100 if name == "random" else 1):
             for day in bank:
                 pts = {t["id"]: t["pts"] for t in day["tiles"]}
                 L = rng.choice(all_lineups(day["tiles"])) if name == "random" else card_lineup(day)
@@ -330,7 +330,7 @@ def main():
     cs = contests(d)
 
     bank = assemble(cs, logs, ptab, recs, a.days, a.seed)
-    print(f"verifying {len(bank) * 9} tiles")
+    print(f"verifying {sum(len(d['tiles']) for d in bank)} tiles")
     bad = verify(bank, raw)
     if bad:
         sys.exit(f"{bad} problems. Nothing written.")
@@ -340,9 +340,9 @@ def main():
 
     body = ",\n".join(json.dumps(p, separators=(",", ":")) for p in bank)
     src = ("// Generated by scripts/mine_rosters.py. Do not edit by hand.\n"
-           "// One real NFL week per day: 2 QB, 3 RB, 4 WR. Card stats use only games\n"
+           "// One real NFL week per day: 2 QB, 4 RB, 4 WR, 2 TE. Card stats use only games\n"
            "// before that week. `houseIds` is the House's lineup by season average\n"
-           "// (QB, RB, RB, WR, WR, FLEX). 0.5 PPR.\n"
+           "// (QB, RB, RB, WR, WR, TE, FLEX). 0.5 PPR.\n"
            f"export const LINEUP_BANK = [\n{body}\n];\n")
     Path(a.out).write_text(src)
     print(f"wrote {a.out}: {len(bank)} days, {len(src) // 1024} KB")
