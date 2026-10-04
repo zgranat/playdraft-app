@@ -151,9 +151,14 @@ function tickLine(s, e) {
 /* Photos are cached locally by scripts/fetch_headshots.py, with the remote
    URL as a fallback and initials behind both. A missing face must look
    deliberate, never broken. */
+/* NFL.com serves the originals at 1400-3400px wide. Ask its image CDN for a
+   face-cropped 120px square instead: ~5KB rather than several hundred. */
+const thumb = url => url
+  ? url.replace(/\/image\/(upload|private)\//, "/image/$1/c_fill,g_face,w_120,h_120,")
+  : url;
 function Face({ t, size = 50, C }) {
   const [step, setStep] = useState(0);
-  const src = step === 0 ? `/players/${t.id.split("-")[0]}.png` : t.shot;
+  const src = step === 0 ? thumb(t.shot) : t.shot;
   return (
     <span style={{
       width: size, height: size, borderRadius: 2, flex: "none", position: "relative",
@@ -163,7 +168,7 @@ function Face({ t, size = 50, C }) {
       <span style={{ fontFamily: DISPLAY, fontWeight: 700,
         fontSize: size * 0.36, color: "#fff", opacity: .85 }}>{initials(t.name)}</span>
       {step < 2 && (
-        <img alt="" loading="lazy" referrerPolicy="no-referrer" src={src}
+        <img alt="" decoding="async" referrerPolicy="no-referrer" src={src}
           onError={() => setStep(step + 1)}
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%",
             objectFit: "cover", objectPosition: "top center" }} />
@@ -243,6 +248,7 @@ export default function StartSit({ onExit, onCrossPromo, dark = false,
     if (!ready) return;
     ev(practice ? "practice_locked" : "locked", { n: getLineupNumber() });
     setPhase("run");
+    window.scrollTo({ top: 0, behavior: "smooth" });
     const reduce = typeof window !== "undefined" && window.matchMedia
       && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return finish();
