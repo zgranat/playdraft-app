@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { Analytics } from "@vercel/analytics/react";
-import { playedLineupToday, loadLineupStats, lineupRecord } from "./lineupMeta";
+import { playedLineupToday, loadLineupStats, lineupRecord, lineupLast7 } from "./lineupMeta";
 // The lineup bank is big, so Start/Sit loads only when someone opens it.
 const StartSit = lazy(() => import("./StartSit"));
 
@@ -1403,41 +1403,89 @@ function Header({dark,onDark,onStats,onHome,onHow,onScoring,mode,onMode,showMode
 // ============================================================
 // HOW TO PLAY
 // ============================================================
-function HowTo({dark,onClose}) {
+// Both games share these help screens. The tabs open on whichever game the
+// player came from, so the HOW button inside Start/Sit explains Start/Sit.
+function GameTabs({game,setGame,dark}) {
+  const tab=(id,label,color)=>(
+    <button key={id} onClick={()=>setGame(id)} style={{flex:1,fontFamily:"'Bebas Neue',cursive",fontSize:"15px",letterSpacing:"2px",padding:"10px 0",borderRadius:"6px",cursor:"pointer",
+      border:`1px solid ${game===id?color:(dark?"#2a2a2a":"#ddd6c4")}`,background:game===id?color:"transparent",color:game===id?"#fff":(dark?"#777":"#888")}}>{label}</button>
+  );
+  return <div style={{display:"flex",gap:"8px",marginBottom:"18px"}}>{tab("fourdowns","FOUR DOWNS","#C8A96E")}{tab("startsit","START/SIT","#3FA7D6")}</div>;
+}
+
+function HelpSteps({steps,dark,accent}) {
+  const fg=dark?"#d4c9b8":"#1a1a2e", card=dark?"#141414":"#fff", border=dark?"#222":"#e8e0d0";
+  return steps.map(s=>(
+    <div key={s.n} style={{display:"flex",gap:"14px",marginBottom:"12px",background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"16px"}}>
+      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"24px",color:accent,flexShrink:0,lineHeight:1,marginTop:"2px"}}>{s.n}</div>
+      <div>
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,marginBottom:"3px"}}>{s.icon} {s.title}</div>
+        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13.5px",color:dark?"#888":"#666",lineHeight:1.5}}>{s.desc}</div>
+      </div>
+    </div>
+  ));
+}
+
+function HowTo({dark,game:initial="fourdowns",onClose,onPlay}) {
+  const [game,setGame]=useState(initial);
   const bg=dark?"#0a0a0a":"#faf7f0", fg=dark?"#d4c9b8":"#1a1a2e", card=dark?"#141414":"#fff", border=dark?"#222":"#e8e0d0";
+  const ss=game==="startsit", accent=ss?"#3FA7D6":"#C8A96E";
   return (
     <div style={{background:bg,minHeight:"calc(100vh - 52px)",padding:"20px 16px 40px",overflowY:"auto"}}>
       <div style={{maxWidth:"480px",margin:"0 auto"}}>
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(32px,8vw,48px)",letterSpacing:"4px",color:"#C8A96E",marginBottom:"4px"}}>HOW TO PLAY</div>
-        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"italic",marginBottom:"24px",lineHeight:1.6}}>Group the players. Find the connection. Beat your time.</div>
-        {[
-          {n:"01",icon:"🏈",title:"16 PLAYERS",desc:"Every puzzle gives you 16 NFL players hiding in 4 secret groups of 4."},
-          {n:"02",icon:"🤯",title:"FIND THE CONNECTION",desc:"What connects each group? Categories go beyond stats — expect the unexpected."},
-          {n:"03",icon:"🏴",title:"4 DOWNS",desc:"4 wrong guesses and it's game over. You'll know when you're one away."},
-          {n:"04",icon:"⚡",title:"SPEED WINS",desc:"Solve fast, make no mistakes. Your time is what you share with friends."},
-          {n:"05",icon:"🔒",title:"CLEAN GAME",desc:"Solve all 4 with zero wrong downs and earn the CLEAN GAME badge on your share card."},
-        ].map(s=>(
-          <div key={s.n} style={{display:"flex",gap:"14px",marginBottom:"14px",background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"16px"}}>
-            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"24px",color:"#C8A96E",flexShrink:0,lineHeight:1,marginTop:"2px"}}>{s.n}</div>
-            <div>
-              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,marginBottom:"3px"}}>{s.icon} {s.title}</div>
-              <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:dark?"#888":"#666",lineHeight:1.5}}>{s.desc}</div>
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(32px,8vw,48px)",letterSpacing:"4px",color:"#C8A96E",marginBottom:"12px"}}>HOW TO PLAY</div>
+        <GameTabs game={game} setGame={setGame} dark={dark}/>
+        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"italic",marginBottom:"18px",lineHeight:1.6}}>
+          {ss?"Nine fantasy calls on real NFL weeks. Beat the House.":"Group the players. Find the connection. Beat your time."}</div>
+        {ss ? (
+          <>
+            <HelpSteps dark={dark} accent={accent} steps={[
+              {n:"01",icon:"🏈",title:"NINE CALLS",desc:"QB, two RBs, three WRs, a TE and two FLEX. Each call is two real players from real weeks of real seasons. Start one, sit the other."},
+              {n:"02",icon:"🏠",title:"THE HOUSE",desc:"The House always starts the player with the higher season average, and his pick is tagged on the card. Follow him on every call and you push."},
+              {n:"03",icon:"🔎",title:"READ THE CARD",desc:"Each card shows only what a manager knew at kickoff. Find the calls where the House's simple rule is wrong."},
+              {n:"04",icon:"📺",title:"THE GAMES PLAY OUT",desc:"Lock your lineup and watch both scores climb, position by position. 0.5 PPR. Each call goes to whoever actually scored more that week."},
+              {n:"05",icon:"🏆",title:"BEAT THE HOUSE",desc:"Outscore the House's lineup to win the day. Your record against him lives in the Locker Room."},
+            ]}/>
+            <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
+              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:fg,marginBottom:"8px"}}>📋 THE CARD</div>
+              {[["AVG","Points per game this season, before this week. The only number the House reads."],
+                ["L3","Points per game over his last three games. Hot or cold."],
+                ["TCH / TGT / ATT","Touches (RB), targets (WR, TE) or dropbacks plus runs (QB) per game, last three. Usage is opportunity."],
+                ["OPP","How generous that defense has been to his position this season. 1st is the softest. Green is a good matchup, red a tough one."],
+                ["VEGAS","Points his team was expected to score, from the betting line. High totals mean more chances."]].map(([k,d],i)=>(
+                <div key={k} style={{display:"flex",gap:"10px",padding:"6px 0",borderTop:i?`1px solid ${border}`:"none"}}>
+                  <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"1px",color:accent,minWidth:"92px"}}>{k}</span>
+                  <span style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",color:dark?"#888":"#666",lineHeight:1.45}}>{d}</span>
+                </div>
+              ))}
             </div>
-          </div>
-        ))}
-        <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:fg,marginBottom:"10px"}}>🎨 DIFFICULTY</div>
-          {[["#B8860B","1ST & EASY","Most players get this right away"],["#2E6B3E","2ND DOWN","You watch the games"],["#1B4F8A","3RD & LONG","You follow closely"],["#8B1A2A","4TH & GOAL","You live and breathe NFL"]].map(([c,t,d],i)=>(
-            <div key={i} style={{display:"flex",alignItems:"center",gap:"10px",padding:"6px 0",borderBottom:i<3?`1px solid ${border}`:"none"}}>
-              <div style={{width:"11px",height:"11px",borderRadius:"3px",background:c,flexShrink:0}}/>
-              <div>
-                <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"1px",color:fg}}>{t}</span>
-                <span style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",color:dark?"#666":"#888",fontStyle:"italic",marginLeft:"8px"}}>{d}</span>
-              </div>
+          </>
+        ) : (
+          <>
+            <HelpSteps dark={dark} accent={accent} steps={[
+              {n:"01",icon:"🏈",title:"16 PLAYERS",desc:"Every puzzle gives you 16 NFL players hiding in 4 secret groups of 4."},
+              {n:"02",icon:"🤯",title:"FIND THE CONNECTION",desc:"What connects each group? Categories go beyond stats. Expect the unexpected."},
+              {n:"03",icon:"🏴",title:"4 DOWNS",desc:"4 wrong guesses and it's game over. You'll know when you're one away."},
+              {n:"04",icon:"⚡",title:"SPEED WINS",desc:"Solve fast, make no mistakes. Your time is what you share with friends."},
+              {n:"05",icon:"🔒",title:"CLEAN GAME",desc:"Solve all 4 with zero wrong downs and earn the CLEAN GAME badge on your share card."},
+            ]}/>
+            <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"16px",marginBottom:"16px"}}>
+              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:fg,marginBottom:"10px"}}>🎨 DIFFICULTY</div>
+              {[["#B8860B","1ST & EASY","Most players get this right away"],["#2E6B3E","2ND DOWN","You watch the games"],["#1B4F8A","3RD & LONG","You follow closely"],["#8B1A2A","4TH & GOAL","You live and breathe NFL"]].map(([c,t,d],i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",gap:"10px",padding:"6px 0",borderBottom:i<3?`1px solid ${border}`:"none"}}>
+                  <div style={{width:"11px",height:"11px",borderRadius:"3px",background:c,flexShrink:0}}/>
+                  <div>
+                    <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"1px",color:fg}}>{t}</span>
+                    <span style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",color:dark?"#666":"#888",fontStyle:"italic",marginLeft:"8px"}}>{d}</span>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <button onClick={onClose} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"3px",padding:"16px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"8px",cursor:"pointer"}}>LET'S PLAY</button>
+          </>
+        )}
+        <button onClick={()=>onPlay?onPlay(game):onClose()} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"3px",padding:"16px",background:accent,color:ss?"#fff":"#0f1923",border:"none",borderRadius:"8px",cursor:"pointer"}}>
+          {ss?"SET TODAY'S LINEUP":"PLAY FOUR DOWNS"}</button>
+        <button onClick={onClose} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"3px",padding:"13px",background:"transparent",color:"#888",border:`1px solid ${dark?"#2a2a2a":"#ccc"}`,borderRadius:"8px",cursor:"pointer",marginTop:"8px"}}>BACK</button>
       </div>
     </div>
   );
@@ -1849,18 +1897,43 @@ function ResultPanel({puzzle,solved,solvedOnly,wrong,ms,onPlayAgain,dark,won,mod
 // ============================================================
 // SCORING PAGE
 // ============================================================
-function ScoringPage({dark,onClose}) {
+function ScoringPage({dark,game:initial="fourdowns",onClose}) {
+  const [game,setGame]=useState(initial);
   const bg=dark?"#0a0a0a":"#faf7f0", fg=dark?"#d4c9b8":"#1a1a2e", card=dark?"#141414":"#fff", border=dark?"#222":"#e8e0d0";
+  const box=(title,body,extra)=>(
+    <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"20px",marginBottom:"12px"}}>
+      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,marginBottom:"8px"}}>{title}</div>
+      <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>{body}</div>
+      {extra}
+    </div>
+  );
+  const mono={marginTop:"12px",background:dark?"#0a0a0a":"#f5f0e8",borderRadius:"8px",padding:"12px",fontFamily:"'Courier New',monospace",fontSize:"13px",color:dark?"#C8A96E":"#0f1923",lineHeight:1.8};
   return (
     <div style={{background:bg,minHeight:"calc(100vh - 52px)",padding:"20px 16px 40px",overflowY:"auto"}}>
       <div style={{maxWidth:"480px",margin:"0 auto"}}>
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(32px,8vw,48px)",letterSpacing:"4px",color:"#C8A96E",marginBottom:"4px"}}>HOW SCORING WORKS</div>
-        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"italic",marginBottom:"24px",lineHeight:1.6}}>Speed and accuracy are everything. Everyone can win — the best players win faster.</div>
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(32px,8vw,48px)",letterSpacing:"4px",color:"#C8A96E",marginBottom:"12px"}}>HOW SCORING WORKS</div>
+        <GameTabs game={game} setGame={setGame} dark={dark}/>
+        {game==="startsit" ? (<>
+        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"italic",marginBottom:"18px",lineHeight:1.6}}>Fantasy is never all skill. Start/Sit scores your calls, not just your luck.</div>
+        {box("🏆 WIN, LOSE OR PUSH","Add up the fantasy points of your nine starters (0.5 PPR). Beat the House's total and you win the day. Start every player he starts and you match him exactly: a push.")}
+        {box("✅ CALLS RIGHT","A call is right when the player you started outscored the one you sat. Nine calls, scored out of nine.")}
+        {box("🎯 UPSETS CALLED","Starting the player the House sat is a fade. A fade that hits is an upset called, the hardest thing to do and the best thing to brag about.")}
+        {box("📊 LINEUPS BEATEN","There are 512 lineups you could have set from the same nine calls. Your score is ranked against all of them, and once enough people have played, against everyone who played that day. Everyone gets the same players and the same results, so the luck cancels out.")}
+        {box("📲 YOUR SHARE CARD","No player names, so it spoils nothing.",(
+          <div style={mono}>
+            Start/Sit #28<br/>
+            QB 🎯<br/>RB 🟩🟥<br/>WR 🟩🟩🟩<br/>TE 🟩<br/>FX 🟥🎯<br/>
+            7/9 calls · +11.2 vs the House<br/>
+            Beat 91% of possible lineups
+          </div>))}
+        {box("📈 YOUR RECORD","Every daily lineup goes on your record against the House: wins, losses and pushes, plus your win streak. Archive lineups are practice and don't count.")}
+        </>) : (<>
+        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"italic",marginBottom:"18px",lineHeight:1.6}}>Speed and accuracy are everything. Everyone can win; the best players win faster.</div>
 
         {/* Time is the score */}
         <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"20px",marginBottom:"12px"}}>
           <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,marginBottom:"8px"}}>⚡ TIME IS YOUR SCORE</div>
-          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>Your final time is what you share with friends. Solve all 4 groups as fast as possible. Wrong guesses add time penalties — accuracy matters as much as speed.</div>
+          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>Your final time is what you share with friends. Solve all 4 groups as fast as possible. Wrong guesses add time penalties, so accuracy matters as much as speed.</div>
         </div>
 
         {/* Clean game */}
@@ -1880,7 +1953,7 @@ function ScoringPage({dark,onClose}) {
         {/* Wrong downs */}
         <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"20px",marginBottom:"12px"}}>
           <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,marginBottom:"8px"}}>🏴 4 DOWNS</div>
-          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>You get 4 wrong guesses before game over. Each wrong guess costs you a down. Lose all 4 and the puzzle is over — categories are revealed but no time is recorded.</div>
+          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>You get 4 wrong guesses before game over. Each wrong guess costs you a down. Lose all 4 and the puzzle is over: categories are revealed but no time is recorded.</div>
         </div>
 
         {/* Streaks */}
@@ -1892,8 +1965,9 @@ function ScoringPage({dark,onClose}) {
         {/* One away */}
         <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"20px",marginBottom:"20px"}}>
           <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"13px",letterSpacing:"2px",color:fg,marginBottom:"8px"}}>👀 ONE AWAY</div>
-          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>If 3 of your 4 selected players belong to the same group, you'll get a hint. You're close — but not quite.</div>
+          <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.6}}>If 3 of your 4 selected players belong to the same group, you'll get a hint. You're close, but not quite.</div>
         </div>
+        </>)}
 
         <button onClick={onClose} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"3px",padding:"16px",background:"#C8A96E",color:"#0f1923",border:"none",borderRadius:"8px",cursor:"pointer"}}>GOT IT</button>
       </div>
@@ -1904,14 +1978,23 @@ function ScoringPage({dark,onClose}) {
 // ============================================================
 // LOCKER ROOM — season stats
 // ============================================================
-function LockerRoom({dark,onClose,onPlay}) {
+function LockerRoom({dark,game:initial="fourdowns",onClose,onPlay,onPlayLineup}) {
   const bg=dark?"#0a0a0a":"#faf7f0", fg=dark?"#d4c9b8":"#1a1a2e", card=dark?"#141414":"#fff", border=dark?"#222":"#e8e0d0";
   const [copied,setCopied]=useState(false);
+  const [game,setGame]=useState(initial);
   const st=loadStats(), d=deriveStats(st), streak=liveStreak(st), week=last7(st);
   const doneToday = st.lastPlayed===new Date().toDateString();
   const empty = d.played===0;
+  const ls=loadLineupStats(), lsWeek=lineupLast7(ls), lsDone=playedLineupToday();
+  const lsLog=(ls.log||[]).filter(x=>x.hits!=null);
+  const lsAvgCalls=lsLog.length?(lsLog.reduce((a,x)=>a+x.hits,0)/lsLog.length).toFixed(1):null;
+  const lsWinPct=ls.played?Math.round(ls.wins/ls.played*100):0;
 
-  const brag=`🏈 DRAFT — MY LOCKER ROOM\n🔥 ${streak}-day streak · 🏆 best ${st.bestStreak||0}\n⚡ avg ${d.avgMs?fmt(d.avgMs):"—"} · fastest ${d.bestMs?fmt(d.bestMs):"—"}\n🔒 ${d.clean} clean game${d.clean===1?"":"s"}\n\nplaydraft.app`;
+  // One brag card for both games; each line only appears once that game has been played.
+  const brag=["🏈 PLAYDRAFT — MY LOCKER ROOM",
+    !empty&&`FOUR DOWNS: 🔥 ${streak}-day streak · best ${st.bestStreak||0} · ⚡ fastest ${d.bestMs?fmt(d.bestMs):"—"} · 🔒 ${d.clean} clean`,
+    ls.played&&`START/SIT: 🏆 ${lineupRecord(ls)} vs the House${ls.upsets?` · 🎯 ${ls.upsets} upsets called`:""}${lsAvgCalls?` · ${lsAvgCalls}/9 calls`:""}`,
+    "","playdraft.app"].filter(x=>x!==false&&x!==0).join("\n");
   const shareBrag=()=>{ if(navigator.share){navigator.share({title:"DRAFT",text:brag,url:"https://playdraft.app"});} else {navigator.clipboard.writeText(brag).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2200);});} };
 
   const Stat=({label,value,hint})=>(
@@ -1926,12 +2009,81 @@ function LockerRoom({dark,onClose,onPlay}) {
     <div style={{background:bg,minHeight:"calc(100vh - 52px)",padding:"20px 16px 40px",overflowY:"auto"}}>
       <div style={{maxWidth:"480px",margin:"0 auto"}}>
         <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"clamp(32px,8vw,48px)",letterSpacing:"4px",color:"#C8A96E",marginBottom:"4px"}}>LOCKER ROOM</div>
-        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"italic",marginBottom:"22px",lineHeight:1.6}}>Your season so far. Streaks are earned one day at a time.</div>
+        <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"italic",marginBottom:"14px",lineHeight:1.6}}>Your season so far, both games.</div>
+        <GameTabs game={game} setGame={setGame} dark={dark}/>
 
+        {game==="startsit" ? (
+          <>
+            {!ls.played ? (
+              <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"32px 20px",textAlign:"center",marginBottom:"16px"}}>
+                <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"20px",letterSpacing:"2px",color:fg,marginBottom:"6px"}}>NO LINEUPS SET YET</div>
+                <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.5}}>Set today&apos;s lineup to start your record against the House.</div>
+              </div>
+            ) : (
+              <>
+                <div style={{background:"#3FA7D6",borderRadius:"12px",padding:"20px",marginBottom:"12px",textAlign:"center"}}>
+                  <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"3px",color:"rgba(255,255,255,0.75)"}}>RECORD VS THE HOUSE</div>
+                  <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"52px",lineHeight:1,color:"#fff"}}>{lineupRecord(ls)}</div>
+                  <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",fontStyle:"italic",color:"rgba(255,255,255,0.88)",marginTop:"4px"}}>
+                    {lsDone?"Today's lineup is locked. Come back tomorrow.":"Today's lineup is waiting."}
+                  </div>
+                  <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:"rgba(255,255,255,0.75)",marginTop:"8px"}}>
+                    WIN STREAK {ls.streak||0} · BEST {ls.best||0}{ls.pushes?` · ${ls.pushes} PUSH${ls.pushes===1?"":"ES"}`:""}</div>
+                </div>
+                <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"3px",color:"#888",margin:"18px 0 8px"}}>SEASON STATS</div>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"8px",marginBottom:"8px"}}>
+                  <Stat label="LINEUPS SET" value={ls.played}/>
+                  <Stat label="WIN %" value={`${lsWinPct}%`} hint={`${ls.wins} of ${ls.played}`}/>
+                </div>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"8px",marginBottom:"8px"}}>
+                  <Stat label="AVG CALLS RIGHT" value={lsAvgCalls?`${lsAvgCalls}/9`:"—"}/>
+                  <Stat label="BEST LINEUP" value={ls.bestPct!=null&&lsLog.length?`${ls.bestPct}%`:"—"} hint={ls.bestPct!=null&&lsLog.length?"of lineups beaten":null}/>
+                </div>
+                <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"16px",marginBottom:"8px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                  <div>
+                    <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"12px",letterSpacing:"2px",color:fg}}>🎯 UPSETS CALLED</div>
+                    <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:dark?"#777":"#888",marginTop:"2px"}}>Faded the House and got it right</div>
+                  </div>
+                  <div style={{textAlign:"right"}}>
+                    <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"28px",color:"#3FA7D6",lineHeight:1}}>{ls.upsets||0}</div>
+                    <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"1px",color:"#888"}}>{ls.fades?`${Math.round((ls.upsets||0)/ls.fades*100)}% OF FADES HIT`:"NO FADES YET"}</div>
+                  </div>
+                </div>
+                <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"3px",color:"#888",margin:"18px 0 8px"}}>GAME LOG · LAST 7 DAYS</div>
+                <div style={{display:"flex",gap:"6px",marginBottom:"6px"}}>
+                  {lsWeek.map((w,i)=>(
+                    <div key={i} style={{flex:1,textAlign:"center"}}>
+                      <div style={{height:"34px",borderRadius:"7px",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Bebas Neue',cursive",fontSize:"14px",
+                        background:w.state==="W"?"#2E6B3E":w.state==="L"?"#8B1A2A":w.state==="P"?"#9A7A3C":(dark?"#161616":"#eee7db"),
+                        color:w.state==="-"?(dark?"#3a3a3a":"#c3b9a6"):"#fff",
+                        border:`1px solid ${w.state==="-"?(dark?"#222":"#e0d8cc"):"transparent"}`}}>
+                        {w.state==="-"?"·":w.state}
+                      </div>
+                      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"9px",letterSpacing:"1px",color:"#888",marginTop:"3px"}}>{w.label}</div>
+                    </div>
+                  ))}
+                </div>
+                {ls.played>lsLog.length&&(
+                  <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"12px",fontStyle:"italic",color:dark?"#666":"#999",marginBottom:"8px",lineHeight:1.5}}>
+                    Call-by-call stats started with the nine-call version, so earlier lineups only count toward your record.
+                  </div>
+                )}
+                <button onClick={shareBrag} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"2px",padding:"15px",background:copied?"#2E6B3E":(dark?"#1c1c1c":"#fff"),color:copied?"#fff":fg,border:`2px solid ${copied?"#2E6B3E":(dark?"#333":"#c8bfae")}`,borderRadius:"8px",cursor:"pointer",marginTop:"10px",transition:"background 0.2s"}}>
+                  {copied?"✓ COPIED":"📲 SHARE YOUR LOCKER ROOM"}
+                </button>
+              </>
+            )}
+            {!lsDone&&onPlayLineup&&(
+              <button onClick={onPlayLineup} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"16px",letterSpacing:"3px",padding:"16px",background:"#3FA7D6",color:"#fff",border:"none",borderRadius:"8px",cursor:"pointer",marginTop:"10px"}}>
+                SET TODAY&apos;S LINEUP
+              </button>
+            )}
+          </>
+        ) : (<>
         {empty ? (
           <div style={{background:card,border:`1px solid ${border}`,borderRadius:"10px",padding:"32px 20px",textAlign:"center",marginBottom:"16px"}}>
             <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"20px",letterSpacing:"2px",color:fg,marginBottom:"6px"}}>NO SNAPS TAKEN YET</div>
-            <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.5}}>Solve today&apos;s DRAFT to get on the board and start a streak.</div>
+            <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"14px",color:dark?"#888":"#666",lineHeight:1.5}}>Solve today&apos;s Four Downs to get on the board and start a streak.</div>
           </div>
         ) : (
           <>
@@ -1942,7 +2094,7 @@ function LockerRoom({dark,onClose,onPlay}) {
               <div style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"13px",fontStyle:"italic",color:streak>0?"rgba(255,255,255,0.85)":"#888",marginTop:"4px"}}>
                 {streak>0
                   ? (doneToday?"Locked in for today. Come back tomorrow.":"Play today or the streak ends.")
-                  : "Solve today\u2019s DRAFT to start one."}
+                  : "Solve today\u2019s Four Downs to start one."}
               </div>
               <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"2px",color:streak>0?"rgba(255,255,255,0.7)":"#888",marginTop:"8px"}}>SEASON HIGH · {st.bestStreak||0}</div>
             </div>
@@ -1950,7 +2102,7 @@ function LockerRoom({dark,onClose,onPlay}) {
             {/* Season stats */}
             <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:"10px",letterSpacing:"3px",color:"#888",margin:"18px 0 8px"}}>SEASON STATS</div>
             <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"8px",marginBottom:"8px"}}>
-              <Stat label="DRAFTS PLAYED" value={d.played}/>
+              <Stat label="GAMES PLAYED" value={d.played}/>
               <Stat label="WIN %" value={`${d.winPct}%`} hint={`${d.wins} of ${d.played}`}/>
             </div>
             <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"8px",marginBottom:"8px"}}>
@@ -2026,6 +2178,7 @@ function LockerRoom({dark,onClose,onPlay}) {
             {streak>0?"KEEP THE STREAK ALIVE":"PLAY TODAY'S FOUR DOWNS"}
           </button>
         )}
+        </>)}
         <button onClick={onClose} style={{width:"100%",fontFamily:"'Bebas Neue',cursive",fontSize:"14px",letterSpacing:"3px",padding:"14px",background:"transparent",color:dark?"#888":"#888",border:`1px solid ${dark?"#2a2a2a":"#ccc"}`,borderRadius:"8px",cursor:"pointer",marginTop:"8px"}}>BACK</button>
       </div>
     </div>
@@ -2362,6 +2515,18 @@ export default function App() {
     return ()=>window.removeEventListener("hashchange",onHash);
   },[]);
   const [showScoring,setShowScoring]=useState(false);
+  // Help, scoring and the Locker Room open on the game the player came from,
+  // and BACK returns them there.
+  const [helpFor,setHelpFor]=useState("fourdowns");
+  const [helpFrom,setHelpFrom]=useState("home");
+  const openHelp=target=>{
+    if(!["howto","scoring","locker"].includes(screen)){
+      setHelpFor(screen==="startsit"?"startsit":"fourdowns");
+      setHelpFrom(screen);
+    }
+    setScreen(target);
+  };
+  const closeHelp=()=>setScreen(helpFrom==="game"||helpFrom==="startsit"?helpFrom:"home");
   const [mode,setMode]=useState("daily");
   // Server-side "opened" for each game, so the stats email can compare them
   // on equal terms. Fires however the player arrived (button or deep link).
@@ -2421,12 +2586,12 @@ export default function App() {
         button:focus-visible{outline:2px solid #C8A96E;outline-offset:2px;}
         button{-webkit-tap-highlight-color:transparent;}
       `}</style>
-      <Header dark={dark} onDark={()=>setDark(d=>!d)} onStats={()=>setScreen("locker")} onHome={()=>setScreen("home")} onHow={()=>setScreen("howto")} onScoring={()=>setScreen("scoring")} mode={mode} onMode={handleModeChange} showModes={screen!=="startsit"}/>
+      <Header dark={dark} onDark={()=>setDark(d=>!d)} onStats={()=>openHelp("locker")} onHome={()=>setScreen("home")} onHow={()=>openHelp("howto")} onScoring={()=>openHelp("scoring")} mode={mode} onMode={handleModeChange} showModes={screen!=="startsit"}/>
       {screen==="home"&&<Landing onPlay={()=>{if(mode==="featured")setMode("daily");evFourDowns("opened",{mode});setScreen("game");}} onPlayLineup={()=>setScreen("startsit")} onPlayFeatured={playFeatured} dark={dark} mode={mode==="featured"?"daily":mode}/>}
       {screen==="game"&&<Game key={`${puzzle.id}-${mode}`} puzzle={puzzle} dark={dark} mode={mode} onFinish={handleFinish} onPlayFeatured={playFeatured}/>}
-      {screen==="howto"&&<HowTo dark={dark} onClose={()=>setScreen("home")}/>}
-      {screen==="scoring"&&<ScoringPage dark={dark} onClose={()=>setScreen("home")}/>}
-      {screen==="locker"&&<LockerRoom dark={dark} onClose={()=>setScreen("home")} onPlay={()=>{setMode("daily");setScreen("game");}}/>}
+      {screen==="howto"&&<HowTo dark={dark} game={helpFor} onClose={closeHelp} onPlay={g=>{if(g==="startsit")setScreen("startsit");else{setMode("daily");setScreen("game");}}}/>}
+      {screen==="scoring"&&<ScoringPage dark={dark} game={helpFor} onClose={closeHelp}/>}
+      {screen==="locker"&&<LockerRoom dark={dark} game={helpFor} onClose={closeHelp} onPlay={()=>{setMode("daily");setScreen("game");}} onPlayLineup={()=>setScreen("startsit")}/>}
       {screen==="startsit"&&<Suspense fallback={<div style={{minHeight:"100vh"}}/>}><StartSit dark={dark} onExit={()=>setScreen("home")}/></Suspense>}
       {/* The tutorial explains Four Downs, so it waits until someone opens
           Four Downs. Showing it to a Start/Sit deep link (every ad click)

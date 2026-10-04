@@ -10,7 +10,10 @@ export const getLineupNumber = () => {
   return Math.max(0, Math.round((t - l) / 86400000)) + 1;
 };
 
-const blankStats = () => ({ played: 0, wins: 0, pushes: 0, streak: 0, best: 0, lastNumber: 0, recent: [] });
+// calls/upsets/fades are running totals for the Locker Room; log keeps the
+// last 30 daily results as { n, o: "W"|"L"|"P", hits }.
+const blankStats = () => ({ played: 0, wins: 0, pushes: 0, streak: 0, best: 0, lastNumber: 0, recent: [],
+  calls: 0, upsets: 0, fades: 0, bestPct: null, log: [] });
 export const loadLineupStats = () => {
   try {
     const s = localStorage.getItem(LINEUP_STORE);
@@ -26,4 +29,16 @@ export const playedLineupToday = () => loadLineupStats().lastNumber === getLineu
 export const lineupRecord = st => {
   const losses = st.played - st.wins - (st.pushes || 0);
   return st.pushes ? `${st.wins}-${losses}-${st.pushes}` : `${st.wins}-${losses}`;
+};
+
+/* Last 7 days of daily lineups for the Locker Room game log. */
+export const lineupLast7 = st => {
+  const today = getLineupNumber();
+  const out = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(Date.now() - i * 86400000);
+    const e = (st.log || []).find(x => x.n === today - i);
+    out.push({ label: d.toLocaleDateString(undefined, { weekday: "narrow" }), state: e ? e.o : "-", hits: e ? e.hits : null });
+  }
+  return out;
 };

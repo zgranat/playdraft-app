@@ -263,6 +263,12 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
       else if (r.outcome === "push") next.pushes = (next.pushes || 0) + 1;
       else next.streak = 0;
       next.lastNumber = getLineupNumber();
+      next.calls = (next.calls || 0) + r.hits;
+      next.upsets = (next.upsets || 0) + r.fadesHit;
+      next.fades = (next.fades || 0) + r.fadesTried;
+      next.bestPct = Math.max(next.bestPct ?? 0, r.pct);
+      next.log = [...(next.log || []),
+        { n: getLineupNumber(), o: r.outcome === "won" ? "W" : r.outcome === "push" ? "P" : "L", hits: r.hits }].slice(-30);
       setStats(next); saveLineupStats(next);
       ev(r.outcome === "won" ? "won" : r.outcome === "push" ? "push" : "lost",
          { calls: r.hits, pct: r.pct });
