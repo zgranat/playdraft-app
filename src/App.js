@@ -2061,11 +2061,12 @@ function ScoringPage({dark,game:initial="fourdowns",onClose}) {
         {box("✅ YOUR CALLS","A call is any slot where you started someone the House didn't. It's won when your player outscored his.")}
         {box("🎯 CALLS WON","Every call that beat the House's pick counts toward your career total in the Locker Room.")}
         {box("📊 LINEUPS BEATEN","Every lineup you could have set from the same twelve players is ranked. Your score is ranked against all of them, and once enough people have played, against everyone who played that day. Everyone gets the same players and the same results, so the luck cancels out.")}
-        {box("📲 YOUR SHARE CARD","One square per slot: green a call that won, red one that lost, white where you matched the House. No names, so it spoils nothing.",(
+        {box("📲 YOUR SHARE CARD","Your result, your score and how close you got to perfect. No players and no slots, so it gives nothing away to anyone who hasn't played yet.",(
           <div style={mono}>
-            PlayDraft Start/Sit #28 · 2014<br/>
-            🟩⬜⬜⬜⬜⬜🟥<br/>
-            W 102.3-94.4 vs the House
+            PlayDraft Start/Sit #28 · 2010<br/>
+            ✅ Beat the House 95.5–85.9<br/>
+            🎯 8.0 off perfect<br/>
+            📊 Top 5% of 264 possible lineups
           </div>))}
         {box("🏆 PERFECT LINEUP","Out of every lineup you could have set from the twelve players, one scores the most. Start exactly that seven and you've set a perfect lineup. Every result shows how far you were from it.")}
         {box("📈 YOUR RECORD","Every daily lineup goes on your record against the House: wins, losses and pushes, plus your win streak. Archive lineups are practice and don't count.")}

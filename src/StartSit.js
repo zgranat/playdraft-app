@@ -354,16 +354,18 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
     window.scrollTo(0, 0);
   }
 
-  const shareText = r => {
-    const sq = r.rows.map(x => x.outcome === "same" ? "⬜" : x.outcome === "won" ? "\u{1F7E9}"
-      : x.outcome === "lost" ? "\u{1F7E5}" : "\u{1F7E8}").join("");
-    const line = r.outcome === "push" ? `Push ${f1(r.score)}-${f1(puzzle.house)}`
-      : `${r.outcome === "won" ? "W" : "L"} ${f1(r.score)}-${f1(puzzle.house)}`;
-    const fieldLine = field && field.players >= 5 ? `\nBetter than ${field.pct}% of players today` : "";
-    const perfectLine = r.perfect ? "\n\u{1F3C6} Perfect lineup" : "";
-    return `PlayDraft Start/Sit #${getLineupNumber()} · ${puzzle.season}\n${sq}${perfectLine}\n${line} vs the House${fieldLine}`
-      + `\nplaydraft.app/#/start-sit`;
+  /* Results only: nothing here says which slot you changed, how many calls
+     you made or which ones hit, so a friend can't reverse-engineer the lineup. */
+  const shareLines = r => {
+    const head = r.outcome === "won" ? "\u2705 Beat the House" : r.outcome === "lost" ? "\u274C Lost to the House" : "\u{1F91D} Pushed with the House";
+    const lines = [`${head} ${f1(r.score)}\u2013${f1(puzzle.house)}`];
+    lines.push(r.perfect ? "\u{1F3C6} PERFECT LINEUP" : `\u{1F3AF} ${f1(r.best - r.score)} off perfect`);
+    lines.push(`\u{1F4CA} Top ${Math.max(1, 100 - r.pct)}% of ${r.n} possible lineups`);
+    if (field && field.players >= 5) lines.push(`\u{1F465} Better than ${field.pct}% of players today`);
+    if (!practice && stats.played) lines.push(`\u{1F3C8} ${lineupRecord(stats)} vs the House this season`);
+    return lines;
   };
+  const shareText = r => `PlayDraft Start/Sit #${getLineupNumber()} \u00B7 ${puzzle.season}\n${shareLines(r).join("\n")}\nplaydraft.app/#/start-sit`;
   const share = r => {
     const txt = shareText(r);
     ev(practice ? "practice_shared" : "shared", {});
@@ -764,17 +766,10 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
           <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: 14 }}>
             <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".06em", color: C.muted, marginBottom: 8 }}>SHARE PREVIEW</div>
             <div style={{ fontSize: 15, fontWeight: 700 }}>PlayDraft Start/Sit #{getLineupNumber()} · {puzzle.season}</div>
-            <div style={{ display: "flex", gap: 6, margin: "8px 0" }}>
-              {r.rows.map(x => (
-                <div key={x.k} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}>
-                  <div style={{ width: 34, height: 34, borderRadius: 6,
-                    background: x.outcome === "same" ? C.same : x.outcome === "won" ? C.winFill : x.outcome === "lost" ? C.lossFill : "#EAB308" }} />
-                  <div style={{ fontSize: 11, fontWeight: 700, color: C.muted }}>{SLOT_SHORT[x.k]}</div>
-                </div>
-              ))}
+            <div style={{ display: "flex", flexDirection: "column", gap: 3, marginTop: 6 }}>
+              {shareLines(r).map(l => <div key={l} style={{ ...s.num, fontSize: 15 }}>{l}</div>)}
             </div>
-            {r.perfect && <div style={{ fontSize: 15, fontWeight: 700, color: dark ? "#FDBA74" : "#B45309" }}>Perfect lineup</div>}
-            <div style={{ ...s.num, fontSize: 15 }}>{r.outcome === "won" ? "W" : r.outcome === "lost" ? "L" : "Push"} {f1(r.score)}–{f1(puzzle.house)} vs the House</div>
+            <div style={{ fontSize: 12, color: C.muted, marginTop: 8 }}>No players or slots, so it gives nothing away.</div>
           </div>
           {!practice && (
             <button onClick={() => share(r)} style={{ ...s.primary, marginTop: 14, background: C.accent, color: C.onAccent }}>
