@@ -1518,7 +1518,7 @@ const buildShare = (puzzle, solvedOnly, wrong, ms, streak, mode, won) => {
 // ============================================================
 // HEADER
 // ============================================================
-function Header({dark,onDark,onStats,onHome,onHow,onScoring,mode,onMode,showModes=true}) {
+function Header({dark,onDark,onStats,onHome,onHow,onScoring,mode,onMode,showModes=true,screen,onStartSit,onFourDowns}) {
   // No archive on launch day, so offering PRACTICE would just replay the daily.
   const modes = hasPracticeArchive() ? ["daily","practice"] : ["daily"];
   const F="'Barlow Condensed','Arial Narrow',sans-serif";
@@ -1526,7 +1526,8 @@ function Header({dark,onDark,onStats,onHome,onHow,onScoring,mode,onMode,showMode
     border:"1px solid rgba(255,255,255,.18)",borderRadius:"8px",color:"#E5EAF5",cursor:"pointer",padding:0};
   const svg=(d,extra)=>(<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{d}{extra}</svg>);
   return (
-    <header style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 10px",height:"56px",background:"#0B1530",borderBottom:"3px solid #E11D2E",position:"sticky",top:0,zIndex:100,gap:"8px"}}>
+    <div style={{position:"sticky",top:0,zIndex:100}}>
+    <header style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 10px",height:"56px",background:"#0B1530",gap:"8px"}}>
       <button onClick={onHome} aria-label="PlayDraft home" style={{fontFamily:F,fontSize:"26px",fontWeight:800,fontStyle:"italic",letterSpacing:"0.5px",color:"#fff",background:"none",border:"none",cursor:"pointer",padding:"0 4px 0 0",flexShrink:0}}>
         DRAFT<span style={{color:"#E11D2E"}}>.</span>
       </button>
@@ -1546,6 +1547,20 @@ function Header({dark,onDark,onStats,onHome,onHow,onScoring,mode,onMode,showMode
           : svg(<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>)}</button>
       </div>
     </header>
+    {/* Games bar: always one tap to home or either game. */}
+    <nav aria-label="Games" style={{display:"flex",background:"#16223F",borderBottom:"3px solid #E11D2E",height:"40px"}}>
+      {[["home","HOME",onHome],["startsit","START/SIT",onStartSit],["game","FOUR DOWNS",onFourDowns]].map(([id,label,go])=>{
+        const on=screen===id;
+        return (
+          <button key={id} onClick={go} aria-current={on?"page":undefined}
+            style={{flex:1,background:"none",border:"none",cursor:"pointer",fontFamily:F,fontWeight:800,fontStyle:"italic",fontSize:"15px",letterSpacing:"0.8px",
+              color:on?"#fff":"#A3B3D9",boxShadow:on?`inset 0 -3px 0 ${id==="startsit"?"#3B82F6":id==="game"?"#F97316":"#fff"}`:"none"}}>
+            {label}
+          </button>
+        );
+      })}
+    </nav>
+    </div>
   );
 }
 
@@ -2392,13 +2407,10 @@ function Landing({onPlay,onPlayLineup,onPlayFeatured,onPractice,dark,mode}) {
   };
 
   return (
-    <div style={{background:dark?"#0B0F19":"#EEF1F6",display:"flex",flexDirection:"column",alignItems:"center",padding:"0 16px 24px",minHeight:"calc(100vh - 59px)"}}>
-      {/* scoreboard strip */}
-      <div style={{width:"calc(100% + 32px)",background:"#16223F",color:"#fff",display:"flex",alignItems:"stretch",marginBottom:"14px",
-        fontFamily:F,fontWeight:700,fontSize:"14px",letterSpacing:"0.6px",overflowX:"auto",whiteSpace:"nowrap"}}>
-        <span style={{background:RED,padding:"8px 12px",fontWeight:800,fontStyle:"italic"}}>{isPractice?"PRACTICE":day}</span>
-        <span style={{padding:"8px 12px"}}>START/SIT #{getLineupNumber()}{ls.played?` · ${lineupRecord(ls)}`:""}</span>
-        <span style={{padding:"8px 12px",borderLeft:"1px solid rgba(255,255,255,.14)"}}>FOUR DOWNS #{getTodaysPuzzleNumber()}{streak>0?` · 🔥${streak}`:""}</span>
+    <div style={{background:dark?"#0B0F19":"#EEF1F6",display:"flex",flexDirection:"column",alignItems:"center",padding:"0 16px 24px",minHeight:"calc(100vh - 99px)"}}>
+      <div style={{width:"100%",maxWidth:"440px",display:"flex",alignItems:"center",gap:"10px",margin:"14px 0 12px"}}>
+        <span style={{fontFamily:F,fontWeight:800,fontStyle:"italic",fontSize:"15px",letterSpacing:"1px",background:RED,color:"#fff",padding:"3px 10px"}}>{isPractice?"PRACTICE":"TODAY"}</span>
+        <span style={{fontFamily:F,fontWeight:800,fontSize:"15px",letterSpacing:"1px",color:dark?"#A3ACBA":"#4B5563"}}>{day} · TWO NEW GAMES</span>
       </div>
 
       {!isPractice&&tile("#2563EB",onPlayLineup,"Play Start/Sit",<>
@@ -2690,7 +2702,9 @@ export default function App() {
         button:focus-visible{outline:2px solid #B45309;outline-offset:2px;}
         button{-webkit-tap-highlight-color:transparent;}
       `}</style>
-      <Header dark={dark} onDark={()=>setDark(d=>!d)} onStats={()=>openHelp("locker")} onHome={()=>setScreen("home")} onHow={()=>openHelp("howto")} onScoring={()=>openHelp("scoring")} mode={mode} onMode={handleModeChange} showModes={screen==="game"&&mode!=="featured"}/>
+      <Header dark={dark} onDark={()=>setDark(d=>!d)} onStats={()=>openHelp("locker")} onHome={()=>setScreen("home")} onHow={()=>openHelp("howto")} onScoring={()=>openHelp("scoring")} mode={mode} onMode={handleModeChange} showModes={screen==="game"&&mode!=="featured"}
+        screen={screen} onStartSit={()=>setScreen("startsit")}
+        onFourDowns={()=>{if(screen==="game")return;if(mode==="featured")setMode("daily");evFourDowns("opened",{mode:mode==="featured"?"daily":mode});setScreen("game");}}/>
       {screen==="home"&&<Landing onPlay={()=>{if(mode==="featured")setMode("daily");evFourDowns("opened",{mode});setScreen("game");}} onPlayLineup={()=>setScreen("startsit")} onPlayFeatured={playFeatured} onPractice={()=>{handleModeChange("practice");setScreen("game");}} dark={dark} mode={mode==="featured"?"daily":mode}/>}
       {screen==="game"&&<Game key={`${puzzle.id}-${mode}`} puzzle={puzzle} dark={dark} mode={mode} onFinish={handleFinish} onPlayFeatured={playFeatured}/>}
       {screen==="howto"&&<HowTo dark={dark} game={helpFor} onClose={closeHelp} onPlay={g=>{if(g==="startsit")setScreen("startsit");else{setMode("daily");setScreen("game");}}}/>}

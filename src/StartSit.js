@@ -623,7 +623,7 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
     <div style={s.wrap}>
       {topBar(`START/SIT #${getLineupNumber()}`, null)}
       <div style={{ background: C.panel, borderBottom: `1px solid ${C.line}`, padding: "14px 16px 16px",
-        position: "sticky", top: 0, zIndex: 5 }}>
+        position: "sticky", top: 99, zIndex: 5 }}>
         <div style={{ textAlign: "center", fontFamily: DISPLAY, fontWeight: 800, fontSize: 22, letterSpacing: ".03em",
           color: C.call }}>{puzzle.season} · WEEK {puzzle.week}{done ? " · FINAL" : ""}</div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: 8 }}>
