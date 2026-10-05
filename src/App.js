@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { Analytics } from "@vercel/analytics/react";
-import { playedLineupToday, loadLineupStats, lineupRecord, lineupLast7 } from "./lineupMeta";
+import { playedLineupToday, loadLineupStats, lineupRecord, lineupLast7, getLineupNumber } from "./lineupMeta";
 // The lineup bank is big, so Start/Sit loads only when someone opens it.
 const StartSit = lazy(() => import("./StartSit"));
 
@@ -977,6 +977,146 @@ const PUZZLES = [
       { id:"C", players:["JEREMY SHOCKEY","MARK BAVARO","EVAN ENGRAM","KEVIN BOSS"], label:"PLAYED TIGHT END FOR THE NEW YORK GIANTS", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["DEVIN HESTER","DANTE HALL","JOSH CRIBBS","CORDARRELLE PATTERSON"], label:"EARNED FIRST-TEAM ALL-PRO AS A KICK RETURNER", color:"#8B1A2A", difficulty:4 }
     ]
+  },
+  {
+    id: 98, title: "ROUND 98",
+    players: ["PATRICK MAHOMES", "WES WELKER", "MICHAEL CRABTREE", "ZACH THOMAS", "TOM BRADY", "AARON RODGERS", "ANDREW LUCK", "JIM KELLY", "CURTIS MARTIN", "DARRELLE REVIS", "DANNY WOODHEAD", "VINNY TESTAVERDE", "ROB GRONKOWSKI", "PAT McAFEE", "BILL GOLDBERG", "LAWRENCE TAYLOR"],
+    groups: [
+      { id:"A", players:["PATRICK MAHOMES", "WES WELKER", "MICHAEL CRABTREE", "ZACH THOMAS"], label:"PLAYED COLLEGE FOOTBALL AT TEXAS TECH", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["TOM BRADY", "AARON RODGERS", "ANDREW LUCK", "JIM KELLY"], label:"WORE NO. 12 IN THE NFL", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["CURTIS MARTIN", "DARRELLE REVIS", "DANNY WOODHEAD", "VINNY TESTAVERDE"], label:"PLAYED FOR BOTH THE JETS AND THE PATRIOTS", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["ROB GRONKOWSKI", "PAT McAFEE", "BILL GOLDBERG", "LAWRENCE TAYLOR"], label:"PERFORMED AT A WWE EVENT", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 99, title: "ROUND 99",
+    players: ["KURT WARNER", "MARSHALL FAULK", "ISAAC BRUCE", "TORRY HOLT", "JERRY RICE", "COOPER KUPP", "MICHAEL THOMAS", "JUSTIN JEFFERSON", "CAM NEWTON", "VON MILLER", "A.J. GREEN", "JULIO JONES", "PATRICK WILLIS", "JULIUS PEPPERS", "ANDRE JOHNSON", "DWIGHT FREENEY"],
+    groups: [
+      { id:"A", players:["KURT WARNER", "MARSHALL FAULK", "ISAAC BRUCE", "TORRY HOLT"], label:"PLAYED IN THE RAMS' \"GREATEST SHOW ON TURF\" OFFENSE", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["JERRY RICE", "COOPER KUPP", "MICHAEL THOMAS", "JUSTIN JEFFERSON"], label:"WON NFL OFFENSIVE PLAYER OF THE YEAR AS A WIDE RECEIVER", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["CAM NEWTON", "VON MILLER", "A.J. GREEN", "JULIO JONES"], label:"SELECTED IN THE FIRST ROUND OF THE 2011 NFL DRAFT", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["PATRICK WILLIS", "JULIUS PEPPERS", "ANDRE JOHNSON", "DWIGHT FREENEY"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2024", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 100, title: "ROUND 100",
+    players: ["KELLEN MOORE", "DOUG MARTIN", "JAY AJAYI", "LEIGHTON VANDER ESCH", "SAQUON BARKLEY", "JUSTIN HERBERT", "JA'MARR CHASE", "C.J. STROUD", "BRETT FAVRE", "GREG JENNINGS", "DARREN SHARPER", "AARON JONES", "DALLAS CLARK", "AUSTIN EKELER", "ORLANDO PACE", "LONDON FLETCHER"],
+    groups: [
+      { id:"A", players:["KELLEN MOORE", "DOUG MARTIN", "JAY AJAYI", "LEIGHTON VANDER ESCH"], label:"PLAYED COLLEGE FOOTBALL AT BOISE STATE", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["SAQUON BARKLEY", "JUSTIN HERBERT", "JA'MARR CHASE", "C.J. STROUD"], label:"WON AP OFFENSIVE ROOKIE OF THE YEAR", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["BRETT FAVRE", "GREG JENNINGS", "DARREN SHARPER", "AARON JONES"], label:"PLAYED FOR BOTH THE PACKERS AND THE VIKINGS", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["DALLAS CLARK", "AUSTIN EKELER", "ORLANDO PACE", "LONDON FLETCHER"], label:"FIRST NAME IS ALSO A MAJOR CITY", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 101, title: "ROUND 101",
+    players: ["DREW BREES", "MARQUES COLSTON", "TRACY PORTER", "PIERRE THOMAS", "CALVIN JOHNSON", "TERRELL OWENS", "TIM BROWN", "ANQUAN BOLDIN", "BARRY SANDERS", "JAHMYR GIBBS", "D'ANDRE SWIFT", "JAMAAL WILLIAMS", "RUSSELL WILSON", "CHRISTIAN McCAFFREY", "JAY CUTLER", "ERIC DECKER"],
+    groups: [
+      { id:"A", players:["DREW BREES", "MARQUES COLSTON", "TRACY PORTER", "PIERRE THOMAS"], label:"PLAYED FOR THE SAINTS' SUPER BOWL XLIV-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["CALVIN JOHNSON", "TERRELL OWENS", "TIM BROWN", "ANQUAN BOLDIN"], label:"WORE NO. 81 IN THE NFL", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["BARRY SANDERS", "JAHMYR GIBBS", "D'ANDRE SWIFT", "JAMAAL WILLIAMS"], label:"PLAYED RUNNING BACK FOR THE DETROIT LIONS", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["RUSSELL WILSON", "CHRISTIAN McCAFFREY", "JAY CUTLER", "ERIC DECKER"], label:"MARRIED A FAMOUS ENTERTAINER", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 102, title: "ROUND 102",
+    players: ["STEVE YOUNG", "JIM McMAHON", "TY DETMER", "ZACH WILSON", "DAN MARINO", "KURT WARNER", "ODELL BECKHAM JR.", "MIKE EVANS", "DESHAUN WATSON", "MYLES GARRETT", "MARSHON LATTIMORE", "T.J. WATT", "RAY LEWIS", "TERRELL SUGGS", "C.J. MOSLEY", "ROQUAN SMITH"],
+    groups: [
+      { id:"A", players:["STEVE YOUNG", "JIM McMAHON", "TY DETMER", "ZACH WILSON"], label:"PLAYED COLLEGE FOOTBALL AT BYU", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["DAN MARINO", "KURT WARNER", "ODELL BECKHAM JR.", "MIKE EVANS"], label:"WORE NO. 13 IN THE NFL", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["DESHAUN WATSON", "MYLES GARRETT", "MARSHON LATTIMORE", "T.J. WATT"], label:"SELECTED IN THE FIRST ROUND OF THE 2017 NFL DRAFT", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["RAY LEWIS", "TERRELL SUGGS", "C.J. MOSLEY", "ROQUAN SMITH"], label:"PLAYED LINEBACKER FOR THE BALTIMORE RAVENS", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 103, title: "ROUND 103",
+    players: ["JALEN HURTS", "SAQUON BARKLEY", "A.J. BROWN", "DeVONTA SMITH", "JADEVEON CLOWNEY", "ALSHON JEFFERY", "DEEBO SAMUEL", "MARCUS LATTIMORE", "TERRELL DAVIS", "EMMITT SMITH", "MARCUS ALLEN", "FRANCO HARRIS", "TIKI BARBER", "DEVIN McCOURTY", "MAURKICE POUNCEY", "SHAQUILL GRIFFIN"],
+    groups: [
+      { id:"A", players:["JALEN HURTS", "SAQUON BARKLEY", "A.J. BROWN", "DeVONTA SMITH"], label:"PLAYED FOR THE EAGLES' SUPER BOWL LIX-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["JADEVEON CLOWNEY", "ALSHON JEFFERY", "DEEBO SAMUEL", "MARCUS LATTIMORE"], label:"PLAYED COLLEGE FOOTBALL AT SOUTH CAROLINA", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["TERRELL DAVIS", "EMMITT SMITH", "MARCUS ALLEN", "FRANCO HARRIS"], label:"WON SUPER BOWL MVP AS A RUNNING BACK", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["TIKI BARBER", "DEVIN McCOURTY", "MAURKICE POUNCEY", "SHAQUILL GRIFFIN"], label:"HAS A TWIN BROTHER WHO ALSO PLAYED IN THE NFL", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 104, title: "ROUND 104",
+    players: ["LaDAINIAN TOMLINSON", "ANDY DALTON", "JERRY HUGHES", "JALEN REAGOR", "ROB GRONKOWSKI", "TRAVIS KELCE", "JORDY NELSON", "DWIGHT CLARK", "TERRELL OWENS", "DeMARCO MURRAY", "JASON PETERS", "RANDALL CUNNINGHAM", "ANTONIO GATES", "JARED ALLEN", "ERIC ALLEN", "STERLING SHARPE"],
+    groups: [
+      { id:"A", players:["LaDAINIAN TOMLINSON", "ANDY DALTON", "JERRY HUGHES", "JALEN REAGOR"], label:"PLAYED COLLEGE FOOTBALL AT TCU", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["ROB GRONKOWSKI", "TRAVIS KELCE", "JORDY NELSON", "DWIGHT CLARK"], label:"WORE NO. 87 IN THE NFL", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["TERRELL OWENS", "DeMARCO MURRAY", "JASON PETERS", "RANDALL CUNNINGHAM"], label:"PLAYED FOR BOTH THE COWBOYS AND THE EAGLES", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["ANTONIO GATES", "JARED ALLEN", "ERIC ALLEN", "STERLING SHARPE"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2025", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 105, title: "ROUND 105",
+    players: ["GEORGE KITTLE", "T.J. HOCKENSON", "TRISTAN WIRFS", "SAM LaPORTA", "PEYTON MANNING", "DREW BREES", "LARRY FITZGERALD", "J.J. WATT", "JERRY RICE", "ANDRE JOHNSON", "ISAAC BRUCE", "CRIS COLLINSWORTH", "BRIAN URLACHER", "SHAUN ALEXANDER", "PLAXICO BURRESS", "CHAD PENNINGTON"],
+    groups: [
+      { id:"A", players:["GEORGE KITTLE", "T.J. HOCKENSON", "TRISTAN WIRFS", "SAM LaPORTA"], label:"PLAYED COLLEGE FOOTBALL AT IOWA", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["PEYTON MANNING", "DREW BREES", "LARRY FITZGERALD", "J.J. WATT"], label:"WON THE WALTER PAYTON NFL MAN OF THE YEAR AWARD", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JERRY RICE", "ANDRE JOHNSON", "ISAAC BRUCE", "CRIS COLLINSWORTH"], label:"WORE NO. 80 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["BRIAN URLACHER", "SHAUN ALEXANDER", "PLAXICO BURRESS", "CHAD PENNINGTON"], label:"DRAFTED IN 2000, THE SAME CLASS AS TOM BRADY", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 106, title: "ROUND 106",
+    players: ["MICHAEL VICK", "DeANGELO HALL", "KAM CHANCELLOR", "BRUCE SMITH", "MICHAEL IRVIN", "DEZ BRYANT", "MARVIN HARRISON", "TONY GONZALEZ", "RANDY MOSS", "WES WELKER", "ASANTE SAMUEL", "KEVIN FAULK", "A.J. GREEN", "REGGIE WHITE", "JIM BROWN", "AHMAN GREEN"],
+    groups: [
+      { id:"A", players:["MICHAEL VICK", "DeANGELO HALL", "KAM CHANCELLOR", "BRUCE SMITH"], label:"PLAYED COLLEGE FOOTBALL AT VIRGINIA TECH", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["MICHAEL IRVIN", "DEZ BRYANT", "MARVIN HARRISON", "TONY GONZALEZ"], label:"WORE NO. 88 IN THE NFL", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["RANDY MOSS", "WES WELKER", "ASANTE SAMUEL", "KEVIN FAULK"], label:"PLAYED FOR THE 2007 PATRIOTS, 16-0 IN THE REGULAR SEASON", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["A.J. GREEN", "REGGIE WHITE", "JIM BROWN", "AHMAN GREEN"], label:"LAST NAME IS ALSO A COLOR", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 107, title: "ROUND 107",
+    players: ["TRAVIS KELCE", "JASON KELCE", "SAUCE GARDNER", "DESMOND RIDDER", "KHALIL MACK", "AARON DONALD", "MIKE EVANS", "SAMMY WATKINS", "EARL CAMPBELL", "BO JACKSON", "THURMAN THOMAS", "RICKY WILLIAMS", "HOWIE LONG", "ED McCAFFREY", "PHIL SIMMS", "KELLEN WINSLOW SR."],
+    groups: [
+      { id:"A", players:["TRAVIS KELCE", "JASON KELCE", "SAUCE GARDNER", "DESMOND RIDDER"], label:"PLAYED COLLEGE FOOTBALL AT CINCINNATI", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["KHALIL MACK", "AARON DONALD", "MIKE EVANS", "SAMMY WATKINS"], label:"SELECTED IN THE FIRST ROUND OF THE 2014 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["EARL CAMPBELL", "BO JACKSON", "THURMAN THOMAS", "RICKY WILLIAMS"], label:"WORE NO. 34 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["HOWIE LONG", "ED McCAFFREY", "PHIL SIMMS", "KELLEN WINSLOW SR."], label:"HAS A SON WHO ALSO PLAYED IN THE NFL", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 108, title: "ROUND 108",
+    players: ["DARREN McFADDEN", "FELIX JONES", "HUNTER HENRY", "PEYTON HILLIS", "JOHN ELWAY", "MICHAEL VICK", "BOOMER ESIASON", "JOE THEISMANN", "LAMAR JACKSON", "JOE BURROW", "BAKER MAYFIELD", "JAMEIS WINSTON", "JOE FLACCO", "MARK SANCHEZ", "RUSSELL WILSON", "BROCK PURDY"],
+    groups: [
+      { id:"A", players:["DARREN McFADDEN", "FELIX JONES", "HUNTER HENRY", "PEYTON HILLIS"], label:"PLAYED COLLEGE FOOTBALL AT ARKANSAS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["JOHN ELWAY", "MICHAEL VICK", "BOOMER ESIASON", "JOE THEISMANN"], label:"WORE NO. 7 IN THE NFL", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["LAMAR JACKSON", "JOE BURROW", "BAKER MAYFIELD", "JAMEIS WINSTON"], label:"WON THE HEISMAN TROPHY AS A QUARTERBACK", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["JOE FLACCO", "MARK SANCHEZ", "RUSSELL WILSON", "BROCK PURDY"], label:"WON A PLAYOFF GAME AS A ROOKIE STARTING QUARTERBACK", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 109, title: "ROUND 109",
+    players: ["GENO SMITH", "TAVON AUSTIN", "PACMAN JONES", "MARC BULGER", "JOE MONTANA", "TERRY BRADSHAW", "ELI MANNING", "PATRICK MAHOMES", "J.J. WATT", "WARREN SAPP", "JASON TAYLOR", "MARK GASTINEAU", "DEION SANDERS", "JIM HARBAUGH", "STEVE SPURRIER", "HERM EDWARDS"],
+    groups: [
+      { id:"A", players:["GENO SMITH", "TAVON AUSTIN", "PACMAN JONES", "MARC BULGER"], label:"PLAYED COLLEGE FOOTBALL AT WEST VIRGINIA", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["JOE MONTANA", "TERRY BRADSHAW", "ELI MANNING", "PATRICK MAHOMES"], label:"WON SUPER BOWL MVP MORE THAN ONCE", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["J.J. WATT", "WARREN SAPP", "JASON TAYLOR", "MARK GASTINEAU"], label:"WORE NO. 99 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["DEION SANDERS", "JIM HARBAUGH", "STEVE SPURRIER", "HERM EDWARDS"], label:"NFL PLAYER WHO LATER BECAME A COLLEGE HEAD COACH", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 110, title: "ROUND 110",
+    players: ["ROBERT GRIFFIN III", "MIKE SINGLETARY", "JOSH GORDON", "COREY COLEMAN", "DREW BREES", "TONY ROMO", "MATTHEW STAFFORD", "STEVE McNAIR", "ROD WOODSON", "LE'VEON BELL", "KORDELL STEWART", "MIKE WALLACE", "JOSH ALLEN", "ADRIAN PETERSON", "STEVE SMITH", "CHRIS JOHNSON"],
+    groups: [
+      { id:"A", players:["ROBERT GRIFFIN III", "MIKE SINGLETARY", "JOSH GORDON", "COREY COLEMAN"], label:"PLAYED COLLEGE FOOTBALL AT BAYLOR", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["DREW BREES", "TONY ROMO", "MATTHEW STAFFORD", "STEVE McNAIR"], label:"WORE NO. 9 IN THE NFL", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["ROD WOODSON", "LE'VEON BELL", "KORDELL STEWART", "MIKE WALLACE"], label:"PLAYED FOR BOTH THE STEELERS AND THE RAVENS", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["JOSH ALLEN", "ADRIAN PETERSON", "STEVE SMITH", "CHRIS JOHNSON"], label:"SHARES HIS FULL NAME WITH ANOTHER NOTABLE NFL PLAYER", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 111, title: "ROUND 111",
+    players: ["NDAMUKONG SUH", "LAVONTE DAVID", "ROGER CRAIG", "PRINCE AMUKAMARA", "STEVE YOUNG", "JERRY RICE", "RICKY WATTERS", "KEN NORTON JR.", "EMMITT SMITH", "MATT FORTE", "DERRICK HENRY", "HARRISON SMITH", "LEON LETT", "JACKIE SMITH", "SCOTT NORWOOD", "GARO YEPREMIAN"],
+    groups: [
+      { id:"A", players:["NDAMUKONG SUH", "LAVONTE DAVID", "ROGER CRAIG", "PRINCE AMUKAMARA"], label:"PLAYED COLLEGE FOOTBALL AT NEBRASKA", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["STEVE YOUNG", "JERRY RICE", "RICKY WATTERS", "KEN NORTON JR."], label:"PLAYED FOR THE 49ERS' SUPER BOWL XXIX-WINNING TEAM", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["EMMITT SMITH", "MATT FORTE", "DERRICK HENRY", "HARRISON SMITH"], label:"WORE NO. 22 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["LEON LETT", "JACKIE SMITH", "SCOTT NORWOOD", "GARO YEPREMIAN"], label:"REMEMBERED FOR A COSTLY SUPER BOWL MISTAKE", color:"#8B1A2A", difficulty:4 }
+    ]
   }
 ];
 const DIFF_LABELS = ["","1ST & EASY","2ND DOWN","3RD & LONG","4TH & GOAL"];
@@ -1112,7 +1252,8 @@ const FEEDBACK_URL = "https://forms.gle/s2Jk2vvLfLTJLPLd8";
 
 // Puzzle submission form. Paste your Google Form URL here to turn the
 // "build your own" CTA on. Left empty, the CTA renders nothing.
-const SUBMIT_PUZZLE_URL = "https://www.playdraft.app/submit.html";
+// Guest puzzle form switched off for now (Oct 2026). Set the URL to bring the CTAs back.
+const SUBMIT_PUZZLE_URL = "";
 
 // ============================================================
 // FEATURED WEEKLY PUZZLE
@@ -1380,21 +1521,29 @@ const buildShare = (puzzle, solvedOnly, wrong, ms, streak, mode, won) => {
 function Header({dark,onDark,onStats,onHome,onHow,onScoring,mode,onMode,showModes=true}) {
   // No archive on launch day, so offering PRACTICE would just replay the daily.
   const modes = hasPracticeArchive() ? ["daily","practice"] : ["daily"];
+  const F="'Barlow Condensed','Arial Narrow',sans-serif";
+  const icon={width:"34px",height:"34px",flex:"none",display:"flex",alignItems:"center",justifyContent:"center",background:"transparent",
+    border:"1px solid rgba(255,255,255,.18)",borderRadius:"8px",color:"#E5EAF5",cursor:"pointer",padding:0};
+  const svg=(d,extra)=>(<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{d}{extra}</svg>);
   return (
-    <header style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 14px",height:"56px",background:dark?"#0B0F19":"#FFFFFF",borderBottom:`1px solid ${dark?"#263042":"#E5E7EB"}`,position:"sticky",top:0,zIndex:100,gap:"8px"}}>
-      <button onClick={onHome} style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"26px",fontWeight:800,letterSpacing:"1px",color:dark?"#F3F4F6":"#111827",background:"none",border:"none",cursor:"pointer",padding:0,flexShrink:0}}>DRAFT</button>
+    <header style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 10px",height:"56px",background:"#0B1530",borderBottom:"3px solid #E11D2E",position:"sticky",top:0,zIndex:100,gap:"8px"}}>
+      <button onClick={onHome} aria-label="PlayDraft home" style={{fontFamily:F,fontSize:"26px",fontWeight:800,fontStyle:"italic",letterSpacing:"0.5px",color:"#fff",background:"none",border:"none",cursor:"pointer",padding:"0 4px 0 0",flexShrink:0}}>
+        DRAFT<span style={{color:"#E11D2E"}}>.</span>
+      </button>
       <div style={{display:"flex",gap:"4px"}}>
         {showModes&&modes.map(m=>(
-          <button key={m} onClick={()=>onMode(m)} style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"12px",letterSpacing:"0.7px",padding:"6px 12px",borderRadius:"3px",cursor:"pointer",border:"1px solid",borderColor:mode===m?"#B45309":(dark?"#374151":"#D1D5DB"),background:mode===m?"#B45309":"transparent",color:mode===m?"#fff":(dark?"#A3ACBA":"#4B5563"),transition:"all 0.15s"}}>
+          <button key={m} onClick={()=>onMode(m)} aria-pressed={mode===m} style={{fontFamily:F,fontWeight:700,fontSize:"13px",letterSpacing:"0.6px",padding:"6px 8px",borderRadius:"4px",cursor:"pointer",border:"1px solid",borderColor:mode===m?"#F97316":"rgba(255,255,255,.22)",background:mode===m?"#F97316":"transparent",color:"#fff",transition:"all 0.15s"}}>
             {m.toUpperCase()}
           </button>
         ))}
       </div>
-      <div style={{display:"flex",gap:"8px",alignItems:"center"}}>
-        <button onClick={onHow} style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"11px",letterSpacing:"0.3px",padding:"5px 10px",background:"transparent",border:`1px solid ${dark?"#374151":"#D1D5DB"}`,color:dark?"#A3ACBA":"#4B5563",borderRadius:"8px",cursor:"pointer"}}>HOW</button>
-        <button onClick={onScoring} style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"14px",letterSpacing:"0.3px",padding:"5px 8px",background:"transparent",border:`1px solid ${dark?"#374151":"#D1D5DB"}`,color:dark?"#A3ACBA":"#4B5563",borderRadius:"8px",cursor:"pointer"}}>⭐</button>
-        <button onClick={onStats} style={{background:"none",border:"none",cursor:"pointer",fontSize:"18px",padding:"2px"}}>📊</button>
-        <button onClick={onDark} style={{background:"none",border:"none",cursor:"pointer",fontSize:"18px",padding:"2px"}}>{dark?"☀️":"🌙"}</button>
+      <div style={{display:"flex",gap:"4px",alignItems:"center"}}>
+        <button onClick={onHow} aria-label="How to play" style={icon}>{svg(<circle cx="12" cy="12" r="9"/>,<><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6"/><path d="M12 17.2h.01"/></>)}</button>
+        <button onClick={onScoring} aria-label="How scoring works" style={icon}>{svg(<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>)}</button>
+        <button onClick={onStats} aria-label="Locker Room stats" style={icon}>{svg(<path d="M5 20V11M12 20V4M19 20v-6"/>)}</button>
+        <button onClick={onDark} aria-label={dark?"Light mode":"Dark mode"} style={icon}>{dark
+          ? svg(<circle cx="12" cy="12" r="4"/>,<path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>)
+          : svg(<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>)}</button>
       </div>
     </header>
   );
@@ -1552,11 +1701,11 @@ function FeaturedBanner({dark,onPlay}) {
   const result = getFeaturedResult(puzzle.id);
   const line = {display:"flex",alignItems:"center",justifyContent:"space-between",gap:"8px",width:"100%",
     marginTop:"10px",padding:"10px 12px",borderRadius:"8px",textAlign:"left",
-    border:`1px solid ${dark?"#263042":"#E5E7EB"}`,background:dark?"#131A26":"#F9FAFB"};
+    border:"none",background:"#16223F",color:"#fff"};
   const label = (
     <span style={{minWidth:0}}>
-      <span style={{display:"block",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"10px",letterSpacing:"0.7px",color:"#B45309"}}>★ THIS WEEK&apos;S FEATURED</span>
-      <span style={{display:"block",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"16px",letterSpacing:"0.3px",color:dark?"#E5E7EB":"#111827",lineHeight:1.1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{puzzle.themeTitle}</span>
+      <span style={{display:"inline-block",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontWeight:800,fontStyle:"italic",fontSize:"11px",letterSpacing:"0.7px",color:"#fff",background:"#E11D2E",padding:"1px 6px",marginBottom:"3px"}}>★ THIS WEEK&apos;S FEATURED</span>
+      <span style={{display:"block",fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"18px",fontWeight:800,letterSpacing:"0.3px",color:"#fff",lineHeight:1.1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{puzzle.themeTitle}</span>
     </span>
   );
   if (result) return (
@@ -1569,7 +1718,7 @@ function FeaturedBanner({dark,onPlay}) {
   return (
     <button onClick={onPlay} style={{...line,cursor:"pointer",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}>
       {label}
-      <span style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontSize:"13px",letterSpacing:"0.7px",color:"#B45309",flexShrink:0}}>PLAY →</span>
+      <span style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontWeight:800,fontStyle:"italic",fontSize:"16px",letterSpacing:"0.7px",color:"#FDBA74",flexShrink:0}}>PLAY →</span>
     </button>
   );
 }
@@ -2173,13 +2322,13 @@ function LockerRoom({dark,game:initial="fourdowns",onClose,onPlay,onPlayLineup})
 function LineupIcon(){
   // a lineup card: three slots, two switched on
   return (
-    <svg width="76" height="76" viewBox="0 0 76 76" fill="none" aria-hidden="true">
-      <rect x="12" y="8" width="52" height="62" rx="7" fill="#fff" stroke="#111827" strokeWidth="4"/>
-      <rect x="27" y="3" width="22" height="10" rx="3" fill="#111827"/>
+    <svg width="64" height="64" viewBox="0 0 76 76" fill="none" aria-hidden="true">
+      <rect x="12" y="8" width="52" height="62" rx="7" fill="none" stroke="#fff" strokeWidth="4"/>
+      <rect x="27" y="3" width="22" height="10" rx="3" fill="#fff"/>
       {[24,39,54].map((y,i)=>(
         <g key={y}>
-          <rect x="20" y={y} width="22" height="6" rx="3" fill="#111827"/>
-          <rect x="46" y={y-3} width="12" height="12" rx="6" fill={i<2?"#1D4ED8":"#fff"} stroke="#111827" strokeWidth="3"/>
+          <rect x="20" y={y} width="22" height="6" rx="3" fill="#fff"/>
+          <rect x="46" y={y-3} width="12" height="12" rx="6" fill={i<2?"#60A5FA":"none"} stroke="#fff" strokeWidth="3"/>
         </g>
       ))}
     </svg>
@@ -2188,9 +2337,9 @@ function LineupIcon(){
 function GridIcon(){
   // four groups of four: one found
   return (
-    <svg width="76" height="76" viewBox="0 0 76 76" fill="none" aria-hidden="true">
+    <svg width="64" height="64" viewBox="0 0 76 76" fill="none" aria-hidden="true">
       {[[6,6],[40,6],[6,40],[40,40]].map(([x,y],i)=>(
-        <rect key={i} x={x} y={y} width="30" height="30" rx="6" fill={i===0?"#B45309":"#fff"} stroke="#111827" strokeWidth="4"/>
+        <rect key={i} x={x} y={y} width="30" height="30" rx="6" fill={i===0?"#F97316":"none"} stroke="#fff" strokeWidth="4"/>
       ))}
       <path d="M14 21h14M21 14v14" stroke="#fff" strokeWidth="4" strokeLinecap="round"/>
     </svg>
@@ -2198,66 +2347,77 @@ function GridIcon(){
 }
 
 function Landing({onPlay,onPlayLineup,onPlayFeatured,onPractice,dark,mode}) {
-  const bg=dark?"#0B0F19":"#F3F4F6";
   const isPractice=mode==="practice";
   const fd=loadStats(), streak=liveStreak(fd), fdDone=fd.lastPlayed===new Date().toDateString();
   const ls=loadLineupStats(), lsDone=playedLineupToday();
-  const today=new Date().toLocaleDateString(undefined,{weekday:"long",month:"short",day:"numeric"});
-  const DISPLAYF="'Barlow Condensed','Arial Narrow',sans-serif";
-  const card=(color,onClick,label,children)=>(
-    <button onClick={onClick} aria-label={label} style={{width:"100%",maxWidth:"440px",textAlign:"left",background:color,color:"#111827",
-      border:"none",borderRadius:"20px",padding:"18px 18px 16px",marginBottom:"14px",cursor:"pointer",display:"flex",flexDirection:"column",
-      gap:"10px",minHeight:"176px",WebkitTapHighlightColor:"transparent",touchAction:"manipulation",boxShadow:"0 1px 2px rgba(17,24,39,.08)"}}>
-      {children}
+  const day=new Date().toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"}).toUpperCase();
+  const F="'Barlow Condensed','Arial Narrow',sans-serif";
+  const RED="#E11D2E";
+  // turf: faint yard lines every 10%, the way a broadcast field graphic reads
+  const turf="repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 2px,transparent 2px 10%)";
+  const tile=(accent,onClick,label,children)=>(
+    <button onClick={onClick} aria-label={label} style={{width:"100%",maxWidth:"440px",textAlign:"left",color:"#fff",border:"none",
+      borderRadius:"14px",padding:0,marginBottom:"12px",cursor:"pointer",overflow:"hidden",position:"relative",
+      background:`${turf},linear-gradient(135deg,#0B1530 0%,#111C3D 60%,#0B1530 100%)`,
+      boxShadow:"0 6px 18px rgba(11,21,48,.25)",WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}>
+      <div style={{height:"6px",background:accent}}/>
+      <div style={{padding:"14px 16px 16px",display:"flex",flexDirection:"column",gap:"10px"}}>{children}</div>
     </button>
   );
-  const head=(title,blurb,icon)=>(
+  const head=(kicker,title,blurb,icon)=>(
     <div style={{display:"flex",gap:"12px",alignItems:"flex-start"}}>
       <div style={{flex:1,minWidth:0}}>
-        <div style={{fontFamily:DISPLAYF,fontWeight:800,fontSize:"36px",lineHeight:1,letterSpacing:"0.2px"}}>{title}</div>
-        <div style={{fontSize:"16px",lineHeight:1.35,marginTop:"6px",color:"#1F2937"}}>{blurb}</div>
+        <div style={{fontFamily:F,fontWeight:800,fontSize:"13px",letterSpacing:"1.5px",color:"#A3B3D9"}}>{kicker}</div>
+        <div style={{fontFamily:F,fontWeight:800,fontStyle:"italic",fontSize:"42px",lineHeight:.95,textTransform:"uppercase",marginTop:"2px"}}>{title}</div>
+        <div style={{fontSize:"15px",lineHeight:1.35,marginTop:"6px",color:"#D6DEF2"}}>{blurb}</div>
       </div>
-      {icon}
+      <div style={{flex:"none",marginTop:"6px"}}>{icon}</div>
     </div>
   );
-  const foot=(left,right)=>(
-    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"10px",marginTop:"auto"}}>
-      <span style={{fontWeight:700,fontSize:"16px"}}>{left}</span>
-      <span style={{fontFamily:DISPLAYF,fontWeight:800,fontSize:"16px",letterSpacing:"0.5px",background:"#111827",color:"#fff",
-        borderRadius:"999px",padding:"8px 16px",whiteSpace:"nowrap"}}>{right}</span>
+  const foot=(chips,cta,accent)=>(
+    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"10px"}}>
+      <div style={{display:"flex",gap:"6px",flexWrap:"wrap",minWidth:0}}>{chips}</div>
+      <span style={{fontFamily:F,fontWeight:800,fontStyle:"italic",fontSize:"18px",letterSpacing:"0.5px",background:accent,color:"#fff",
+        padding:"9px 20px",clipPath:"polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)",whiteSpace:"nowrap"}}>{cta}</span>
     </div>
   );
-  const status=t=><div style={{fontSize:"14px",fontWeight:600,color:"#1F2937"}}>{t}</div>;
+  const chip=(t,strong)=>(
+    <span key={t} style={{fontFamily:F,fontWeight:700,fontSize:"14px",letterSpacing:"0.4px",padding:"4px 9px",borderRadius:"4px",
+      background:strong?"rgba(255,255,255,.16)":"rgba(255,255,255,.08)",color:"#fff",whiteSpace:"nowrap"}}>{t}</span>
+  );
   const link=(label,onClick,href)=>{
-    const st={background:"none",border:"none",padding:"8px 4px",cursor:"pointer",fontFamily:DISPLAYF,fontWeight:700,fontSize:"14px",
+    const st={background:"none",border:"none",padding:"8px 6px",cursor:"pointer",fontFamily:F,fontWeight:700,fontSize:"14px",
       letterSpacing:"0.4px",color:dark?"#A3ACBA":"#4B5563",textDecoration:"none"};
     return href?<a href={href} target="_blank" rel="noopener noreferrer" style={st}>{label}</a>:<button onClick={onClick} style={st}>{label}</button>;
   };
 
   return (
-    <div style={{background:bg,display:"flex",flexDirection:"column",alignItems:"center",padding:"18px 16px 24px"}}>
-      <div style={{width:"100%",maxWidth:"440px",fontSize:"15px",color:dark?"#A3ACBA":"#4B5563",margin:"0 0 14px 4px"}}>
-        {isPractice?"Practice mode. No streak on the line.":"Two daily NFL games. New ones every morning."}
+    <div style={{background:dark?"#0B0F19":"#EEF1F6",display:"flex",flexDirection:"column",alignItems:"center",padding:"0 16px 24px",minHeight:"calc(100vh - 59px)"}}>
+      {/* scoreboard strip */}
+      <div style={{width:"calc(100% + 32px)",background:"#16223F",color:"#fff",display:"flex",alignItems:"stretch",marginBottom:"14px",
+        fontFamily:F,fontWeight:700,fontSize:"14px",letterSpacing:"0.6px",overflowX:"auto",whiteSpace:"nowrap"}}>
+        <span style={{background:RED,padding:"8px 12px",fontWeight:800,fontStyle:"italic"}}>{isPractice?"PRACTICE":day}</span>
+        <span style={{padding:"8px 12px"}}>START/SIT #{getLineupNumber()}{ls.played?` · ${lineupRecord(ls)}`:""}</span>
+        <span style={{padding:"8px 12px",borderLeft:"1px solid rgba(255,255,255,.14)"}}>FOUR DOWNS #{getTodaysPuzzleNumber()}{streak>0?` · 🔥${streak}`:""}</span>
       </div>
 
-      {!isPractice&&card("#A7C7FF",onPlayLineup,"Play Start/Sit",<>
-        {head("Start/Sit","Set a lineup from a real NFL week. Beat the House.",<LineupIcon/>)}
-        {ls.played>0&&status(lsDone?`Locked in · ${lineupRecord(ls)} vs the House`:`${lineupRecord(ls)} vs the House`)}
-        {foot(today,lsDone?"ARCHIVE":"PLAY")}
+      {!isPractice&&tile("#2563EB",onPlayLineup,"Play Start/Sit",<>
+        {head("DAILY FANTASY","Start/Sit","Set a lineup from a real NFL week. Beat the House.",<LineupIcon/>)}
+        {foot(<>{ls.played>0&&chip(`${lineupRecord(ls)} VS THE HOUSE`,true)}{lsDone&&chip("LOCKED IN")}{ls.perfects>0&&chip(`${ls.perfects} PERFECT`)}</>,
+          lsDone?"ARCHIVE":"PLAY","#2563EB")}
       </>)}
 
-      {card("#F9C784",isPractice?onPlay:onPlay,"Play Four Downs",<>
-        {head("Four Downs","Sixteen players. Four hidden groups. Four downs.",<GridIcon/>)}
-        {!isPractice&&(streak>0||fdDone)&&status(fdDone?`Solved today${streak>0?` · ${streak}-day streak`:""}`:`${streak}-day streak on the line`)}
-        {foot(isPractice?"Practice":today,fdDone&&!isPractice?"SOLVED":"PLAY")}
+      {tile("#F97316",onPlay,"Play Four Downs",<>
+        {head("DAILY NFL PUZZLE","Four Downs","Sixteen players. Four hidden groups. Four downs.",<GridIcon/>)}
+        {foot(<>{!isPractice&&streak>0&&chip(`${streak}-DAY STREAK`,true)}{!isPractice&&fdDone&&chip("SOLVED")}</>,
+          fdDone&&!isPractice?"SOLVED":"PLAY","#F97316")}
       </>)}
 
       {!isPractice&&<div style={{width:"100%",maxWidth:"440px"}}><FeaturedBanner dark={dark} onPlay={onPlayFeatured}/></div>}
 
-      <div style={{marginTop:"10px",display:"flex",gap:"8px",alignItems:"center",flexWrap:"wrap",justifyContent:"center"}}>
+      <div style={{marginTop:"8px",display:"flex",gap:"6px",alignItems:"center",flexWrap:"wrap",justifyContent:"center"}}>
         {!isPractice&&onPractice&&hasPracticeArchive()&&link("FOUR DOWNS ARCHIVE →",onPractice)}
         {link("CONTACT US →",null,FEEDBACK_URL)}
-        {SUBMIT_PUZZLE_URL&&link("BUILD A PUZZLE →",null,SUBMIT_PUZZLE_URL)}
       </div>
     </div>
   );
