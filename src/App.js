@@ -1393,6 +1393,27 @@ const FEATURED_PUZZLES = [
       { id:"C", players:["PATRICK MAHOMES","JOSH ALLEN","BROCK PURDY","JAMES COOK"], label:"PLAYS FOR A TEAM THAT STARTED 3-0", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["JAXON SMITH-NJIGBA","GARRETT WILSON","KENYON SADIQ","DRAKE LONDON"], label:"HAD 100+ RECEIVING YARDS IN WEEK 3", color:"#8B1A2A", difficulty:4 }
     ]
+  },
+  {
+    id: "wk-2026-10-06",
+    weekLabel: "WEEK OF OCT 6",
+    themeTitle: "WEEK 4 REWIND",
+    themeBlurb: "Three teams still perfect, 400-yard days that still ended in losses, and a rough Sunday in the trainer's room.",
+    activeFrom: "2026-10-06",
+    activeUntil: "2026-10-13",
+    title: "FEATURED · WEEK 4 REWIND",
+    players: [
+      "PATRICK MAHOMES","BROCK PURDY","CHRISTIAN McCAFFREY","KYLER MURRAY",
+      "JOE BURROW","JARED GOFF","KIRK COUSINS","C.J. STROUD",
+      "CeeDEE LAMB","TETAIROA McMILLAN","PUKA NACUA","CARNELL TATE",
+      "LAMAR JACKSON","JA'MARR CHASE","SAQUON BARKLEY","D.J. MOORE"
+    ],
+    groups: [
+      { id:"A", players:["PATRICK MAHOMES","BROCK PURDY","CHRISTIAN McCAFFREY","KYLER MURRAY"], label:"PLAYS FOR A TEAM THAT'S 4-0", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["JOE BURROW","JARED GOFF","KIRK COUSINS","C.J. STROUD"], label:"THREW FOR 300+ YARDS IN A WEEK 4 LOSS", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["CeeDEE LAMB","TETAIROA McMILLAN","PUKA NACUA","CARNELL TATE"], label:"HAD 125+ RECEIVING YARDS IN WEEK 4", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["LAMAR JACKSON","JA'MARR CHASE","SAQUON BARKLEY","D.J. MOORE"], label:"EXITED HIS WEEK 4 GAME WITH AN INJURY", color:"#8B1A2A", difficulty:4 }
+    ]
   }
 ];
 
