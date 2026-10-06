@@ -2604,6 +2604,9 @@ function Game({puzzle,dark,onFinish,mode,onPlayFeatured}) {
 // Hash routing needs no server rewrite, so these work today. Each game can be
 // posted separately, and referrers attributed separately.
 const ROUTES={"#/start-sit":"startsit","#/four-downs":"game","#/locker":"locker","#/how":"howto"};
+// Ad platforms sometimes append their own tracking after the link, which lands
+// after the "#" (e.g. #/four-downs?rdt_cid=...). Match on the route alone.
+const routeFor=h=>ROUTES[String(h||"").split(/[?&]/)[0]]||"home";
 const SCREEN_HASH={startsit:"#/start-sit",game:"#/four-downs",locker:"#/locker",howto:"#/how",home:"#/"};
 
 export default function App() {
@@ -2640,14 +2643,14 @@ export default function App() {
     try { return !localStorage.getItem("pd_onboarding_seen"); } catch { return true; }
   });
   const [screen,setScreen]=useState(()=>{
-    try{ return ROUTES[window.location.hash]||"home"; }catch{ return "home"; }
+    try{ return routeFor(window.location.hash); }catch{ return "home"; }
   });
   useEffect(()=>{
     const h=SCREEN_HASH[screen]||"#/";
     try{ if(window.location.hash!==h) window.history.replaceState(null,"",h); }catch{}
   },[screen]);
   useEffect(()=>{
-    const onHash=()=>setScreen(ROUTES[window.location.hash]||"home");
+    const onHash=()=>setScreen(routeFor(window.location.hash));
     window.addEventListener("hashchange",onHash);
     return ()=>window.removeEventListener("hashchange",onHash);
   },[]);
