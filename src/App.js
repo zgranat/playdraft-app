@@ -1414,6 +1414,27 @@ const FEATURED_PUZZLES = [
       { id:"C", players:["CeeDEE LAMB","TETAIROA McMILLAN","PUKA NACUA","CARNELL TATE"], label:"HAD 125+ RECEIVING YARDS IN WEEK 4", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["LAMAR JACKSON","JA'MARR CHASE","SAQUON BARKLEY","D.J. MOORE"], label:"EXITED HIS WEEK 4 GAME WITH AN INJURY", color:"#8B1A2A", difficulty:4 }
     ]
+  },
+  {
+    id: "wk-2026-10-13",
+    weekLabel: "WEEK OF OCT 13",
+    themeTitle: "WEEK 5 REWIND",
+    themeBlurb: "A 27-27 tie, three teams still looking for their first win, and touchdowns everywhere else. Everyone here made Sunday's box score.",
+    activeFrom: "2026-10-13",
+    activeUntil: "2026-10-20",
+    title: "FEATURED · WEEK 5 REWIND",
+    players: [
+      "JUSTIN HERBERT","CAM WARD","CALVIN RIDLEY","MALIK WILLIS",
+      "JAHMYR GIBBS","AARON JONES","JAYDEN DANIELS","JAYLEN WARREN",
+      "JOE BURROW","AARON RODGERS","JAMEIS WINSTON","JARED GOFF",
+      "CHRISTIAN WATSON","JAMESON WILLIAMS","PAT FREIERMUTH","ISAIAH LIKELY"
+    ],
+    groups: [
+      { id:"A", players:["JUSTIN HERBERT","CAM WARD","CALVIN RIDLEY","MALIK WILLIS"], label:"PLAYS FOR A TEAM THAT'S 0-5", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["JAHMYR GIBBS","AARON JONES","JAYDEN DANIELS","JAYLEN WARREN"], label:"RUSHED FOR 100+ YARDS IN WEEK 5", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JOE BURROW","AARON RODGERS","JAMEIS WINSTON","JARED GOFF"], label:"THREW 3+ TOUCHDOWN PASSES IN WEEK 5", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["CHRISTIAN WATSON","JAMESON WILLIAMS","PAT FREIERMUTH","ISAIAH LIKELY"], label:"CAUGHT TWO TOUCHDOWN PASSES IN WEEK 5", color:"#8B1A2A", difficulty:4 }
+    ]
   }
 ];
 
