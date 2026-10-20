@@ -206,6 +206,14 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
 
   const aligned = useMemo(() => alignToHouse(lineup, house, byId), [lineup, house, byId]);
   const callCount = aligned.filter((id, k) => id !== house[k]).length;
+  // Chess-puzzle framing: the perfect lineup is exactly N moves (players swapped in)
+  // from the House's. Players see N up front and must make exactly N moves to lock.
+  const perfectN = useMemo(() => {
+    const best = lineupPercentile(puzzle.tiles, 0).bestIds;
+    return best.filter(id => !puzzle.houseIds.includes(id)).length;
+  }, [puzzle]);
+  const canLock = perfectN === 0 ? true : callCount === perfectN;
+  const plural = n => (n === 1 ? "" : "S");
   const myProj = sum(lineup, byId, "avg"), houseProj = sum(house, byId, "avg");
 
   /* ---------- lineup moves ---------- */
@@ -359,7 +367,7 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
   const shareLines = r => {
     const head = r.outcome === "won" ? "\u2705 Beat the House" : r.outcome === "lost" ? "\u274C Lost to the House" : "\u{1F91D} Pushed with the House";
     const lines = [`${head} ${f1(r.score)}\u2013${f1(puzzle.house)}`];
-    lines.push(r.perfect ? "\u{1F3C6} PERFECT LINEUP" : `\u{1F3AF} ${f1(r.best - r.score)} off perfect`);
+    lines.push(r.perfect ? `\u{1F3C6} PERFECT IN ${perfectN}` : `\u265F\uFE0F Found ${r.moves.filter(m => m.made).length}/${r.moves.length} perfect moves \u00B7 ${f1(r.best - r.score)} off`);
     lines.push(`\u{1F4CA} Top ${Math.max(1, 100 - r.pct)}% of ${r.n} possible lineups`);
     if (field && field.players >= 5) lines.push(`\u{1F465} Better than ${field.pct}% of players today`);
     if (!practice && stats.played) lines.push(`\u{1F3C8} ${lineupRecord(stats)} vs the House this season`);
@@ -493,7 +501,7 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
             </div>
             <div style={{ fontSize: 12.5, fontWeight: 700, borderRadius: 999, padding: "5px 10px", whiteSpace: "nowrap",
               color: callCount ? C.call : C.muted, background: callCount ? C.callBg : C.panelHi }}>
-              {callCount ? `${callCount} call${callCount > 1 ? "s" : ""} vs the House` : "Same as the House"}
+              {`${callCount}/${perfectN} moves`}
             </div>
             <div style={{ textAlign: "right" }}>
               <div style={{ fontFamily: DISPLAY, fontWeight: 700, fontSize: 19 }}>The House</div>
@@ -507,11 +515,17 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
               what you'd have known at kickoff. The House starts the best season average at every slot.
               Matchup: easy means that defense has given up a lot to his position, tough means it hasn't.
               You start with his lineup: tap a slot to swap players, tap a name for his season so far.
+              The perfect lineup is always a set number of moves away. Make exactly that many moves, then lock.
               <br /><b style={{ color: C.fg }}>Only the slots where you differ decide the game.</b> 0.5 PPR.
             </div>
           )}
-          {!showHow && <div style={{ marginTop: 10, fontSize: 13, color: C.muted, lineHeight: 1.45 }}>
-            Same roster as the House. He starts the best season average. Beat him where he's wrong.</div>}
+          <div style={{ marginTop: 12, display: "flex", alignItems: "center", gap: 10, background: C.ink, color: C.onInk,
+            borderRadius: 10, padding: "10px 12px" }}>
+            <span style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 22, letterSpacing: ".03em", whiteSpace: "nowrap" }}>
+              PERFECT IN {perfectN}</span>
+            <span style={{ fontSize: 13, lineHeight: 1.35 }}>
+              The best lineup is {perfectN} move{perfectN === 1 ? "" : "s"} from the House's. Find {perfectN === 1 ? "it" : "them"}.</span>
+          </div>
         </header>
 
         <div style={s.label}><span>STARTERS</span><span>AVG</span></div>
@@ -527,8 +541,11 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
               <button onClick={() => setMoving(null)} style={{ ...s.secondary, height: 44 }}>Cancel</button>
             </div>
           ) : (
-            <button onClick={lock} style={s.primary}>
-              {callCount ? "LOCK LINEUP & PLAY" : "PLAY THE HOUSE'S LINEUP"}</button>
+            <button onClick={canLock ? lock : undefined} disabled={!canLock} aria-disabled={!canLock}
+              style={{ ...s.primary, opacity: canLock ? 1 : 0.45, cursor: canLock ? "pointer" : "default" }}>
+              {canLock ? "LOCK LINEUP & PLAY"
+                : callCount < perfectN ? `MAKE ${perfectN - callCount} MORE MOVE${plural(perfectN - callCount)}`
+                : `${callCount - perfectN} MOVE${plural(callCount - perfectN)} TOO MANY`}</button>
           )}
         </div>
 
@@ -680,7 +697,7 @@ export default function StartSit({ onExit, onCrossPromo, dark = false, mode: ini
             <div style={{ marginTop: 10, background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "12px 14px" }}>
               <div style={{ fontSize: 15, fontWeight: 700 }}>
                 {r.moves.length === 0 ? "The House's lineup was perfect today."
-                  : `Perfect was ${r.moves.length} move${r.moves.length > 1 ? "s" : ""} away. You made ${r.moves.filter(m => m.made).length} of them.`}</div>
+                  : `You found ${r.moves.filter(m => m.made).length} of ${r.moves.length} perfect move${r.moves.length > 1 ? "s" : ""}.`}</div>
               <div style={{ ...s.num, fontSize: 13.5, color: C.muted, marginTop: 2 }}>
                 Best possible {f1(r.best)} · you were {f1(r.best - r.score)} off</div>
               {r.moves.filter(m => !m.made).map(m => (
