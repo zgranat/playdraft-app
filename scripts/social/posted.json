@@ -7,5 +7,14 @@
     "team": "DAL",
     "pts": 45.3,
     "date": "2026-10-19"
+  },
+  {
+    "n": 7,
+    "season": 2017,
+    "week": 12,
+    "player": "Julio Jones",
+    "team": "ATL",
+    "pts": 44.8,
+    "date": "2026-10-20"
   }
 ]
