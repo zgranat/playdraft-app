@@ -147,7 +147,7 @@ export default async function handler(req, res) {
         'lineup_open', 'lineup_start', 'lineup_win', 'lineup_loss', 'lineup_push', 'lineup_share'].map(sumWeek));
     const games = {
       fourdowns: { opened: fdOpen, played: fdStart, finished: fdWin + fdLoss, won: fdWin, shared: fdShare },
-      startsit: { opened: ssOpen, played: ssStart, finished: ssWin + ssLoss + ssPush, won: ssWin, shared: ssShare },
+      startsit: { opened: ssOpen, played: ssStart, finished: ssWin + ssLoss + ssPush, won: ssWin, pushed: ssPush, shared: ssShare },
     };
 
     // Start/Sit play quality, last 7 days (from /api/lineup-score). If fades
@@ -155,13 +155,16 @@ export default async function handler(req, res) {
     // reading the cards; if fade hit rate sits near 50%, they are guessing.
     const lsDays = await Promise.all(week.map(d => hgetall(`ls:day:${d}`)));
     const ls = lsDays.reduce((a, x) => ({ players: a.players + (x.players || 0), calls: a.calls + (x.calls || 0),
-      fades: a.fades + (x.fades || 0), fadeHits: a.fadeHits + (x.fadeHits || 0) }),
-      { players: 0, calls: 0, fades: 0, fadeHits: 0 });
+      fades: a.fades + (x.fades || 0), fadeHits: a.fadeHits + (x.fadeHits || 0), noCalls: a.noCalls + (x.noCalls || 0) }),
+      { players: 0, calls: 0, fades: 0, fadeHits: 0, noCalls: 0 });
     const ssQuality = {
       players: ls.players,
       avgCalls: avg(ls.calls, ls.players),
       fadesPerPlayer: avg(ls.fades, ls.players),
       fadeHitRate: pct(ls.fadeHits, ls.fades),
+      // Locked the House's lineup unchanged (an automatic push). Recorded from
+      // 2026-10-20 on; days before that have no noCalls field.
+      noCallRate: pct(ls.noCalls, ls.players),
     };
 
     // 3-day return by first-touch source. A day's new visitors form a cohort;
@@ -217,13 +220,15 @@ export default async function handler(req, res) {
           ${vsRow('Played', `${games.fourdowns.played}`, `${games.startsit.played}`)}
           ${vsRow('Finished', games.fourdowns.finished, games.startsit.finished)}
           ${vsRow('Won', `${games.fourdowns.won} <span style="color:#999;font-weight:normal;">solved</span>`, `${games.startsit.won} <span style="color:#999;font-weight:normal;">beat House</span>`)}
+          ${vsRow('Pushed', '', `${games.startsit.pushed} <span style="color:#999;font-weight:normal;">tied House</span>`)}
           ${vsRow('Shared', games.fourdowns.shared, games.startsit.shared)}
         </table>
         <p style="color:#555;font-size:13px;margin:8px 0 0;line-height:1.5;">
           Start/Sit play quality: ${ssQuality.players} ranked lineups,
-          ${show(ssQuality.avgCalls)}/9 calls right on average,
-          ${show(ssQuality.fadesPerPlayer)} House fades per player,
-          ${show(ssQuality.fadeHitRate, '%')} of fades hit.
+          ${show(ssQuality.noCallRate, '%')} locked the House's lineup unchanged,
+          ${show(ssQuality.fadesPerPlayer)} calls vs the House per player,
+          ${show(ssQuality.avgCalls)} winning calls per player,
+          ${show(ssQuality.fadeHitRate, '%')} of calls beat the House's pick.
           <span style="color:#999;">Random tapping hits about 50% of fades.</span>
         </p>`;
     const sourcesHtml = `

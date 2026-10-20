@@ -57,6 +57,7 @@ export default async function handler(req, res) {
           ['HINCRBY', day, 'calls', String(int(body.calls))],
           ['HINCRBY', day, 'fades', String(int(body.fades))],
           ['HINCRBY', day, 'fadeHits', String(int(body.fadeHits))],
+          ['HINCRBY', day, 'noCalls', int(body.fades) === 0 ? '1' : '0'],
           ['EXPIRE', day, String(TTL)],
         ]);
       }
