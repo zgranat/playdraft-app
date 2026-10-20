@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { playedLineupToday, loadLineupStats, lineupRecord, lineupLast7, getLineupNumber } from "./lineupMeta";
 // The lineup bank is big, so Start/Sit loads only when someone opens it.
-const StartSit = lazy(() => import("./StartSit"));
+const StartSit = lazy(() => import("./StartSitDraft"));
 
 // ============================================================
 // PUZZLE DATA
@@ -2190,19 +2190,17 @@ function ScoringPage({dark,game:initial="fourdowns",onClose}) {
         <GameTabs game={game} setGame={setGame} dark={dark}/>
         {game==="startsit" ? (<>
         <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"normal",marginBottom:"18px",lineHeight:1.6}}>Fantasy is never all skill. Start/Sit scores your calls, not just your luck.</div>
-        {box("🏆 WIN, LOSE OR PUSH","Add up the fantasy points of your seven starters (0.5 PPR). Beat the House's total and you win the day. Keep his lineup and you match him exactly: a push.")}
-        {box("✅ YOUR CALLS","A call is any slot where you started someone the House didn't. It's won when your player outscored his.")}
-        {box("🎯 CALLS WON","Every call that beat the House's pick counts toward your career total in the Locker Room.")}
-        {box("📊 LINEUPS BEATEN","Every lineup you could have set from the same twelve players is ranked. Your score is ranked against all of them, and once enough people have played, against everyone who played that day. Everyone gets the same players and the same results, so the luck cancels out.")}
-        {box("📲 YOUR SHARE CARD","Your result, your score and how close you got to perfect. No players and no slots, so it gives nothing away to anyone who hasn't played yet.",(
+        {box("✅ SIX CALLS","Each day is one real NFL week. Pick 1 of 2 players at QB, RB, RB, WR, WR and TE using only what you'd have known at kickoff. A call is right when your pick outscored the other player (0.5 PPR).")}
+        {box("🏆 WIN, LOSE OR PUSH","The House always takes the player with the higher season average. Your six picks' total vs his total decides the day.")}
+        {box("🎯 PERFECT","Get all six calls right and you've set the best lineup possible from that week.")}
+        {box("🥊 CHALLENGE YOUR FRIENDS","Your share link opens the exact same week for whoever taps it, with your score to beat.",(
           <div style={mono}>
-            PlayDraft Start/Sit #28 · 2010<br/>
-            ✅ Beat the House 95.5–85.9<br/>
-            🎯 8.0 off perfect<br/>
-            📊 Top 5% of 264 possible lineups
+            PlayDraft Start/Sit · 2010 Week 11<br/>
+            🎯 5/6 right calls · 98.4 pts, beat the House<br/>
+            🟩🟩🟥🟩🟩🟩<br/>
+            Beat me: playdraft.app/?c=43&amp;s=984&amp;h=5
           </div>))}
-        {box("🏆 PERFECT LINEUP","Out of every lineup you could have set from the twelve players, one scores the most. Start exactly that seven and you've set a perfect lineup. Every result shows how far you were from it.")}
-        {box("📈 YOUR RECORD","Every daily lineup goes on your record against the House: wins, losses and pushes, plus your win streak. Archive lineups are practice and don't count.")}
+        {box("📈 YOUR RECORD","Only your first daily play counts toward your record against the House. Play another week as often as you like for fun.")}
         </>) : (<>
         <div style={{fontFamily:"'Barlow',system-ui,-apple-system,sans-serif",fontSize:"15px",color:dark?"#666":"#888",fontStyle:"normal",marginBottom:"18px",lineHeight:1.6}}>Speed and accuracy are everything. Everyone can win; the best players win faster.</div>
 

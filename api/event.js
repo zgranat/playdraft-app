@@ -9,7 +9,7 @@ const FEATURED_TYPES = new Set(['featured_start', 'featured_win', 'featured_loss
 // Per-game comparison. fd_open = opened Four Downs; lineup_* = Start/Sit
 // (open, lock in a lineup, beat/lose/push with the House, share). Bucketed by day
 // like the daily Four Downs events.
-const COMPARE_TYPES = new Set(['fd_open', 'lineup_open', 'lineup_start', 'lineup_win', 'lineup_loss', 'lineup_push', 'lineup_share']);
+const COMPARE_TYPES = new Set(['fd_open', 'lineup_open', 'lineup_start', 'lineup_win', 'lineup_loss', 'lineup_push', 'lineup_share', 'lineup_challenge']);
 const ALLOWED = new Set([...DAILY_TYPES, ...FEATURED_TYPES, ...COMPARE_TYPES]);
 // Finishing a game, per game. Credited to the player's first-touch source so
 // an ad variant can be judged on finished games, not clicks.

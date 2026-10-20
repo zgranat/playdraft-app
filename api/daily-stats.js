@@ -142,12 +142,12 @@ export default async function handler(req, res) {
     }
     const sumWeek = async (type) =>
       (await Promise.all(week.map(d => scard(`evt:${type}:${d}`)))).reduce((a, b) => a + b, 0);
-    const [fdOpen, fdStart, fdWin, fdLoss, fdShare, ssOpen, ssStart, ssWin, ssLoss, ssPush, ssShare] =
+    const [fdOpen, fdStart, fdWin, fdLoss, fdShare, ssOpen, ssStart, ssWin, ssLoss, ssPush, ssShare, ssChallenge] =
       await Promise.all(['fd_open', 'start', 'win', 'loss', 'share',
-        'lineup_open', 'lineup_start', 'lineup_win', 'lineup_loss', 'lineup_push', 'lineup_share'].map(sumWeek));
+        'lineup_open', 'lineup_start', 'lineup_win', 'lineup_loss', 'lineup_push', 'lineup_share', 'lineup_challenge'].map(sumWeek));
     const games = {
       fourdowns: { opened: fdOpen, played: fdStart, finished: fdWin + fdLoss, won: fdWin, shared: fdShare },
-      startsit: { opened: ssOpen, played: ssStart, finished: ssWin + ssLoss + ssPush, won: ssWin, pushed: ssPush, shared: ssShare },
+      startsit: { opened: ssOpen, played: ssStart, finished: ssWin + ssLoss + ssPush, won: ssWin, pushed: ssPush, shared: ssShare, challenges: ssChallenge },
     };
 
     // Start/Sit play quality, last 7 days (from /api/lineup-score). If fades
@@ -222,6 +222,7 @@ export default async function handler(req, res) {
           ${vsRow('Won', `${games.fourdowns.won} <span style="color:#999;font-weight:normal;">solved</span>`, `${games.startsit.won} <span style="color:#999;font-weight:normal;">beat House</span>`)}
           ${vsRow('Pushed', '', `${games.startsit.pushed} <span style="color:#999;font-weight:normal;">tied House</span>`)}
           ${vsRow('Shared', games.fourdowns.shared, games.startsit.shared)}
+          ${vsRow('Challenge links opened', '', games.startsit.challenges)}
         </table>
         <p style="color:#555;font-size:13px;margin:8px 0 0;line-height:1.5;">
           Start/Sit play quality: ${ssQuality.players} ranked lineups,
