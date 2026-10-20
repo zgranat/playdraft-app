@@ -1,0 +1,12 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="robots" content="noindex">
+<title>PlayDraft</title>
+<script>
+// Short vault-post links: /v/42 -> week 42 as a Start/Sit challenge, tagged
+// as X traffic so the stats email credits it to x/history.
+(function () {
+  var m = location.pathname.match(/\/v\/(\d{1,4})/);
+  var q = m ? "?c=" + m[1] + "&utm_source=x&utm_content=history" : "?utm_source=x&utm_content=history";
+  location.replace("/" + q + "#/start-sit");
+})();
+</script></head><body></body></html>

@@ -49,7 +49,7 @@ function statParts(s = {}) {
 }
 const parts = statParts(hero.stats);
 const where = `${hero.home ? "vs" : "at"} ${hero.opp}`;
-const link = `playdraft.app/?c=${n}&utm_source=x&utm_content=history#/start-sit`;
+const link = `playdraft.app/v/${n}`;   // public/v.html adds the challenge + utm tags
 const tagline = "Start 'em or sit 'em. History already knows.";
 
 const caption = [
@@ -60,6 +60,8 @@ const caption = [
   "",
   `${tagline}`,
   link,
+  "",
+  "#FantasyFootball",
 ].join("\n");
 
 const font = f => `data:font/woff2;base64,${fs.readFileSync(path.join(here, "fonts", f)).toString("base64")}`;
