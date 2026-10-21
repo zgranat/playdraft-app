@@ -16,5 +16,14 @@
     "team": "ATL",
     "pts": 44.8,
     "date": "2026-10-20"
+  },
+  {
+    "n": 23,
+    "season": 2019,
+    "week": 7,
+    "player": "Aaron Rodgers",
+    "team": "GB",
+    "pts": 43.8,
+    "date": "2026-10-21"
   }
 ]
