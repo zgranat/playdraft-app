@@ -25,5 +25,14 @@
     "team": "GB",
     "pts": 43.8,
     "date": "2026-10-21"
+  },
+  {
+    "n": 41,
+    "season": 2006,
+    "week": 11,
+    "player": "LaDainian Tomlinson",
+    "team": "SD",
+    "pts": 43.4,
+    "date": "2026-10-22"
   }
 ]
