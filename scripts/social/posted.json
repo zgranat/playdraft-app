@@ -34,5 +34,14 @@
     "team": "SD",
     "pts": 43.4,
     "date": "2026-10-22"
+  },
+  {
+    "n": 6,
+    "season": 2007,
+    "week": 6,
+    "player": "Adrian Peterson",
+    "team": "MIN",
+    "pts": 41.8,
+    "date": "2026-10-23"
   }
 ]
