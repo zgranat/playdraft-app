@@ -52,5 +52,14 @@
     "team": "JAX",
     "pts": 40.6,
     "date": "2026-10-24"
+  },
+  {
+    "n": 34,
+    "season": 2009,
+    "week": 6,
+    "player": "Tom Brady",
+    "team": "NE",
+    "pts": 39.2,
+    "date": "2026-10-25"
   }
 ]
