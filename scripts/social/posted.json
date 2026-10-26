@@ -61,5 +61,14 @@
     "team": "NE",
     "pts": 39.2,
     "date": "2026-10-25"
+  },
+  {
+    "n": 2,
+    "season": 2009,
+    "week": 14,
+    "player": "Chris Johnson",
+    "team": "TEN",
+    "pts": 38.1,
+    "date": "2026-10-26"
   }
 ]
