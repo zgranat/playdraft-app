@@ -1257,6 +1257,76 @@ const PUZZLES = [
       { id:"C", players:["PHILIP RIVERS","DAVANTE ADAMS","DOUG WILLIAMS","JOSH ALLEN"], label:"WORE NO. 17 IN THE NFL", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["JULIUS PEPPERS","JIMMY GRAHAM","MARTELLUS BENNETT","HA HA CLINTON-DIX"], label:"PLAYED FOR BOTH THE BEARS AND THE PACKERS", color:"#8B1A2A", difficulty:4 }
     ]
+  },
+  {
+    id: 126, title: "ROUND 126",
+    players: ["TOM BRADY", "JULIAN EDELMAN", "JAMES WHITE", "LeGARRETTE BLOUNT", "ERIC DICKERSON", "DON MEREDITH", "EMMANUEL SANDERS", "COURTLAND SUTTON", "TIM BROWN", "DESMOND HOWARD", "DeVONTA SMITH", "TRAVIS HUNTER", "FRANCO HARRIS", "TERRY BRADSHAW", "JACK TATUM", "KEN STABLER"],
+    groups: [
+      { id:"A", players:["TOM BRADY", "JULIAN EDELMAN", "JAMES WHITE", "LeGARRETTE BLOUNT"], label:"PLAYED FOR THE PATRIOTS' SUPER BOWL LI-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["ERIC DICKERSON", "DON MEREDITH", "EMMANUEL SANDERS", "COURTLAND SUTTON"], label:"PLAYED COLLEGE FOOTBALL AT SMU", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["TIM BROWN", "DESMOND HOWARD", "DeVONTA SMITH", "TRAVIS HUNTER"], label:"WON THE HEISMAN TROPHY AS A WIDE RECEIVER", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["FRANCO HARRIS", "TERRY BRADSHAW", "JACK TATUM", "KEN STABLER"], label:"PLAYED IN THE \"IMMACULATE RECEPTION\" GAME", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 127, title: "ROUND 127",
+    players: ["JOE MONTANA", "JERRY RICE", "RONNIE LOTT", "ROGER CRAIG", "GALE SAYERS", "JOHN RIGGINS", "AQIB TALIB", "DANA STUBBLEFIELD", "RAY GUY", "SHANE LECHLER", "PAT McAFEE", "JOHNNY HEKKER", "BERNIE KOSAR", "CRIS CARTER", "JOSH GORDON", "TERRELLE PRYOR"],
+    groups: [
+      { id:"A", players:["JOE MONTANA", "JERRY RICE", "RONNIE LOTT", "ROGER CRAIG"], label:"PLAYED FOR THE 49ERS' SUPER BOWL XXIV-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["GALE SAYERS", "JOHN RIGGINS", "AQIB TALIB", "DANA STUBBLEFIELD"], label:"PLAYED COLLEGE FOOTBALL AT KANSAS", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["RAY GUY", "SHANE LECHLER", "PAT McAFEE", "JOHNNY HEKKER"], label:"MADE THE PRO BOWL AS A PUNTER", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["BERNIE KOSAR", "CRIS CARTER", "JOSH GORDON", "TERRELLE PRYOR"], label:"SELECTED IN THE NFL SUPPLEMENTAL DRAFT", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 128, title: "ROUND 128",
+    players: ["PATRICK MAHOMES", "TRAVIS KELCE", "CHRIS JONES", "ISIAH PACHECO", "JORDAN LOVE", "BOBBY WAGNER", "MERLIN OLSEN", "KEVIN CURTIS", "ELI MANNING", "DAVID TYREE", "RANDY MOSS", "WES WELKER", "LUKE KUECHLY", "FLETCHER COX", "DOUG MARTIN", "HARRISON SMITH"],
+    groups: [
+      { id:"A", players:["PATRICK MAHOMES", "TRAVIS KELCE", "CHRIS JONES", "ISIAH PACHECO"], label:"PLAYED FOR THE CHIEFS' SUPER BOWL LVIII-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["JORDAN LOVE", "BOBBY WAGNER", "MERLIN OLSEN", "KEVIN CURTIS"], label:"PLAYED COLLEGE FOOTBALL AT UTAH STATE", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["ELI MANNING", "DAVID TYREE", "RANDY MOSS", "WES WELKER"], label:"PLAYED IN THE \"HELMET CATCH\" SUPER BOWL (XLII)", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["LUKE KUECHLY", "FLETCHER COX", "DOUG MARTIN", "HARRISON SMITH"], label:"SELECTED IN THE FIRST ROUND OF THE 2012 NFL DRAFT", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 129, title: "ROUND 129",
+    players: ["LAWRENCE TAYLOR", "PHIL SIMMS", "HARRY CARSON", "MARK BAVARO", "ANTONIO BROWN", "JOE STALEY", "ERIC FISHER", "COOPER RUSH", "DARRELLE REVIS", "JOE THOMAS", "DeMARCUS WARE", "ZACH THOMAS", "ED REED", "RICHARD SHERMAN", "TREVON DIGGS", "XAVIEN HOWARD"],
+    groups: [
+      { id:"A", players:["LAWRENCE TAYLOR", "PHIL SIMMS", "HARRY CARSON", "MARK BAVARO"], label:"PLAYED FOR THE GIANTS' SUPER BOWL XXI-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["ANTONIO BROWN", "JOE STALEY", "ERIC FISHER", "COOPER RUSH"], label:"PLAYED COLLEGE FOOTBALL AT CENTRAL MICHIGAN", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["DARRELLE REVIS", "JOE THOMAS", "DeMARCUS WARE", "ZACH THOMAS"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2023", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["ED REED", "RICHARD SHERMAN", "TREVON DIGGS", "XAVIEN HOWARD"], label:"LED THE NFL IN INTERCEPTIONS IN A SEASON", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 130, title: "ROUND 130",
+    players: ["DOUG WILLIAMS", "ART MONK", "DARRELL GREEN", "TIMMY SMITH", "CALVIN JOHNSON", "DEMARYIUS THOMAS", "KEITH BROOKING", "DORSEY LEVENS", "STEVE McNAIR", "KEVIN DYSON", "KURT WARNER", "ISAAC BRUCE", "AMARI COOPER", "TODD GURLEY", "MELVIN GORDON", "MARCUS PETERS"],
+    groups: [
+      { id:"A", players:["DOUG WILLIAMS", "ART MONK", "DARRELL GREEN", "TIMMY SMITH"], label:"PLAYED FOR WASHINGTON'S SUPER BOWL XXII-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["CALVIN JOHNSON", "DEMARYIUS THOMAS", "KEITH BROOKING", "DORSEY LEVENS"], label:"PLAYED COLLEGE FOOTBALL AT GEORGIA TECH", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["STEVE McNAIR", "KEVIN DYSON", "KURT WARNER", "ISAAC BRUCE"], label:"PLAYED IN SUPER BOWL XXXIV (\"ONE YARD SHORT\")", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["AMARI COOPER", "TODD GURLEY", "MELVIN GORDON", "MARCUS PETERS"], label:"SELECTED IN THE FIRST ROUND OF THE 2015 NFL DRAFT", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 131, title: "ROUND 131",
+    players: ["TOM BRADY", "ROB GRONKOWSKI", "SONY MICHEL", "STEPHON GILMORE", "CASE KEENUM", "KEVIN KOLB", "ED OLIVER", "ANDRE WARE", "TONY BOSELLI", "LeROY BUTLER", "RICHARD SEYMOUR", "BRYANT YOUNG", "DEACON JONES", "MERLIN OLSEN", "ROSEY GRIER", "LAMAR LUNDY"],
+    groups: [
+      { id:"A", players:["TOM BRADY", "ROB GRONKOWSKI", "SONY MICHEL", "STEPHON GILMORE"], label:"PLAYED FOR THE PATRIOTS' SUPER BOWL LIII-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["CASE KEENUM", "KEVIN KOLB", "ED OLIVER", "ANDRE WARE"], label:"PLAYED COLLEGE FOOTBALL AT HOUSTON", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["TONY BOSELLI", "LeROY BUTLER", "RICHARD SEYMOUR", "BRYANT YOUNG"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2022", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["DEACON JONES", "MERLIN OLSEN", "ROSEY GRIER", "LAMAR LUNDY"], label:"PLAYED ON THE RAMS' \"FEARSOME FOURSOME\" DEFENSIVE LINE", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 132, title: "ROUND 132",
+    players: ["LAWRENCE TAYLOR", "OTTIS ANDERSON", "JEFF HOSTETLER", "PHIL SIMMS", "JAY CUTLER", "JORDAN MATTHEWS", "CASEY HAYWARD", "ZACH CUNNINGHAM", "PEYTON MANNING", "CHARLES WOODSON", "JOHN LYNCH", "ALAN FANECA", "STEFON DIGGS", "MARCUS WILLIAMS", "DREW BREES", "ALVIN KAMARA"],
+    groups: [
+      { id:"A", players:["LAWRENCE TAYLOR", "OTTIS ANDERSON", "JEFF HOSTETLER", "PHIL SIMMS"], label:"PLAYED FOR THE GIANTS' SUPER BOWL XXV-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["JAY CUTLER", "JORDAN MATTHEWS", "CASEY HAYWARD", "ZACH CUNNINGHAM"], label:"PLAYED COLLEGE FOOTBALL AT VANDERBILT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["PEYTON MANNING", "CHARLES WOODSON", "JOHN LYNCH", "ALAN FANECA"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2021", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["STEFON DIGGS", "MARCUS WILLIAMS", "DREW BREES", "ALVIN KAMARA"], label:"PLAYED IN THE \"MINNEAPOLIS MIRACLE\" GAME", color:"#8B1A2A", difficulty:4 }
+    ]
   }
 ];
 const DIFF_LABELS = ["","1ST & EASY","2ND DOWN","3RD & LONG","4TH & GOAL"];
@@ -1595,6 +1665,27 @@ const FEATURED_PUZZLES = [
       { id:"B", players:["KENNETH WALKER III","KYLE PITTS","TRE TUCKER","D'ANDRE SWIFT"], label:"SCORED TWO TOUCHDOWNS IN WEEK 6", color:"#2E6B3E", difficulty:2 },
       { id:"C", players:["DAVANTE ADAMS","LADD McCONKEY","ROMEO DOUBS","RASHOD BATEMAN"], label:"LEFT HIS WEEK 6 GAME WITH AN INJURY", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["DESHAUN WATSON","DRAKE MAYE","JORDAN LOVE","AARON RODGERS"], label:"STARTING QB FOR A TEAM THAT'S 4-2", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: "wk-2026-10-27",
+    weekLabel: "WEEK OF OCT 27",
+    themeTitle: "WEEK 7 REWIND",
+    themeBlurb: "A Sunday in Paris, a walk-off in Detroit, and a pile of 2-5 teams running out of runway. Everyone here made Week 7's box score.",
+    activeFrom: "2026-10-27",
+    activeUntil: "2026-11-03",
+    title: "FEATURED · WEEK 7 REWIND",
+    players: [
+      "AARON RODGERS","DK METCALF","T.J. WATT","ALVIN KAMARA",
+      "TONY POLLARD","BUCKY IRVING","QUINSHON JUDKINS","JAMESON WILLIAMS",
+      "TEE HIGGINS","JAXON SMITH-NJIGBA","MALIK NABERS","AMON-RA ST. BROWN",
+      "C.J. STROUD","DANIEL JONES","GENO SMITH","BAKER MAYFIELD"
+    ],
+    groups: [
+      { id:"A", players:["AARON RODGERS", "DK METCALF", "T.J. WATT", "ALVIN KAMARA"], label:"PLAYED IN THE STEELERS-SAINTS GAME IN PARIS", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["TONY POLLARD", "BUCKY IRVING", "QUINSHON JUDKINS", "JAMESON WILLIAMS"], label:"SCORED TWO OR MORE TOUCHDOWNS IN WEEK 7", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["TEE HIGGINS", "JAXON SMITH-NJIGBA", "MALIK NABERS", "AMON-RA ST. BROWN"], label:"HAD 100+ RECEIVING YARDS IN WEEK 7", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["C.J. STROUD", "DANIEL JONES", "GENO SMITH", "BAKER MAYFIELD"], label:"STARTING QB FOR A TEAM THAT'S 2-5", color:"#8B1A2A", difficulty:4 }
     ]
   }
 ];
