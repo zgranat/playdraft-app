@@ -79,5 +79,14 @@
     "team": "DET",
     "pts": 37.9,
     "date": "2026-10-27"
+  },
+  {
+    "n": 15,
+    "season": 2009,
+    "week": 6,
+    "player": "Maurice Jones-Drew",
+    "team": "JAX",
+    "pts": 36.3,
+    "date": "2026-10-28"
   }
 ]
