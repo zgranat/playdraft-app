@@ -2901,6 +2901,7 @@ export default function App() {
       }
       captureSource();
       if (localStorage.getItem('pd_me') === '1') return;   // owner's own visits never count
+      if (navigator.webdriver) return;   // headless browsers (scripts, previews) aren't visitors
       fetch('/api/track', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

@@ -90,7 +90,8 @@ function buildCalls(p) {
 
 /* ---------- events ---------- */
 const SERVER_EVENTS = { opened: "lineup_open", locked: "lineup_start", won: "lineup_win",
-  lost: "lineup_loss", push: "lineup_push", shared: "lineup_share", challenge: "lineup_challenge" };
+  lost: "lineup_loss", push: "lineup_push", shared: "lineup_share", challenge: "lineup_challenge",
+  subscribed: "lineup_subscribe" };
 const isMe = () => { try { return localStorage.getItem("pd_me") === "1"; } catch { return false; } };
 const ident = () => {
   try { return { id: localStorage.getItem("pd_anon_id") || "unknown", src: localStorage.getItem("pd_src") || "unknown" }; }
@@ -102,8 +103,68 @@ function ev(name, props = {}) {
   if (!type || isMe()) return;
   try {
     fetch("/api/event", { method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ type, ...ident() }) }).catch(() => {});
+      body: JSON.stringify({ type, ...ident(), ...(props.via ? { via: props.via } : {}) }) }).catch(() => {});
   } catch {}
+}
+
+/* Consecutive daily weeks played, counting back from today (or yesterday, so
+   the streak still shows before today's game). */
+const playStreak = st => {
+  const days = new Set((st.log || []).map(x => x.n));
+  let k = days.has(todayN()) ? todayN() : todayN() - 1, run = 0;
+  while (days.has(k)) { run++; k--; }
+  return run;
+};
+const isPhone = () => { try { return /iPhone|iPad|Android/i.test(navigator.userAgent); } catch { return false; } };
+const subscribed = () => { try { return !!localStorage.getItem("draft_sub"); } catch { return false; } };
+
+/* Tomorrow's week + daily reminder signup: the reason to come back. Shares the
+   draft_sub flag and /api/subscribe with Four Downs, so one signup covers both. */
+function ComeBack({ C, nextWeek, streak }) {
+  const [email, setEmail] = useState("");
+  const [state, setState] = useState(subscribed() ? "done" : "idle");
+  const [err, setErr] = useState("");
+  const submit = () => {
+    const v = email.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) { setErr("Enter a valid email"); return; }
+    setErr(""); setState("sending");
+    fetch("/api/subscribe", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: v, game: "startsit" }) })
+      .then(r => r.json())
+      .then(d => {
+        if (d && d.ok) { try { localStorage.setItem("draft_sub", "1"); } catch {} setState("done"); ev("subscribed"); }
+        else { setErr("Couldn't sign up. Try again later."); setState("idle"); }
+      })
+      .catch(() => { setErr("Couldn't sign up. Try again later."); setState("idle"); });
+  };
+  return (
+    <div style={{ margin: "12px 16px 0", background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, padding: "14px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8 }}>
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".08em", color: C.muted }}>TOMORROW AT MIDNIGHT ET</div>
+        {streak >= 2 && <div style={{ fontSize: 13, fontWeight: 700 }}>{"\u{1F525}"} {streak}-day streak</div>}
+      </div>
+      <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 24, lineHeight: 1.1, marginTop: 2 }}>
+        {nextWeek ? `${nextWeek.season}, Week ${nextWeek.week}` : "A new week from the vault"}
+      </div>
+      {state === "done" ? (
+        <div style={{ fontSize: 14, color: C.win, fontWeight: 700, marginTop: 8 }}>{"✅"} You'll get it by email at 8:30am ET.</div>
+      ) : (
+        <>
+          <div style={{ fontSize: 14, color: C.muted, margin: "4px 0 10px" }}>Get it by email. One a day, unsubscribe anytime.</div>
+          <div style={{ display: "flex", gap: 8 }}>
+            <input type="email" inputMode="email" autoComplete="email" placeholder="you@email.com" value={email}
+              onChange={e => setEmail(e.target.value)} onKeyDown={e => { if (e.key === "Enter") submit(); }}
+              style={{ flex: 2, minWidth: 0, fontFamily: BODY, fontSize: 16, padding: "12px", borderRadius: 10,
+                border: `1.5px solid ${C.line}`, background: C.bg, color: C.fg }} />
+            <button onClick={submit} disabled={state === "sending"}
+              style={{ flex: 1, border: 0, borderRadius: 10, background: "#B45309", color: "#fff", fontFamily: DISPLAY,
+                fontWeight: 800, fontSize: 17, letterSpacing: ".04em", cursor: "pointer" }}>
+              {state === "sending" ? "..." : "REMIND ME"}</button>
+          </div>
+          {err && <div style={{ fontSize: 13, color: C.loss, marginTop: 6 }}>{err}</div>}
+        </>
+      )}
+    </div>
+  );
 }
 
 /* ---------- helpers ---------- */
@@ -254,20 +315,45 @@ export default function StartSitDraft({ onExit, dark = false }) {
     window.scrollTo(0, 0);
   }
 
+  // Did this player beat the friend whose challenge link they opened?
+  const vsFriend = r => !challenge || challenge.hits == null || !r ? null
+    : r.hits > challenge.hits || (r.hits === challenge.hits && challenge.score != null && r.score > challenge.score) ? "won"
+      : r.hits === challenge.hits && (challenge.score == null || r.score === challenge.score) ? "tie" : "lost";
+
+  // Trash talk, not a scoreboard: the text has to make a friend want to tap.
+  // utm_source=share credits whoever arrives through it, so the stats email
+  // can show whether sharing brings in new players.
   const shareText = r => {
     const squares = r.rows.map(x => (x.right ? "\u{1F7E9}" : "\u{1F7E5}")).join("");
-    const head = r.perfect ? `\u{1F3C6} ${r.hits}/6 PERFECT` : `\u{1F3AF} ${r.hits}/6 right calls`;
-    const vs = r.outcome === "won" ? "beat the House" : r.outcome === "lost" ? "lost to the House" : "tied the House";
-    const link = `playdraft.app/?c=${n}&s=${Math.round(r.score * 10)}&h=${r.hits}#/start-sit`;
-    return `PlayDraft Start/Sit · ${puzzle.season} Week ${puzzle.week}\n${head} · ${f1(r.score)} pts, ${vs}\n${squares}\nBeat me: ${link}`;
+    const wk = `${puzzle.season} Week ${puzzle.week}`;
+    const f = vsFriend(r);
+    const line = f === "won" ? `Beat your ${challenge.hits}/6 with a ${r.hits}/6 on ${wk}. Run it back.`
+      : f === "lost" ? `You got me on ${wk} (${r.hits}/6). Rematch on a new week?`
+      : r.perfect ? `Perfect 6/6 on ${wk}. Every call right. Bet you can't.`
+      : r.outcome === "won" ? `${r.hits}/6 on ${wk} and I beat the House by ${f1(r.diff)}. Your move.`
+      : r.outcome === "lost" ? `The House got me on ${wk} (${r.hits}/6). Bet you do worse.`
+      : `${r.hits}/6 on ${wk}. Tied the House. Break the tie.`;
+    const link = `https://playdraft.app/?c=${n}&s=${Math.round(r.score * 10)}&h=${r.hits}&utm_source=share#/start-sit`;
+    return `${line}\n${squares}\nSame 6 calls: ${link}`;
   };
-  const share = r => {
+  const flashCopied = () => { setCopied(true); timers.current.push(setTimeout(() => setCopied(false), 2000)); };
+  const share = (r, via = "sheet") => {
     const txt = shareText(r);
-    ev("shared", { n, hits: r.hits });
-    if (navigator.share) { navigator.share({ text: txt }).catch(() => {}); return; }
-    if (navigator.clipboard) navigator.clipboard.writeText(txt)
-      .then(() => { setCopied(true); timers.current.push(setTimeout(() => setCopied(false), 2000)); }).catch(() => {});
+    const channel = via === "sheet" && !navigator.share ? "copy" : via;
+    ev("shared", { n, hits: r.hits, via: channel });
+    if (channel === "sms") { window.location.href = `sms:?&body=${encodeURIComponent(txt)}`; return; }
+    if (channel === "whatsapp") { window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank", "noopener"); return; }
+    if (channel === "sheet") { navigator.share({ text: txt }).catch(() => {}); return; }
+    if (navigator.clipboard) navigator.clipboard.writeText(txt).then(flashCopied).catch(() => {});
   };
+
+  function playToday() {
+    timers.current.forEach(clearTimeout); timers.current = [];
+    const m = todayN();
+    setChallenge(null); setCounts(stats.lastNumber !== m); setN(m); setPicks([]); setPhase("pick"); setShown(0); setField(null); setCopied(false);
+    ev("today_from_result", { n: m });
+    window.scrollTo(0, 0);
+  }
 
   /* ---------------- styles ---------------- */
   const s = {
@@ -420,9 +506,17 @@ export default function StartSitDraft({ onExit, dark = false }) {
   /* ---------------- reveal / done ---------------- */
   const r = result;
   const done = phase === "done";
-  const beatFriend = challenge && challenge.hits != null
-    ? (r.hits > challenge.hits || (r.hits === challenge.hits && challenge.score != null && r.score > challenge.score) ? "won"
-      : r.hits === challenge.hits && (challenge.score == null || r.score === challenge.score) ? "tie" : "lost") : null;
+  const beatFriend = vsFriend(r);
+  const askHead = beatFriend === "won" ? "Send it back to them."
+    : beatFriend === "lost" ? "Ask for a rematch."
+    : r.perfect ? "Perfect. Make someone try it."
+    : r.outcome === "won" ? "You beat the House. Can your friends?"
+    : r.outcome === "lost" ? "Bet your friends do worse."
+    : "Find out who breaks the tie.";
+  const playedToday = stats.lastNumber === todayN();
+  const nextWeek = bankFor(todayN() + 1);
+  const smallBtn = { flex: 1, height: 44, borderRadius: 10, border: `1.5px solid ${C.line}`, background: C.panel, color: C.fg,
+    fontFamily: DISPLAY, fontWeight: 700, fontSize: 16, letterSpacing: ".03em", cursor: "pointer" };
   return (
     <div style={s.wrap}>
       {topBar}{season}
@@ -448,8 +542,21 @@ export default function StartSitDraft({ onExit, dark = false }) {
             </div>
           )}
           {counts && <div style={{ fontSize: 13, color: C.muted, marginTop: 8 }}>You're {lineupRecord(stats)} against the House this season.</div>}
+          <div style={{ marginTop: 12, background: C.panel, border: `2px solid ${C.ink}`, borderRadius: 14, padding: 14 }}>
+            <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 24, lineHeight: 1.05 }}>{askHead}</div>
+            <div style={{ fontSize: 14, color: C.muted, margin: "4px 0 12px" }}>
+              Same week, same 6 calls. They'll see your {r.hits}/6 to beat.</div>
+            <button onClick={() => share(r, "sheet")} style={s.primary}>
+              {copied ? "LINK COPIED" : "\u{1F4F2} CHALLENGE A FRIEND"}</button>
+            <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+              {isPhone() && <button onClick={() => share(r, "sms")} style={smallBtn}>Text</button>}
+              <button onClick={() => share(r, "whatsapp")} style={smallBtn}>WhatsApp</button>
+              <button onClick={() => share(r, "copy")} style={smallBtn}>{copied ? "Copied" : "Copy"}</button>
+            </div>
+          </div>
         </div>
       )}
+      {done && <ComeBack C={C} nextWeek={nextWeek} streak={playStreak(stats)} />}
       <div style={s.label}><span>YOUR CALLS</span><span>PTS</span></div>
       <div style={s.list}>
         {r.rows.map((x, k) => {
@@ -473,8 +580,9 @@ export default function StartSitDraft({ onExit, dark = false }) {
       </div>
       {done && (
         <div style={s.bar}>
-          <button onClick={() => share(r)} style={s.primary}>{copied ? "COPIED" : "CHALLENGE YOUR FRIENDS"}</button>
-          <button onClick={anotherWeek} style={s.secondary}>Play another week</button>
+          {!playedToday && n !== todayN()
+            ? <button onClick={playToday} style={s.primary}>PLAY TODAY'S WEEK</button>
+            : <button onClick={anotherWeek} style={s.secondary}>Play another week</button>}
         </div>
       )}
     </div>
