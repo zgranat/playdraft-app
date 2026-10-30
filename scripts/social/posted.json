@@ -97,5 +97,14 @@
     "team": "SEA",
     "pts": 35.9,
     "date": "2026-10-29"
+  },
+  {
+    "n": 39,
+    "season": 2002,
+    "week": 11,
+    "player": "Hines Ward",
+    "team": "PIT",
+    "pts": 35.8,
+    "date": "2026-10-30"
   }
 ]
