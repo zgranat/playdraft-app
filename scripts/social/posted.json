@@ -124,5 +124,14 @@
     "team": "SF",
     "pts": 35.1,
     "date": "2026-11-01"
+  },
+  {
+    "n": 51,
+    "season": 2009,
+    "week": 10,
+    "player": "Randy Moss",
+    "team": "NE",
+    "pts": 34.4,
+    "date": "2026-11-02"
   }
 ]
