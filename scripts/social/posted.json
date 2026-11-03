@@ -133,5 +133,14 @@
     "team": "NE",
     "pts": 34.4,
     "date": "2026-11-02"
+  },
+  {
+    "n": 57,
+    "season": 2005,
+    "week": 8,
+    "player": "Antonio Gates",
+    "team": "SD",
+    "pts": 37.5,
+    "date": "2026-11-03"
   }
 ]
