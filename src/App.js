@@ -1327,6 +1327,76 @@ const PUZZLES = [
       { id:"C", players:["PEYTON MANNING", "CHARLES WOODSON", "JOHN LYNCH", "ALAN FANECA"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2021", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["STEFON DIGGS", "MARCUS WILLIAMS", "DREW BREES", "ALVIN KAMARA"], label:"PLAYED IN THE \"MINNEAPOLIS MIRACLE\" GAME", color:"#8B1A2A", difficulty:4 }
     ]
+  },
+  {
+    id: 133, title: "ROUND 133",
+    players: ["PATRICK MAHOMES", "TRAVIS KELCE", "CHRIS JONES", "JUJU SMITH-SCHUSTER", "TIM COUCH", "RANDALL COBB", "WILL LEVIS", "WAN'DALE ROBINSON", "JARED GOFF", "CARSON WENTZ", "JALEN RAMSEY", "EZEKIEL ELLIOTT", "LARRY FITZGERALD", "RANDY MOSS", "AMARI COOPER", "JA'MARR CHASE"],
+    groups: [
+      { id:"A", players:["PATRICK MAHOMES", "TRAVIS KELCE", "CHRIS JONES", "JUJU SMITH-SCHUSTER"], label:"PLAYED FOR THE CHIEFS' SUPER BOWL LVII-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["TIM COUCH", "RANDALL COBB", "WILL LEVIS", "WAN'DALE ROBINSON"], label:"PLAYED COLLEGE FOOTBALL AT KENTUCKY", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JARED GOFF", "CARSON WENTZ", "JALEN RAMSEY", "EZEKIEL ELLIOTT"], label:"SELECTED IN THE FIRST ROUND OF THE 2016 NFL DRAFT", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["LARRY FITZGERALD", "RANDY MOSS", "AMARI COOPER", "JA'MARR CHASE"], label:"WON THE BILETNIKOFF AWARD", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 134, title: "ROUND 134",
+    players: ["BEN ROETHLISBERGER", "TROY POLAMALU", "JEROME BETTIS", "HINES WARD", "SAM BRADFORD", "NDAMUKONG SUH", "TIM TEBOW", "DEZ BRYANT", "LaDAINIAN TOMLINSON", "DERRICK HENRY", "MELVIN GORDON", "JONATHAN TAYLOR", "VERNON DAVIS", "KYLE PITTS", "MARK ANDREWS", "BROCK BOWERS"],
+    groups: [
+      { id:"A", players:["BEN ROETHLISBERGER", "TROY POLAMALU", "JEROME BETTIS", "HINES WARD"], label:"PLAYED FOR THE STEELERS' SUPER BOWL XL-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["SAM BRADFORD", "NDAMUKONG SUH", "TIM TEBOW", "DEZ BRYANT"], label:"SELECTED IN THE FIRST ROUND OF THE 2010 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["LaDAINIAN TOMLINSON", "DERRICK HENRY", "MELVIN GORDON", "JONATHAN TAYLOR"], label:"WON THE DOAK WALKER AWARD", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["VERNON DAVIS", "KYLE PITTS", "MARK ANDREWS", "BROCK BOWERS"], label:"WON THE JOHN MACKEY AWARD", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 135, title: "ROUND 135",
+    players: ["TOM BRADY", "TY LAW", "ADAM VINATIERI", "TEDY BRUSCHI", "CALVIN JOHNSON", "ADRIAN PETERSON", "MARSHAWN LYNCH", "JAMARCUS RUSSELL", "JASON WITTEN", "TERRELL OWENS", "REGGIE WAYNE", "STEVE SMITH SR.", "MICHAEL STRAHAN", "DEMARCUS WARE", "JULIUS PEPPERS", "DWIGHT FREENEY"],
+    groups: [
+      { id:"A", players:["TOM BRADY", "TY LAW", "ADAM VINATIERI", "TEDY BRUSCHI"], label:"PLAYED FOR THE PATRIOTS' SUPER BOWL XXXVIII-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["CALVIN JOHNSON", "ADRIAN PETERSON", "MARSHAWN LYNCH", "JAMARCUS RUSSELL"], label:"SELECTED IN THE FIRST ROUND OF THE 2007 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JASON WITTEN", "TERRELL OWENS", "REGGIE WAYNE", "STEVE SMITH SR."], label:"CAUGHT 1,000+ CAREER PASSES", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["MICHAEL STRAHAN", "DEMARCUS WARE", "JULIUS PEPPERS", "DWIGHT FREENEY"], label:"RECORDED 100+ CAREER SACKS", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 136, title: "ROUND 136",
+    players: ["RAY LEWIS", "ED REED", "TERRELL SUGGS", "ANQUAN BOLDIN", "MATT RYAN", "DARREN McFADDEN", "CHRIS JOHNSON", "FELIX JONES", "VINCE YOUNG", "CAM NEWTON", "MARCUS MARIOTA", "BAKER MAYFIELD", "JOE MONTANA", "JARED GOFF", "TREVOR LAWRENCE", "TYLER LOCKETT"],
+    groups: [
+      { id:"A", players:["RAY LEWIS", "ED REED", "TERRELL SUGGS", "ANQUAN BOLDIN"], label:"PLAYED FOR THE RAVENS' SUPER BOWL XLVII-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["MATT RYAN", "DARREN McFADDEN", "CHRIS JOHNSON", "FELIX JONES"], label:"SELECTED IN THE FIRST ROUND OF THE 2008 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["VINCE YOUNG", "CAM NEWTON", "MARCUS MARIOTA", "BAKER MAYFIELD"], label:"WON THE DAVEY O'BRIEN AWARD", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["JOE MONTANA", "JARED GOFF", "TREVOR LAWRENCE", "TYLER LOCKETT"], label:"WORE NO. 16 IN THE NFL", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 137, title: "ROUND 137",
+    players: ["TROY AIKMAN", "EMMITT SMITH", "MICHAEL IRVIN", "CHARLES HALEY", "CARSON PALMER", "TROY POLAMALU", "ANDRE JOHNSON", "DALLAS CLARK", "EDDIE GEORGE", "RAY RICE", "STEVE ATWATER", "KAREEM HUNT", "CHARLES WOODSON", "CHAMP BAILEY", "ASANTE SAMUEL", "DARREN SHARPER"],
+    groups: [
+      { id:"A", players:["TROY AIKMAN", "EMMITT SMITH", "MICHAEL IRVIN", "CHARLES HALEY"], label:"PLAYED FOR THE COWBOYS' SUPER BOWL XXVII-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["CARSON PALMER", "TROY POLAMALU", "ANDRE JOHNSON", "DALLAS CLARK"], label:"SELECTED IN THE FIRST ROUND OF THE 2003 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["EDDIE GEORGE", "RAY RICE", "STEVE ATWATER", "KAREEM HUNT"], label:"WORE NO. 27 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["CHARLES WOODSON", "CHAMP BAILEY", "ASANTE SAMUEL", "DARREN SHARPER"], label:"INTERCEPTED 40+ PASSES IN HIS NFL CAREER", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 138, title: "ROUND 138",
+    players: ["JOE MONTANA", "JERRY RICE", "RONNIE LOTT", "ROGER CRAIG", "BARRY SANDERS", "BRIAN DAWKINS", "RONDE BARBER", "ED REED", "AARON RODGERS", "ALEX SMITH", "DEMARCUS WARE", "CADILLAC WILLIAMS", "BRANDIN COOKS", "DANNY AMENDOLA", "WES WELKER", "SONY MICHEL"],
+    groups: [
+      { id:"A", players:["JOE MONTANA", "JERRY RICE", "RONNIE LOTT", "ROGER CRAIG"], label:"PLAYED FOR THE 49ERS' SUPER BOWL XXIII-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["BARRY SANDERS", "BRIAN DAWKINS", "RONDE BARBER", "ED REED"], label:"WORE NO. 20 IN THE NFL", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["AARON RODGERS", "ALEX SMITH", "DEMARCUS WARE", "CADILLAC WILLIAMS"], label:"SELECTED IN THE FIRST ROUND OF THE 2005 NFL DRAFT", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["BRANDIN COOKS", "DANNY AMENDOLA", "WES WELKER", "SONY MICHEL"], label:"PLAYED FOR BOTH THE PATRIOTS AND THE RAMS", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 139, title: "ROUND 139",
+    players: ["BEN ROETHLISBERGER", "JAMES HARRISON", "SANTONIO HOLMES", "HINES WARD", "TERRELL DAVIS", "TODD GURLEY", "AUSTIN EKELER", "PHILLIP LINDSAY", "MATTHEW STAFFORD", "MARK SANCHEZ", "CLAY MATTHEWS", "MICHAEL CRABTREE", "VON MILLER", "MICAH PARSONS", "JEVON KEARSE", "ALDON SMITH"],
+    groups: [
+      { id:"A", players:["BEN ROETHLISBERGER", "JAMES HARRISON", "SANTONIO HOLMES", "HINES WARD"], label:"PLAYED FOR THE STEELERS' SUPER BOWL XLIII-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["TERRELL DAVIS", "TODD GURLEY", "AUSTIN EKELER", "PHILLIP LINDSAY"], label:"WORE NO. 30 IN THE NFL", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["MATTHEW STAFFORD", "MARK SANCHEZ", "CLAY MATTHEWS", "MICHAEL CRABTREE"], label:"SELECTED IN THE FIRST ROUND OF THE 2009 NFL DRAFT", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["VON MILLER", "MICAH PARSONS", "JEVON KEARSE", "ALDON SMITH"], label:"RECORDED 11+ SACKS AS A ROOKIE", color:"#8B1A2A", difficulty:4 }
+    ]
   }
 ];
 const DIFF_LABELS = ["","1ST & EASY","2ND DOWN","3RD & LONG","4TH & GOAL"];
@@ -1686,6 +1756,27 @@ const FEATURED_PUZZLES = [
       { id:"B", players:["TONY POLLARD", "BUCKY IRVING", "QUINSHON JUDKINS", "JAMESON WILLIAMS"], label:"SCORED TWO OR MORE TOUCHDOWNS IN WEEK 7", color:"#2E6B3E", difficulty:2 },
       { id:"C", players:["TEE HIGGINS", "JAXON SMITH-NJIGBA", "MALIK NABERS", "AMON-RA ST. BROWN"], label:"HAD 100+ RECEIVING YARDS IN WEEK 7", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["C.J. STROUD", "DANIEL JONES", "GENO SMITH", "BAKER MAYFIELD"], label:"STARTING QB FOR A TEAM THAT'S 2-5", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: "wk-2026-11-03",
+    weekLabel: "WEEK OF NOV 3",
+    themeTitle: "WEEK 8 REWIND",
+    themeBlurb: "Monster days on the ground, an overtime shootout, and a statement win on Monday night. Everyone here made Week 8's box score.",
+    activeFrom: "2026-11-03",
+    activeUntil: "2026-11-10",
+    title: "FEATURED · WEEK 8 REWIND",
+    players: [
+      "CALEB WILLIAMS","SAM DARNOLD","COOPER KUPP","ROME ODUNZE",
+      "JAHMYR GIBBS","BUCKY IRVING","JAYLEN WARREN","BRAELON ALLEN",
+      "LAMAR JACKSON","JEREMIYAH LOVE","HUNTER HENRY","JAKE FERGUSON",
+      "JOE BURROW","PATRICK MAHOMES","TREVOR LAWRENCE","GARDNER MINSHEW"
+    ],
+    groups: [
+      { id:"A", players:["CALEB WILLIAMS", "SAM DARNOLD", "COOPER KUPP", "ROME ODUNZE"], label:"PLAYED IN MONDAY NIGHT'S BEARS-SEAHAWKS GAME", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["JAHMYR GIBBS", "BUCKY IRVING", "JAYLEN WARREN", "BRAELON ALLEN"], label:"RUSHED FOR 140+ YARDS IN WEEK 8", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["LAMAR JACKSON", "JEREMIYAH LOVE", "HUNTER HENRY", "JAKE FERGUSON"], label:"LEFT HIS WEEK 8 GAME WITH AN INJURY", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["JOE BURROW", "PATRICK MAHOMES", "TREVOR LAWRENCE", "GARDNER MINSHEW"], label:"THREW 3+ TOUCHDOWN PASSES IN WEEK 8", color:"#8B1A2A", difficulty:4 }
     ]
   }
 ];

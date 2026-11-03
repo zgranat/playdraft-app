@@ -29,6 +29,7 @@ const FEATURED_WINDOWS = [
   { id: 'wk-2026-10-13', activeFrom: '2026-10-13', activeUntil: '2026-10-20' },
   { id: 'wk-2026-10-20', activeFrom: '2026-10-20', activeUntil: '2026-10-27' },
   { id: 'wk-2026-10-27', activeFrom: '2026-10-27', activeUntil: '2026-11-03' },
+  { id: 'wk-2026-11-03', activeFrom: '2026-11-03', activeUntil: '2026-11-10' },
 ];
 
 function resolveFeatured(dateKey) {
