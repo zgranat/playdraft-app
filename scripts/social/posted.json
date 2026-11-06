@@ -160,5 +160,14 @@
     "team": "PHI",
     "pts": 38.8,
     "date": "2026-11-05"
+  },
+  {
+    "n": 44,
+    "season": 2012,
+    "week": 5,
+    "player": "Reggie Wayne",
+    "team": "IND",
+    "pts": 33.7,
+    "date": "2026-11-06"
   }
 ]
