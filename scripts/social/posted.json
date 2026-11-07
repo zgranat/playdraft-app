@@ -169,5 +169,14 @@
     "team": "IND",
     "pts": 33.7,
     "date": "2026-11-06"
+  },
+  {
+    "n": 14,
+    "season": 2017,
+    "week": 13,
+    "player": "Tyreek Hill",
+    "team": "KC",
+    "pts": 33.5,
+    "date": "2026-11-07"
   }
 ]
