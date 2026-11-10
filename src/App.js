@@ -1397,6 +1397,76 @@ const PUZZLES = [
       { id:"C", players:["MATTHEW STAFFORD", "MARK SANCHEZ", "CLAY MATTHEWS", "MICHAEL CRABTREE"], label:"SELECTED IN THE FIRST ROUND OF THE 2009 NFL DRAFT", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["VON MILLER", "MICAH PARSONS", "JEVON KEARSE", "ALDON SMITH"], label:"RECORDED 11+ SACKS AS A ROOKIE", color:"#8B1A2A", difficulty:4 }
     ]
+  },
+  {
+    id: 140, title: "ROUND 140",
+    players: ["ELI MANNING", "VICTOR CRUZ", "JASON PIERRE-PAUL", "HAKEEM NICKS", "REGGIE BUSH", "MARIO WILLIAMS", "JAY CUTLER", "HALOTI NGATA", "PATRICK MAHOMES", "TIM TEBOW", "BART STARR", "BRANDON MARSHALL", "DREW BREES", "BRETT FAVRE", "PHILIP RIVERS", "PEYTON MANNING"],
+    groups: [
+      { id:"A", players:["ELI MANNING", "VICTOR CRUZ", "JASON PIERRE-PAUL", "HAKEEM NICKS"], label:"PLAYED FOR THE GIANTS' SUPER BOWL XLVI-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["REGGIE BUSH", "MARIO WILLIAMS", "JAY CUTLER", "HALOTI NGATA"], label:"SELECTED IN THE FIRST ROUND OF THE 2006 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["PATRICK MAHOMES", "TIM TEBOW", "BART STARR", "BRANDON MARSHALL"], label:"WORE NO. 15 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["DREW BREES", "BRETT FAVRE", "PHILIP RIVERS", "PEYTON MANNING"], label:"THREW 400+ CAREER TOUCHDOWN PASSES", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 141, title: "ROUND 141",
+    players: ["COREY DILLON", "DEION BRANCH", "RODNEY HARRISON", "TEDY BRUSCHI", "DeANDRE HOPKINS", "TAVON AUSTIN", "CORDARRELLE PATTERSON", "LANE JOHNSON", "SAQUON BARKLEY", "CLINTON PORTIS", "LE'VEON BELL", "ROD WOODSON", "MARSHALL FAULK", "PRIEST HOLMES", "JAMAL LEWIS", "SHAUN ALEXANDER"],
+    groups: [
+      { id:"A", players:["COREY DILLON", "DEION BRANCH", "RODNEY HARRISON", "TEDY BRUSCHI"], label:"PLAYED FOR THE PATRIOTS' SUPER BOWL XXXIX-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["DeANDRE HOPKINS", "TAVON AUSTIN", "CORDARRELLE PATTERSON", "LANE JOHNSON"], label:"SELECTED IN THE FIRST ROUND OF THE 2013 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["SAQUON BARKLEY", "CLINTON PORTIS", "LE'VEON BELL", "ROD WOODSON"], label:"WORE NO. 26 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["MARSHALL FAULK", "PRIEST HOLMES", "JAMAL LEWIS", "SHAUN ALEXANDER"], label:"WON NFL OFFENSIVE PLAYER OF THE YEAR IN THE 2000s", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 142, title: "ROUND 142",
+    players: ["VON MILLER", "DeMARCUS WARE", "DEMARYIUS THOMAS", "EMMANUEL SANDERS", "KYLER MURRAY", "NICK BOSA", "DANIEL JONES", "JOSH JACOBS", "BRETT FAVRE", "DAK PRESCOTT", "DESHAUN WATSON", "ADAM VINATIERI", "BRUCE SMITH", "REGGIE WHITE", "KEVIN GREENE", "JULIUS PEPPERS"],
+    groups: [
+      { id:"A", players:["VON MILLER", "DeMARCUS WARE", "DEMARYIUS THOMAS", "EMMANUEL SANDERS"], label:"PLAYED FOR THE BRONCOS' SUPER BOWL 50-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["KYLER MURRAY", "NICK BOSA", "DANIEL JONES", "JOSH JACOBS"], label:"SELECTED IN THE FIRST ROUND OF THE 2019 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["BRETT FAVRE", "DAK PRESCOTT", "DESHAUN WATSON", "ADAM VINATIERI"], label:"WORE NO. 4 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["BRUCE SMITH", "REGGIE WHITE", "KEVIN GREENE", "JULIUS PEPPERS"], label:"RECORDED 150+ CAREER SACKS", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 143, title: "ROUND 143",
+    players: ["KURT WARNER", "MARSHALL FAULK", "ISAAC BRUCE", "TORRY HOLT", "CeeDEE LAMB", "JUSTIN JEFFERSON", "CHASE YOUNG", "BRANDON AIYUK", "DONOVAN McNABB", "TEDDY BRIDGEWATER", "JOE FLACCO", "KERRY COLLINS", "BOOMER ESIASON", "ICKEY WOODS", "JA'MARR CHASE", "ANTHONY MUNOZ"],
+    groups: [
+      { id:"A", players:["KURT WARNER", "MARSHALL FAULK", "ISAAC BRUCE", "TORRY HOLT"], label:"PLAYED FOR THE RAMS' SUPER BOWL XXXIV-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["CeeDEE LAMB", "JUSTIN JEFFERSON", "CHASE YOUNG", "BRANDON AIYUK"], label:"SELECTED IN THE FIRST ROUND OF THE 2020 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["DONOVAN McNABB", "TEDDY BRIDGEWATER", "JOE FLACCO", "KERRY COLLINS"], label:"WORE NO. 5 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["BOOMER ESIASON", "ICKEY WOODS", "JA'MARR CHASE", "ANTHONY MUNOZ"], label:"PLAYED IN A SUPER BOWL FOR THE BENGALS", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 144, title: "ROUND 144",
+    players: ["TOM BRADY", "TROY BROWN", "LAWYER MILLOY", "ADAM VINATIERI", "MICHAEL VICK", "LaDAINIAN TOMLINSON", "SANTANA MOSS", "REGGIE WAYNE", "RUSSELL WILSON", "CARSON PALMER", "JAMEIS WINSTON", "STEPHEN GOSTKOWSKI", "TIM BROWN", "BO JACKSON", "MARCUS ALLEN", "HOWIE LONG"],
+    groups: [
+      { id:"A", players:["TOM BRADY", "TROY BROWN", "LAWYER MILLOY", "ADAM VINATIERI"], label:"PLAYED FOR THE PATRIOTS' SUPER BOWL XXXVI-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["MICHAEL VICK", "LaDAINIAN TOMLINSON", "SANTANA MOSS", "REGGIE WAYNE"], label:"SELECTED IN THE FIRST ROUND OF THE 2001 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["RUSSELL WILSON", "CARSON PALMER", "JAMEIS WINSTON", "STEPHEN GOSTKOWSKI"], label:"WORE NO. 3 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["TIM BROWN", "BO JACKSON", "MARCUS ALLEN", "HOWIE LONG"], label:"PLAYED FOR THE RAIDERS IN THE 1980s", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 145, title: "ROUND 145",
+    players: ["MARK RYPIEN", "ART MONK", "DARRELL GREEN", "GARY CLARK", "SAQUON BARKLEY", "DERWIN JAMES", "MINKAH FITZPATRICK", "CALVIN RIDLEY", "MATT RYAN", "JOHNNY MANZIEL", "JaMARCUS RUSSELL", "MASON CROSBY", "RAY LEWIS", "RANDY MOSS", "BRIAN URLACHER", "TERRELL OWENS"],
+    groups: [
+      { id:"A", players:["MARK RYPIEN", "ART MONK", "DARRELL GREEN", "GARY CLARK"], label:"PLAYED FOR WASHINGTON'S SUPER BOWL XXVI-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["SAQUON BARKLEY", "DERWIN JAMES", "MINKAH FITZPATRICK", "CALVIN RIDLEY"], label:"SELECTED IN THE FIRST ROUND OF THE 2018 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["MATT RYAN", "JOHNNY MANZIEL", "JaMARCUS RUSSELL", "MASON CROSBY"], label:"WORE NO. 2 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["RAY LEWIS", "RANDY MOSS", "BRIAN URLACHER", "TERRELL OWENS"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2018", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 146, title: "ROUND 146",
+    players: ["JOHN ELWAY", "TERRELL DAVIS", "SHANNON SHARPE", "ROD SMITH", "DAVID CARR", "ED REED", "DWIGHT FREENEY", "JEREMY SHOCKEY", "JOHNNY UNITAS", "DEEBO SAMUEL", "AMARI COOPER", "BERNIE KOSAR", "EMMITT SMITH", "WALTER PAYTON", "BARRY SANDERS", "FRANK GORE"],
+    groups: [
+      { id:"A", players:["JOHN ELWAY", "TERRELL DAVIS", "SHANNON SHARPE", "ROD SMITH"], label:"PLAYED FOR THE BRONCOS' SUPER BOWL XXXII-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["DAVID CARR", "ED REED", "DWIGHT FREENEY", "JEREMY SHOCKEY"], label:"SELECTED IN THE FIRST ROUND OF THE 2002 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JOHNNY UNITAS", "DEEBO SAMUEL", "AMARI COOPER", "BERNIE KOSAR"], label:"WORE NO. 19 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["EMMITT SMITH", "WALTER PAYTON", "BARRY SANDERS", "FRANK GORE"], label:"RUSHED FOR 15,000+ CAREER YARDS", color:"#8B1A2A", difficulty:4 }
+    ]
   }
 ];
 const DIFF_LABELS = ["","1ST & EASY","2ND DOWN","3RD & LONG","4TH & GOAL"];
@@ -1777,6 +1847,27 @@ const FEATURED_PUZZLES = [
       { id:"B", players:["JAHMYR GIBBS", "BUCKY IRVING", "JAYLEN WARREN", "BRAELON ALLEN"], label:"RUSHED FOR 140+ YARDS IN WEEK 8", color:"#2E6B3E", difficulty:2 },
       { id:"C", players:["LAMAR JACKSON", "JEREMIYAH LOVE", "HUNTER HENRY", "JAKE FERGUSON"], label:"LEFT HIS WEEK 8 GAME WITH AN INJURY", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["JOE BURROW", "PATRICK MAHOMES", "TREVOR LAWRENCE", "GARDNER MINSHEW"], label:"THREW 3+ TOUCHDOWN PASSES IN WEEK 8", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: "wk-2026-11-10",
+    weekLabel: "WEEK OF NOV 10",
+    themeTitle: "WEEK 9 REWIND",
+    themeBlurb: "A Sunday in Madrid, a five-touchdown day for Stroud, and four teams already at seven wins. Everyone here made Week 9's box score.",
+    activeFrom: "2026-11-10",
+    activeUntil: "2026-11-17",
+    title: "FEATURED · WEEK 9 REWIND",
+    players: [
+      "JA'MARR CHASE","BIJAN ROBINSON","MICHAEL PENIX JR.","DRAKE LONDON",
+      "BO NIX","CALEB WILLIAMS","BROCK PURDY","JOSH ALLEN",
+      "KENNETH WALKER III","BUCKY IRVING","CHRISTIAN McCAFFREY","KAYSHON BOUTTE",
+      "C.J. STROUD","JORDAN LOVE","DRAKE MAYE","BRYCE YOUNG"
+    ],
+    groups: [
+      { id:"A", players:["JA'MARR CHASE", "BIJAN ROBINSON", "MICHAEL PENIX JR.", "DRAKE LONDON"], label:"PLAYED IN THE BENGALS-FALCONS GAME IN MADRID", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["BO NIX", "CALEB WILLIAMS", "BROCK PURDY", "JOSH ALLEN"], label:"STARTING QB FOR A TEAM WITH 7 WINS", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["KENNETH WALKER III", "BUCKY IRVING", "CHRISTIAN McCAFFREY", "KAYSHON BOUTTE"], label:"SCORED TWO OR MORE TOUCHDOWNS IN WEEK 9", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["C.J. STROUD", "JORDAN LOVE", "DRAKE MAYE", "BRYCE YOUNG"], label:"THREW 3+ TOUCHDOWN PASSES IN WEEK 9", color:"#8B1A2A", difficulty:4 }
     ]
   }
 ];
