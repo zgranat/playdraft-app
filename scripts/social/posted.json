@@ -205,5 +205,14 @@
     "team": "NO",
     "pts": 33,
     "date": "2026-11-10"
+  },
+  {
+    "n": 62,
+    "season": 2014,
+    "week": 6,
+    "player": "Matt Forte",
+    "team": "CHI",
+    "pts": 32.7,
+    "date": "2026-11-11"
   }
 ]
