@@ -214,5 +214,14 @@
     "team": "CHI",
     "pts": 32.7,
     "date": "2026-11-11"
+  },
+  {
+    "n": 17,
+    "season": 2015,
+    "week": 6,
+    "player": "DeAndre Hopkins",
+    "team": "HOU",
+    "pts": 31.8,
+    "date": "2026-11-12"
   }
 ]
