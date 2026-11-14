@@ -232,5 +232,14 @@
     "team": "SD",
     "pts": 31.8,
     "date": "2026-11-13"
+  },
+  {
+    "n": 55,
+    "season": 2018,
+    "week": 9,
+    "player": "Alvin Kamara",
+    "team": "NO",
+    "pts": 31.6,
+    "date": "2026-11-14"
   }
 ]
