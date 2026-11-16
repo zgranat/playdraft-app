@@ -250,5 +250,14 @@
     "team": "CIN",
     "pts": 31.5,
     "date": "2026-11-15"
+  },
+  {
+    "n": 38,
+    "season": 2012,
+    "week": 12,
+    "player": "Tom Brady",
+    "team": "NE",
+    "pts": 31.4,
+    "date": "2026-11-16"
   }
 ]
