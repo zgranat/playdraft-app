@@ -1467,6 +1467,76 @@ const PUZZLES = [
       { id:"C", players:["JOHNNY UNITAS", "DEEBO SAMUEL", "AMARI COOPER", "BERNIE KOSAR"], label:"WORE NO. 19 IN THE NFL", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["EMMITT SMITH", "WALTER PAYTON", "BARRY SANDERS", "FRANK GORE"], label:"RUSHED FOR 15,000+ CAREER YARDS", color:"#8B1A2A", difficulty:4 }
     ]
+  },
+  {
+    id: 147, title: "ROUND 147",
+    players: ["TROY AIKMAN", "MICHAEL IRVIN", "JAY NOVACEK", "CHARLES HALEY", "LARRY FITZGERALD", "SEAN TAYLOR", "STEVEN JACKSON", "VINCE WILFORK", "PEYTON MANNING", "A.J. GREEN", "JEREMY MACLIN", "RANDALL COBB", "TROY POLAMALU", "EDGERRIN JAMES", "ISAAC BRUCE", "STEVE ATWATER"],
+    groups: [
+      { id:"A", players:["TROY AIKMAN", "MICHAEL IRVIN", "JAY NOVACEK", "CHARLES HALEY"], label:"PLAYED FOR THE COWBOYS' SUPER BOWL XXVIII-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["LARRY FITZGERALD", "SEAN TAYLOR", "STEVEN JACKSON", "VINCE WILFORK"], label:"SELECTED IN THE FIRST ROUND OF THE 2004 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["PEYTON MANNING", "A.J. GREEN", "JEREMY MACLIN", "RANDALL COBB"], label:"WORE NO. 18 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["TROY POLAMALU", "EDGERRIN JAMES", "ISAAC BRUCE", "STEVE ATWATER"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2020", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 148, title: "ROUND 148",
+    players: ["JOE MONTANA", "RONNIE LOTT", "DWIGHT CLARK", "ROGER CRAIG", "JA'MARR CHASE", "KYLE PITTS", "JAYLEN WADDLE", "DeVONTA SMITH", "RANDY MOSS", "ANTONIO BROWN", "CORDARRELLE PATTERSON", "SHANNON SHARPE", "BRIAN URLACHER", "JULIUS PEPPERS", "TERRELL SUGGS", "PATRICK WILLIS"],
+    groups: [
+      { id:"A", players:["JOE MONTANA", "RONNIE LOTT", "DWIGHT CLARK", "ROGER CRAIG"], label:"PLAYED FOR THE 49ERS' SUPER BOWL XIX-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["JA'MARR CHASE", "KYLE PITTS", "JAYLEN WADDLE", "DeVONTA SMITH"], label:"SELECTED IN THE FIRST ROUND OF THE 2021 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["RANDY MOSS", "ANTONIO BROWN", "CORDARRELLE PATTERSON", "SHANNON SHARPE"], label:"WORE NO. 84 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["BRIAN URLACHER", "JULIUS PEPPERS", "TERRELL SUGGS", "PATRICK WILLIS"], label:"WON DEFENSIVE ROOKIE OF THE YEAR IN THE 2000s", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 149, title: "ROUND 149",
+    players: ["JOE THEISMANN", "JOHN RIGGINS", "DEXTER MANLEY", "ART MONK", "SAUCE GARDNER", "GARRETT WILSON", "DRAKE LONDON", "KENNY PICKETT", "DEVIN HESTER", "MARSHON LATTIMORE", "JAIRE ALEXANDER", "WILLIS McGAHEE", "JASON TAYLOR", "LaDAINIAN TOMLINSON", "KURT WARNER", "MORTEN ANDERSEN"],
+    groups: [
+      { id:"A", players:["JOE THEISMANN", "JOHN RIGGINS", "DEXTER MANLEY", "ART MONK"], label:"PLAYED FOR WASHINGTON'S SUPER BOWL XVII-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["SAUCE GARDNER", "GARRETT WILSON", "DRAKE LONDON", "KENNY PICKETT"], label:"SELECTED IN THE FIRST ROUND OF THE 2022 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["DEVIN HESTER", "MARSHON LATTIMORE", "JAIRE ALEXANDER", "WILLIS McGAHEE"], label:"WORE NO. 23 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["JASON TAYLOR", "LaDAINIAN TOMLINSON", "KURT WARNER", "MORTEN ANDERSEN"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2017", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 150, title: "ROUND 150",
+    players: ["ROGER STAUBACH", "TONY DORSETT", "RANDY WHITE", "DREW PEARSON", "C.J. STROUD", "BIJAN ROBINSON", "JAHMYR GIBBS", "JAXON SMITH-NJIGBA", "LeSEAN McCOY", "RICHARD SHERMAN", "REGGIE BUSH", "JAMAAL CHARLES", "BRETT FAVRE", "MARVIN HARRISON", "KEVIN GREENE", "KEN STABLER"],
+    groups: [
+      { id:"A", players:["ROGER STAUBACH", "TONY DORSETT", "RANDY WHITE", "DREW PEARSON"], label:"PLAYED FOR THE COWBOYS' SUPER BOWL XII-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["C.J. STROUD", "BIJAN ROBINSON", "JAHMYR GIBBS", "JAXON SMITH-NJIGBA"], label:"SELECTED IN THE FIRST ROUND OF THE 2023 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["LeSEAN McCOY", "RICHARD SHERMAN", "REGGIE BUSH", "JAMAAL CHARLES"], label:"WORE NO. 25 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["BRETT FAVRE", "MARVIN HARRISON", "KEVIN GREENE", "KEN STABLER"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2016", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 151, title: "ROUND 151",
+    players: ["MARCUS ALLEN", "HOWIE LONG", "JIM PLUNKETT", "LYLE ALZADO", "MALIK NABERS", "ROME ODUNZE", "BROCK BOWERS", "BRIAN THOMAS JR.", "ERIC DICKERSON", "EARL THOMAS", "DeMARCO MURRAY", "LeGARRETTE BLOUNT", "JEROME BETTIS", "TIM BROWN", "JUNIOR SEAU", "CHARLES HALEY"],
+    groups: [
+      { id:"A", players:["MARCUS ALLEN", "HOWIE LONG", "JIM PLUNKETT", "LYLE ALZADO"], label:"PLAYED FOR THE RAIDERS' SUPER BOWL XVIII-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["MALIK NABERS", "ROME ODUNZE", "BROCK BOWERS", "BRIAN THOMAS JR."], label:"SELECTED IN THE FIRST ROUND OF THE 2024 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["ERIC DICKERSON", "EARL THOMAS", "DeMARCO MURRAY", "LeGARRETTE BLOUNT"], label:"WORE NO. 29 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["JEROME BETTIS", "TIM BROWN", "JUNIOR SEAU", "CHARLES HALEY"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2015", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 152, title: "ROUND 152",
+    players: ["TERRY BRADSHAW", "FRANCO HARRIS", "LYNN SWANN", "JOE GREENE", "CHARLES WOODSON", "FRED TAYLOR", "RANDY MOSS", "RYAN LEAF", "REGGIE WHITE", "MICHAEL STRAHAN", "JAMES HARRISON", "HALOTI NGATA", "CRIS CARTER", "WARREN SAPP", "JONATHAN OGDEN", "LARRY ALLEN"],
+    groups: [
+      { id:"A", players:["TERRY BRADSHAW", "FRANCO HARRIS", "LYNN SWANN", "JOE GREENE"], label:"PLAYED FOR THE STEELERS' SUPER BOWL XIII-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["CHARLES WOODSON", "FRED TAYLOR", "RANDY MOSS", "RYAN LEAF"], label:"SELECTED IN THE FIRST ROUND OF THE 1998 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["REGGIE WHITE", "MICHAEL STRAHAN", "JAMES HARRISON", "HALOTI NGATA"], label:"WORE NO. 92 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["CRIS CARTER", "WARREN SAPP", "JONATHAN OGDEN", "LARRY ALLEN"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2013", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 153, title: "ROUND 153",
+    players: ["JOHN ELWAY", "ED McCAFFREY", "STEVE ATWATER", "BILL ROMANOWSKI", "CHAMP BAILEY", "RICKY WILLIAMS", "DAUNTE CULPEPPER", "TIM COUCH", "T.J. WATT", "NDAMUKONG SUH", "JEVON KEARSE", "JULIUS PEPPERS", "DERRICK BROOKS", "ANDRE REED", "WALTER JONES", "RAY GUY"],
+    groups: [
+      { id:"A", players:["JOHN ELWAY", "ED McCAFFREY", "STEVE ATWATER", "BILL ROMANOWSKI"], label:"PLAYED FOR THE BRONCOS' SUPER BOWL XXXIII-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["CHAMP BAILEY", "RICKY WILLIAMS", "DAUNTE CULPEPPER", "TIM COUCH"], label:"SELECTED IN THE FIRST ROUND OF THE 1999 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["T.J. WATT", "NDAMUKONG SUH", "JEVON KEARSE", "JULIUS PEPPERS"], label:"WORE NO. 90 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["DERRICK BROOKS", "ANDRE REED", "WALTER JONES", "RAY GUY"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2014", color:"#8B1A2A", difficulty:4 }
+    ]
   }
 ];
 const DIFF_LABELS = ["","1ST & EASY","2ND DOWN","3RD & LONG","4TH & GOAL"];
@@ -1868,6 +1938,27 @@ const FEATURED_PUZZLES = [
       { id:"B", players:["BO NIX", "CALEB WILLIAMS", "BROCK PURDY", "JOSH ALLEN"], label:"STARTING QB FOR A TEAM WITH 7 WINS", color:"#2E6B3E", difficulty:2 },
       { id:"C", players:["KENNETH WALKER III", "BUCKY IRVING", "CHRISTIAN McCAFFREY", "KAYSHON BOUTTE"], label:"SCORED TWO OR MORE TOUCHDOWNS IN WEEK 9", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["C.J. STROUD", "JORDAN LOVE", "DRAKE MAYE", "BRYCE YOUNG"], label:"THREW 3+ TOUCHDOWN PASSES IN WEEK 9", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: "wk-2026-11-17",
+    weekLabel: "WEEK OF NOV 17",
+    themeTitle: "WEEK 10 REWIND",
+    themeBlurb: "A Sunday night rout in Cincinnati, a rough morning in Munich, and a logjam at 7-2. Everyone here made Week 10's box score.",
+    activeFrom: "2026-11-17",
+    activeUntil: "2026-11-24",
+    title: "FEATURED · WEEK 10 REWIND",
+    players: [
+      "JA'MARR CHASE","AARON RODGERS","DK METCALF","PAT FREIERMUTH",
+      "DRAKE MAYE","AIDAN HUTCHINSON","A.J. BROWN","GENO SMITH",
+      "PATRICK MAHOMES","TREVOR LAWRENCE","KIRK COUSINS","JARED GOFF",
+      "CHRISTIAN McCAFFREY","GEORGE PICKENS","AMON-RA ST. BROWN","JOSH ALLEN"
+    ],
+    groups: [
+      { id:"A", players:["JA'MARR CHASE", "AARON RODGERS", "DK METCALF", "PAT FREIERMUTH"], label:"PLAYED IN SUNDAY NIGHT'S STEELERS-BENGALS GAME", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["DRAKE MAYE", "AIDAN HUTCHINSON", "A.J. BROWN", "GENO SMITH"], label:"LEFT HIS WEEK 10 GAME WITH AN INJURY", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["PATRICK MAHOMES", "TREVOR LAWRENCE", "KIRK COUSINS", "JARED GOFF"], label:"STARTING QB FOR A TEAM THAT'S 7-2", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["CHRISTIAN McCAFFREY", "GEORGE PICKENS", "AMON-RA ST. BROWN", "JOSH ALLEN"], label:"SCORED TWO OR MORE TOUCHDOWNS IN WEEK 10", color:"#8B1A2A", difficulty:4 }
     ]
   }
 ];
