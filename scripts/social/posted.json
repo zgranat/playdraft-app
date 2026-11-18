@@ -268,5 +268,14 @@
     "team": "WAS",
     "pts": 30.5,
     "date": "2026-11-17"
+  },
+  {
+    "n": 21,
+    "season": 2017,
+    "week": 14,
+    "player": "DeAndre Hopkins",
+    "team": "HOU",
+    "pts": 30.4,
+    "date": "2026-11-18"
   }
 ]
