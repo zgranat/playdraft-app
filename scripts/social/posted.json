@@ -277,5 +277,14 @@
     "team": "HOU",
     "pts": 30.4,
     "date": "2026-11-18"
+  },
+  {
+    "n": 73,
+    "season": 2010,
+    "week": 10,
+    "player": "Roddy White",
+    "team": "ATL",
+    "pts": 31.8,
+    "date": "2026-11-19"
   }
 ]
