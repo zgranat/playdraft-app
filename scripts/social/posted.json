@@ -286,5 +286,14 @@
     "team": "ATL",
     "pts": 31.8,
     "date": "2026-11-19"
+  },
+  {
+    "n": 74,
+    "season": 2019,
+    "week": 16,
+    "player": "Ryan Fitzpatrick",
+    "team": "MIA",
+    "pts": 31.7,
+    "date": "2026-11-20"
   }
 ]
