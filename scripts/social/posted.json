@@ -295,5 +295,14 @@
     "team": "MIA",
     "pts": 31.7,
     "date": "2026-11-20"
+  },
+  {
+    "n": 47,
+    "season": 2016,
+    "week": 15,
+    "player": "LeSean McCoy",
+    "team": "BUF",
+    "pts": 30.4,
+    "date": "2026-11-21"
   }
 ]
