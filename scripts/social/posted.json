@@ -304,5 +304,14 @@
     "team": "BUF",
     "pts": 30.4,
     "date": "2026-11-21"
+  },
+  {
+    "n": 76,
+    "season": 2013,
+    "week": 16,
+    "player": "Peyton Manning",
+    "team": "DEN",
+    "pts": 32,
+    "date": "2026-11-22"
   }
 ]
