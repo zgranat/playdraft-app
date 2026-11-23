@@ -313,5 +313,14 @@
     "team": "DEN",
     "pts": 32,
     "date": "2026-11-22"
+  },
+  {
+    "n": 24,
+    "season": 2011,
+    "week": 9,
+    "player": "Julio Jones",
+    "team": "ATL",
+    "pts": 29.9,
+    "date": "2026-11-23"
   }
 ]
