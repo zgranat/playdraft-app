@@ -1537,6 +1537,76 @@ const PUZZLES = [
       { id:"C", players:["T.J. WATT", "NDAMUKONG SUH", "JEVON KEARSE", "JULIUS PEPPERS"], label:"WORE NO. 90 IN THE NFL", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["DERRICK BROOKS", "ANDRE REED", "WALTER JONES", "RAY GUY"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2014", color:"#8B1A2A", difficulty:4 }
     ]
+  },
+  {
+    id: 154, title: "ROUND 154",
+    players: ["BOB GRIESE", "LARRY CSONKA", "PAUL WARFIELD", "NICK BUONICONTI", "KEYSHAWN JOHNSON", "EDDIE GEORGE", "MARVIN HARRISON", "RAY LEWIS", "MIKE DITKA", "STEVE SMITH SR.", "MARK ANDREWS", "SANTANA MOSS", "BRUCE SMITH", "ROD WOODSON", "DERRICK THOMAS", "RANDALL McDANIEL"],
+    groups: [
+      { id:"A", players:["BOB GRIESE", "LARRY CSONKA", "PAUL WARFIELD", "NICK BUONICONTI"], label:"PLAYED FOR THE DOLPHINS' SUPER BOWL VII-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["KEYSHAWN JOHNSON", "EDDIE GEORGE", "MARVIN HARRISON", "RAY LEWIS"], label:"SELECTED IN THE FIRST ROUND OF THE 1996 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["MIKE DITKA", "STEVE SMITH SR.", "MARK ANDREWS", "SANTANA MOSS"], label:"WORE NO. 89 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["BRUCE SMITH", "ROD WOODSON", "DERRICK THOMAS", "RANDALL McDANIEL"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2009", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 155, title: "ROUND 155",
+    players: ["BART STARR", "JIM TAYLOR", "RAY NITSCHKE", "HERB ADDERLEY", "CAM WARD", "TRAVIS HUNTER", "ASHTON JEANTY", "ABDUL CARTER", "VON MILLER", "JACK LAMBERT", "SHAQUIL BARRETT", "THOMAS DAVIS", "DEION SANDERS", "MARSHALL FAULK", "SHANNON SHARPE", "RICHARD DENT"],
+    groups: [
+      { id:"A", players:["BART STARR", "JIM TAYLOR", "RAY NITSCHKE", "HERB ADDERLEY"], label:"PLAYED FOR THE PACKERS' SUPER BOWL I-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["CAM WARD", "TRAVIS HUNTER", "ASHTON JEANTY", "ABDUL CARTER"], label:"SELECTED IN THE FIRST ROUND OF THE 2025 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["VON MILLER", "JACK LAMBERT", "SHAQUIL BARRETT", "THOMAS DAVIS"], label:"WORE NO. 58 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["DEION SANDERS", "MARSHALL FAULK", "SHANNON SHARPE", "RICHARD DENT"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2011", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 156, title: "ROUND 156",
+    players: ["LEN DAWSON", "BUCK BUCHANAN", "WILLIE LANIER", "JAN STENERUD", "STEVE McNAIR", "KERRY COLLINS", "WARREN SAPP", "TY LAW", "WES WELKER", "ANDRE REED", "VINCENT JACKSON", "TED HENDRICKS", "EMMITT SMITH", "JERRY RICE", "JOHN RANDLE", "RICKEY JACKSON"],
+    groups: [
+      { id:"A", players:["LEN DAWSON", "BUCK BUCHANAN", "WILLIE LANIER", "JAN STENERUD"], label:"PLAYED FOR THE CHIEFS' SUPER BOWL IV-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["STEVE McNAIR", "KERRY COLLINS", "WARREN SAPP", "TY LAW"], label:"SELECTED IN THE FIRST ROUND OF THE 1995 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["WES WELKER", "ANDRE REED", "VINCENT JACKSON", "TED HENDRICKS"], label:"WORE NO. 83 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["EMMITT SMITH", "JERRY RICE", "JOHN RANDLE", "RICKEY JACKSON"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2010", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 157, title: "ROUND 157",
+    players: ["JOE MONTANA", "RONNIE LOTT", "DWIGHT CLARK", "FRED DEAN", "DREW BLEDSOE", "JEROME BETTIS", "GARRISON HEARST", "CURTIS CONWAY", "FLETCHER COX", "CAMERON WAKE", "TAMBA HALI", "KEVIN GREENE", "CURTIS MARTIN", "CORTEZ KENNEDY", "CHRIS DOLEMAN", "DERMONTTI DAWSON"],
+    groups: [
+      { id:"A", players:["JOE MONTANA", "RONNIE LOTT", "DWIGHT CLARK", "FRED DEAN"], label:"PLAYED FOR THE 49ERS' SUPER BOWL XVI-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["DREW BLEDSOE", "JEROME BETTIS", "GARRISON HEARST", "CURTIS CONWAY"], label:"SELECTED IN THE FIRST ROUND OF THE 1993 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["FLETCHER COX", "CAMERON WAKE", "TAMBA HALI", "KEVIN GREENE"], label:"WORE NO. 91 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["CURTIS MARTIN", "CORTEZ KENNEDY", "CHRIS DOLEMAN", "DERMONTTI DAWSON"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2012", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 158, title: "ROUND 158",
+    players: ["KEN STABLER", "FRED BILETNIKOFF", "GENE UPSHAW", "ART SHELL", "JEFF GEORGE", "JUNIOR SEAU", "EMMITT SMITH", "RODNEY HAMPTON", "JASON WITTEN", "OZZIE NEWSOME", "RAYMOND BERRY", "TORREY SMITH", "TROY AIKMAN", "WARREN MOON", "REGGIE WHITE", "HARRY CARSON"],
+    groups: [
+      { id:"A", players:["KEN STABLER", "FRED BILETNIKOFF", "GENE UPSHAW", "ART SHELL"], label:"PLAYED FOR THE RAIDERS' SUPER BOWL XI-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["JEFF GEORGE", "JUNIOR SEAU", "EMMITT SMITH", "RODNEY HAMPTON"], label:"SELECTED IN THE FIRST ROUND OF THE 1990 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JASON WITTEN", "OZZIE NEWSOME", "RAYMOND BERRY", "TORREY SMITH"], label:"WORE NO. 82 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["TROY AIKMAN", "WARREN MOON", "REGGIE WHITE", "HARRY CARSON"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2006", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 159, title: "ROUND 159",
+    players: ["JOE NAMATH", "DON MAYNARD", "MATT SNELL", "EMERSON BOOZER", "BARRY SANDERS", "DEION SANDERS", "DERRICK THOMAS", "TONY MANDARICH", "JAMAL LEWIS", "KAM CHANCELLOR", "ANTONIO CROMARTIE", "JIM TAYLOR", "ED REED", "TONY GONZALEZ", "CHAMP BAILEY", "TY LAW"],
+    groups: [
+      { id:"A", players:["JOE NAMATH", "DON MAYNARD", "MATT SNELL", "EMERSON BOOZER"], label:"PLAYED FOR THE JETS' SUPER BOWL III-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["BARRY SANDERS", "DEION SANDERS", "DERRICK THOMAS", "TONY MANDARICH"], label:"SELECTED IN THE FIRST ROUND OF THE 1989 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JAMAL LEWIS", "KAM CHANCELLOR", "ANTONIO CROMARTIE", "JIM TAYLOR"], label:"WORE NO. 31 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["ED REED", "TONY GONZALEZ", "CHAMP BAILEY", "TY LAW"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2019", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: 160, title: "ROUND 160",
+    players: ["ROGER STAUBACH", "BOB LILLY", "MIKE DITKA", "DUANE THOMAS", "WARRICK DUNN", "ORLANDO PACE", "WALTER JONES", "SHAWN SPRINGS", "JOHN RIGGINS", "KYLE JUSZCZYK", "LEROY KELLY", "FLOYD LITTLE", "DARRELL GREEN", "ART MONK", "ANDRE TIPPETT", "FRED DEAN"],
+    groups: [
+      { id:"A", players:["ROGER STAUBACH", "BOB LILLY", "MIKE DITKA", "DUANE THOMAS"], label:"PLAYED FOR THE COWBOYS' SUPER BOWL VI-WINNING TEAM", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["WARRICK DUNN", "ORLANDO PACE", "WALTER JONES", "SHAWN SPRINGS"], label:"SELECTED IN THE FIRST ROUND OF THE 1997 NFL DRAFT", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["JOHN RIGGINS", "KYLE JUSZCZYK", "LEROY KELLY", "FLOYD LITTLE"], label:"WORE NO. 44 IN THE NFL", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["DARRELL GREEN", "ART MONK", "ANDRE TIPPETT", "FRED DEAN"], label:"INDUCTED INTO THE PRO FOOTBALL HALL OF FAME IN 2008", color:"#8B1A2A", difficulty:4 }
+    ]
   }
 ];
 const DIFF_LABELS = ["","1ST & EASY","2ND DOWN","3RD & LONG","4TH & GOAL"];
@@ -1959,6 +2029,27 @@ const FEATURED_PUZZLES = [
       { id:"B", players:["DRAKE MAYE", "AIDAN HUTCHINSON", "A.J. BROWN", "GENO SMITH"], label:"LEFT HIS WEEK 10 GAME WITH AN INJURY", color:"#2E6B3E", difficulty:2 },
       { id:"C", players:["PATRICK MAHOMES", "TREVOR LAWRENCE", "KIRK COUSINS", "JARED GOFF"], label:"STARTING QB FOR A TEAM THAT'S 7-2", color:"#1B4F8A", difficulty:3 },
       { id:"D", players:["CHRISTIAN McCAFFREY", "GEORGE PICKENS", "AMON-RA ST. BROWN", "JOSH ALLEN"], label:"SCORED TWO OR MORE TOUCHDOWNS IN WEEK 10", color:"#8B1A2A", difficulty:4 }
+    ]
+  },
+  {
+    id: "wk-2026-11-24",
+    weekLabel: "WEEK OF NOV 24",
+    themeTitle: "WEEK 11 REWIND",
+    themeBlurb: "A Sunday night rout in Mexico City, a 51-point day in Dallas, and a four-way logjam at 8-2. Everyone here made Week 11's box score.",
+    activeFrom: "2026-11-24",
+    activeUntil: "2026-12-01",
+    title: "FEATURED · WEEK 11 REWIND",
+    players: [
+      "BROCK PURDY","KIRK COUSINS","NICK BOSA","JUSTIN JEFFERSON",
+      "CALEB WILLIAMS","JARED GOFF","BO NIX","PATRICK MAHOMES",
+      "TRAVIS KELCE","LADD McCONKEY","STERLING SHEPARD","JAHMYR GIBBS",
+      "CeeDEE LAMB","GEORGE PICKENS","CHRIS OLAVE","EMMETT JOHNSON"
+    ],
+    groups: [
+      { id:"A", players:["BROCK PURDY", "KIRK COUSINS", "NICK BOSA", "JUSTIN JEFFERSON"], label:"PLAYED IN THE 49ERS-VIKINGS GAME IN MEXICO CITY", color:"#B8860B", difficulty:1 },
+      { id:"B", players:["CALEB WILLIAMS", "JARED GOFF", "BO NIX", "PATRICK MAHOMES"], label:"STARTING QB FOR A TEAM THAT'S 8-2", color:"#2E6B3E", difficulty:2 },
+      { id:"C", players:["TRAVIS KELCE", "LADD McCONKEY", "STERLING SHEPARD", "JAHMYR GIBBS"], label:"SCORED TWO OR MORE TOUCHDOWNS IN WEEK 11", color:"#1B4F8A", difficulty:3 },
+      { id:"D", players:["CeeDEE LAMB", "GEORGE PICKENS", "CHRIS OLAVE", "EMMETT JOHNSON"], label:"HAD A 100-YARD RUSHING OR RECEIVING GAME IN WEEK 11", color:"#8B1A2A", difficulty:4 }
     ]
   }
 ];
