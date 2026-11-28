@@ -358,5 +358,14 @@
     "team": "PIT",
     "pts": 29.6,
     "date": "2026-11-27"
+  },
+  {
+    "n": 82,
+    "season": 2004,
+    "week": 13,
+    "player": "Clinton Portis",
+    "team": "WAS",
+    "pts": 29.7,
+    "date": "2026-11-28"
   }
 ]
